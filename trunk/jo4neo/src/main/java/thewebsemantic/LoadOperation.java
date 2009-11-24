@@ -28,7 +28,6 @@ public class LoadOperation<T> {
 	public T load() {
 		Transaction t = neo.beginTx();
 		try {
-			//TypeWrapper type = TypeWrapperFactory.wrap(cls);
 			Node n = neo.getNodeById(key);
 			if (n == null)
 				return null;
@@ -63,7 +62,6 @@ public class LoadOperation<T> {
 			ArrayList<T> results = new ArrayList<T>();
 			for (Node node : nodes)
 				results.add((T) loadFully(node));
-
 			t.success();
 			return results;
 		} finally {
@@ -115,6 +113,12 @@ public class LoadOperation<T> {
 		return o;
 	}
 
+	/**
+	 * Each node created is annotated with the javatype from
+	 * whence it came.
+	 * @param n neo4j node.
+	 * @return
+	 */
 	private TypeWrapper nodesJavaType(Node n) {
 		String typename = (String) n.getProperty(Neo.class.getName());
 		TypeWrapper type = TypeWrapperFactory.wrap(typename);
