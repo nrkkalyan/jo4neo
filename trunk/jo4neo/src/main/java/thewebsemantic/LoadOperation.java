@@ -50,6 +50,9 @@ public class LoadOperation<T> {
 		}
 	}
 
+	public Collection<T> loadAll() {
+		return load(neo.getIndexService().getNodes("javaclass", cls.getName()));
+	}
 	public Collection<T> load(Iterable<Node> nodes) {
 		Transaction t = neo.beginTx();
 		try {
@@ -85,7 +88,6 @@ public class LoadOperation<T> {
 		} finally {
 			t.finish();
 		}
-
 	}
 
 	protected Object loadDirect(Relationship r) {
@@ -108,8 +110,6 @@ public class LoadOperation<T> {
 		return o;
 	}
 
-	public Collection<T> loadAll() {
-		return load(neo.getIndexService().getNodes("javaclass", cls.getName()));
-	}
+
 
 }
