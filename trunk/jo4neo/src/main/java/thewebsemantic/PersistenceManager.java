@@ -7,6 +7,7 @@ import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.Transaction;
+import org.neo4j.util.index.IndexHits;
 
 public class PersistenceManager {
 
@@ -67,7 +68,7 @@ public class PersistenceManager {
 	}
 
 	public <T> Collection<T> load(Class<T> t) {
-		return null;
+		return new LoadOperation<T>(t, 0, ineo).loadAll();
 	}
 
 }

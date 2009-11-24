@@ -82,6 +82,7 @@ public class PersistOperation {
 	private Node asNode(TypeWrapper t, Object value) {
 		Neo id = t.id(value);
 		Node n = id.mirror(neo);
+		neo.getIndexService().index(n, "javaclass", t.getWrappedType().getName());
 		t.setId(value, id);
 		return n;
 	}

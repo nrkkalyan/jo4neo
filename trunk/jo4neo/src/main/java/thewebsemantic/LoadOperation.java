@@ -1,6 +1,7 @@
 package thewebsemantic;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,20 @@ public class LoadOperation<T> {
 		}
 	}
 
+	public Collection<T> load(Iterable<Node> nodes) {
+		Transaction t = neo.beginTx();
+		try {
+			ArrayList<T> results = new ArrayList<T>();
+			for (Node node : nodes)
+				results.add((T) loadDirect(node));
+
+			t.success();
+			return results;
+		} finally {
+			t.finish();
+		}
+	}
+
 	private void single(Node n, FieldContext field) {
 		for (Relationship r : field.relationships(n, neo.getRelationFactory())) {
 			field.setProperty(loadDirect(r));
@@ -58,12 +73,11 @@ public class LoadOperation<T> {
 
 	public List<Object> load(FieldContext field) {
 		Transaction t = neo.beginTx();
-		//Class<?> c = field.type2();
 		try {
 			ArrayList<Object> values = new ArrayList<Object>();
 			Node n = neo.getNodeById(nodeid);
-			for (Relationship r : n.getRelationships(field.toRelationship(neo.getRelationFactory()),
-					Direction.OUTGOING)) {
+			for (Relationship r : n.getRelationships(field.toRelationship(neo
+					.getRelationFactory()), Direction.OUTGOING)) {
 				values.add(loadDirect(r));
 			}
 			t.success();
@@ -79,12 +93,12 @@ public class LoadOperation<T> {
 	}
 
 	protected Object loadDirect(Node n) {
-		if ( cache.containsKey(n.getId()))
+		if (cache.containsKey(n.getId()))
 			return cache.get(n.getId());
-		String typename = (String)n.getProperty(Neo.class.getName());
+		String typename = (String) n.getProperty(Neo.class.getName());
 		TypeWrapper type = TypeWrapperFactory.wrap(typename);
 		Object o = type.newInstance();
-		type.setId(o, new Neo(n.getId(),type.getWrappedType()));
+		type.setId(o, new Neo(n.getId(), type.getWrappedType()));
 		cache.put(n.getId(), o);
 		for (FieldContext field : type.getValueContexts(o))
 			if (field.isSimpleType())
@@ -92,6 +106,10 @@ public class LoadOperation<T> {
 			else if (field.isSingular())
 				single(n, field);
 		return o;
+	}
+
+	public Collection<T> loadAll() {
+		return load(neo.getIndexService().getNodes("javaclass", cls.getName()));
 	}
 
 }
