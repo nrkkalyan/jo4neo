@@ -34,14 +34,18 @@ public class PersistOperation {
 
 	private void save(Node node, Object o) {
 		for (FieldContext field : type.getValueContexts(o))
-			if (field.isSimpleType())
-				saveAndIndex(node, field);
-			else if (field.isPluralPrimitive())
-				saveAndIndex(node, field);
-			else if (field.isSingular())
-				relate(node, field);
-			else if (field.isPlural())
-				relations(node, field);
+			save(node, field);
+	}
+
+	private void save(Node node, FieldContext field) {
+		if (field.isSimpleType())
+			saveAndIndex(node, field);
+		else if (field.isPluralPrimitive())
+			saveAndIndex(node, field);
+		else if (field.isSingular())
+			relate(node, field);
+		else if (field.isPlural())
+			relations(node, field);
 	}
 
 	private void saveAndIndex(Node node, FieldContext field) {
@@ -55,7 +59,11 @@ public class PersistOperation {
 		Collection<Object> values = field.values();
 		if (values == null)
 			return;
-
+		// prevent infinite loop on cycles
+		if (visited.containsKey(node.getId()))
+			return;
+		visited.put(node.getId(), node);
+		
 		// ignore unmodified collections
 		if (values instanceof Lazy) {
 			if (!((Lazy) values).modified())
@@ -74,8 +82,7 @@ public class PersistOperation {
 
 			// save primitive properties
 			for (FieldContext f : genericType.getValueContexts(value))
-				if (f.isSimpleType())
-					saveAndIndex(n2, f);
+				save(n2, f);
 		}
 	}
 
@@ -90,21 +97,18 @@ public class PersistOperation {
 	private void relate(Node node, FieldContext field) {
 		if (field.value() == null)
 			return;
+
 		// prevent infinite loop on cycles
 		if (visited.containsKey(node.getId()))
 			return;
 		visited.put(node.getId(), node);
-
+		
 		Node n2 = field.targetNode(neo);
 		node.createRelationshipTo(n2, field.toRelationship(neo
 				.getRelationFactory()));
 
-		// save primitive properties
 		for (FieldContext f : field.getTargetFields())
-			if (f.isSimpleType())
-				saveAndIndex(n2, f);
-			else if (f.isSingular())
-				relate(n2, f);
+			save(n2, f);		
 	}
 
 }
