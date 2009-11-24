@@ -98,6 +98,18 @@ public class FieldContext {
 		}
 		return null;
 	}
+	
+	public Node subjectNode(IndexedNeo neo) {
+		try {
+			field.setAccessible(true);
+			TypeWrapper t = TypeWrapperFactory.wrap(subject);
+			Neo id = t.id(subject);
+			return neo.getNodeById(id.id());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;		
+	}
 
 	public FieldContext[] getTargetFields() {
 		TypeWrapper t = TypeWrapperFactory.wrap(field);
