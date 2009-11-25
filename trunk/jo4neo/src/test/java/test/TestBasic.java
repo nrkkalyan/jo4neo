@@ -171,6 +171,47 @@ public class TestBasic {
 	}
 	
 	@Test
+	public void collections4() {
+
+		PersistenceManager pm = new PersistenceManager(neo);
+		try {
+			Student s1 = new Student();
+			s1.setName("student");
+
+			
+			Course c1 = new Course();
+			c1.setName("math101");
+			Course c2 = new Course();
+			c2.setName("spanish101");
+			Course c3 = new Course();
+			c3.setName("history101");
+			
+			s1.getCourses().add(c1);
+			s1.getCourses().add(c2);
+			s1.getCourses().add(c3);			
+			pm.save(s1);
+			long id = s1.neo.id();
+			
+			
+			Student s1ref = pm.load(Student.class, id);
+			assertEquals(s1ref.getCourses().size(), 3);
+			Course remove = null;
+			for (Course course : s1ref.getCourses()) {
+				if ("spanish101".equals(course.getName()))
+						remove = course;
+			}
+			s1ref.getCourses().remove(remove);
+			pm.save(s1ref);
+			
+			s1 = pm.load(Student.class, id);
+			assertEquals(s1.getCourses().size(), 2);
+			assertEquals(s1.getName(), "student");
+		} finally {
+			pm.close();
+		}
+	}
+	
+	@Test
 	public void basic() {
 		PersistenceManager pm = new PersistenceManager(neo);
 		Transaction t = neo.beginTx();
