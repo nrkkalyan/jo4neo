@@ -13,19 +13,17 @@ import org.neo4j.api.core.Transaction;
 
 public class LoadOperation<T> {
 
-	long key;
 	IndexedNeo neo;
 	Class<?> cls;
 	Map<Long, Object> cache;
 
-	public LoadOperation(Class<?> type, long key, IndexedNeo ineo) {
-		this.key = key;
+	public LoadOperation(Class<?> type, IndexedNeo ineo) {
 		this.cls = type;
 		this.neo = ineo;
 		cache = new HashMap<Long, Object>();
 	}
 
-	public T load() {
+	public T load(long key) {
 		Transaction t = neo.beginTx();
 		try {
 			Node n = neo.getNodeById(key);

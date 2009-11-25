@@ -53,7 +53,7 @@ public class PersistenceManager {
 	}
 
 	public <T> T load(Class<T> t, long key) {
-		return new LoadOperation<T>(t, key, ineo).load();
+		return new LoadOperation<T>(t, ineo).load(key);
 	}
 
 	public void close() {
@@ -68,7 +68,7 @@ public class PersistenceManager {
 	}
 
 	public <T> Collection<T> load(Class<T> t) {
-		return new LoadOperation<T>(t, 0, ineo).loadAll();
+		return new LoadOperation<T>(t, ineo).loadAll();
 	}
 
 }
