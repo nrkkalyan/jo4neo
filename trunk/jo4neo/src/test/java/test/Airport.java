@@ -8,8 +8,8 @@ import thewebsemantic.Neo;
 public class Airport {
 	transient Neo neo;
 
+	@Graph(index="airportcode") String code;
 	@Graph String name;
-	@Graph String code;
 	@Graph Collection<City> citiesServed;
 	public String getName() {
 		return name;
