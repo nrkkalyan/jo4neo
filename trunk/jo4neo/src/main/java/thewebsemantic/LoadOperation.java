@@ -78,11 +78,8 @@ public class LoadOperation<T> {
 		Transaction t = neo.beginTx();
 		try {
 			ArrayList<Object> values = new ArrayList<Object>();
-			
-			//Node n = neo.getNodeById(nodeid);
 			Node n = field.subjectNode(neo);
-			for (Relationship r : n.getRelationships(field.toRelationship(neo
-					.getRelationFactory()), Direction.OUTGOING)) {
+			for (Relationship r : outgoingRelationships(field, n)) {
 				values.add(loadDirect(r));
 			}
 			t.success();
@@ -90,6 +87,12 @@ public class LoadOperation<T> {
 		} finally {
 			t.finish();
 		}
+	}
+
+	private Iterable<Relationship> outgoingRelationships(FieldContext field,
+			Node n) {
+		return n.getRelationships(field.toRelationship(neo
+				.getRelationFactory()), Direction.OUTGOING);
 	}
 
 	protected Object loadDirect(Relationship r) {
