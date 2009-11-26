@@ -59,12 +59,18 @@ public class PersistOperation {
 		Collection<Object> values = field.values();
 		if (values == null)
 			return;
-		// prevent infinite loop on cycles
+		/*
+		 * cycle detection
+		 * object graphs may contain cycles, which would cause
+		 * infinite recursion without this check
+		 */
 		if (visited.containsKey(node.getId()))
 			return;
 		visited.put(node.getId(), node);
 		
-		// ignore unmodified collections
+		/*
+		 *  Ignore unmodified collections.
+		 */
 		if (values instanceof Lazy) {
 			if (!((Lazy) values).modified())
 				return;
@@ -80,7 +86,6 @@ public class PersistOperation {
 			node.createRelationshipTo(n2, field.toRelationship(neo
 					.getRelationFactory()));
 
-			// save primitive properties
 			for (FieldContext f : genericType.getValueContexts(value))
 				save(n2, f);
 		}
