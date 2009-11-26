@@ -66,6 +66,10 @@ public class PersistenceManager {
 			list.add(load(t, n.getId()));
 		return list;
 	}
+	
+	public <T> T loadSingle(Class<T> t, String indexname, Object value) {
+		return load(t,indexname, value).iterator().next();
+	}
 
 	public <T> Collection<T> load(Class<T> t) {
 		return new LoadOperation<T>(t, ineo).loadAll();
