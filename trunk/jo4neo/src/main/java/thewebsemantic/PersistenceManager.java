@@ -11,6 +11,7 @@ import org.neo4j.util.index.IndexHits;
 
 public class PersistenceManager {
 
+	public static final String JAVA_CLASS = "javaclass";
 	NeoService neo;
 	IndexedNeo ineo;
 

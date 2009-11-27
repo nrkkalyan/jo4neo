@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import static thewebsemantic.PersistenceManager.JAVA_CLASS;
 
 import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
@@ -52,7 +53,7 @@ public class LoadOperation<T> {
 	}
 
 	public Collection<T> loadAll() {
-		return load(neo.getIndexService().getNodes("javaclass", cls.getName()));
+		return load(neo.getIndexService().getNodes(JAVA_CLASS, cls.getName()));
 	}
 	public Collection<T> load(Iterable<Node> nodes) {
 		Transaction t = neo.beginTx();

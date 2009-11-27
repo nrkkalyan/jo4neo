@@ -7,6 +7,7 @@ import java.util.Map;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.Transaction;
+import static thewebsemantic.PersistenceManager.JAVA_CLASS;
 
 public class PersistOperation {
 
@@ -94,7 +95,7 @@ public class PersistOperation {
 	private Node asNode(TypeWrapper t, Object value) {
 		Neo id = t.id(value);
 		Node n = id.mirror(neo);
-		neo.getIndexService().index(n, "javaclass", t.getWrappedType().getName());
+		neo.getIndexService().index(n, JAVA_CLASS, t.getWrappedType().getName());
 		t.setId(value, id);
 		return n;
 	}
