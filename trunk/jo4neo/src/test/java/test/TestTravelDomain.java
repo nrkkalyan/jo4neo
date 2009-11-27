@@ -42,10 +42,10 @@ public class TestTravelDomain {
 	
 	private static void createCities() {
 		PersistenceManager pm = new PersistenceManager(neo);
-		for (String[] row : statedata) {
+		for (String[] row : citydata) {
 			City c = new City();
-			c.setName(row[1]);
-			State s = pm.loadSingle(State.class, "statecode", row[0]);
+			c.setName(row[0]);
+			State s = pm.loadSingle(State.class, "statecode", row[1]);
 			c.setState(s);
 			s.getCities().add(c);
 			pm.save(c);
@@ -76,6 +76,14 @@ public class TestTravelDomain {
 		PersistenceManager pm = new PersistenceManager(neo);
 		Collection<State> states = pm.load(State.class);
 		assertEquals(3, states.size());
+		
+		Collection<City> cities = pm.load(City.class);
+		assertEquals(7, cities.size());
+		
+		State texas = pm.loadSingle(State.class, "statecode", "TX");
+		assertNotNull(texas);
+		assertEquals(3, texas.getCities().size());
+		
 	}
 	
 	static public boolean deleteDirectory(File path) {
