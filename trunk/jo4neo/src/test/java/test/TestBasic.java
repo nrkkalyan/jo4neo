@@ -204,7 +204,7 @@ public class TestBasic {
 			pm.save(s1ref);
 			
 			s1 = pm.load(Student.class, id);
-			assertEquals(s1.getCourses().size(), 2);
+			assertEquals(2,s1.getCourses().size());
 			assertEquals(s1.getName(), "student");
 		} finally {
 			pm.close();

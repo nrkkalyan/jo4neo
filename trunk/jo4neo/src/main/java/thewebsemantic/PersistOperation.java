@@ -11,13 +11,11 @@ import static thewebsemantic.PersistenceManager.JAVA_CLASS;
 
 public class PersistOperation {
 
-	TypeWrapper type;
+	//TypeWrapper type;
 	IndexedNeo neo;
 	Map<Long, Object> visited;
 
-	public PersistOperation(TypeWrapper type, IndexedNeo neo) {
-
-		this.type = type;
+	public PersistOperation(IndexedNeo neo) {
 		this.neo = neo;
 		visited = new HashMap<Long, Object>();
 	}
@@ -25,15 +23,25 @@ public class PersistOperation {
 	public void save(Object bean) {
 		Transaction t = neo.beginTx();
 		try {
+			TypeWrapper type = TypeWrapperFactory.wrap(bean);
 			save(asNode(type, bean), bean);
 			t.success();
 		} finally {
 			t.finish();
 		}
-
 	}
 
 	private void save(Node node, Object o) {
+		/*
+		 * cycle detection
+		 * object graphs may contain cycles, which would cause
+		 * infinite recursion without this check
+		 */
+		if (visited.containsKey(node.getId()))
+			return;
+		visited.put(node.getId(), node);
+		
+		TypeWrapper type = TypeWrapperFactory.wrap(o);
 		for (FieldContext field : type.getValueContexts(o))
 			save(node, field);
 	}
@@ -59,15 +67,7 @@ public class PersistOperation {
 	private void relations(Node node, FieldContext field) {
 		Collection<Object> values = field.values();
 		if (values == null)
-			return;
-		/*
-		 * cycle detection
-		 * object graphs may contain cycles, which would cause
-		 * infinite recursion without this check
-		 */
-		if (visited.containsKey(node.getId()))
-			return;
-		visited.put(node.getId(), node);
+			return;	
 		
 		/*
 		 *  Ignore unmodified collections.
@@ -79,16 +79,13 @@ public class PersistOperation {
 					.getRelationFactory()))
 				r.delete();
 		}
-
 		
 		for (Object value : values) {
 			TypeWrapper genericType = TypeWrapperFactory.wrap(value);
 			Node n2 = asNode(genericType, value);
 			node.createRelationshipTo(n2, field.toRelationship(neo
 					.getRelationFactory()));
-
-			for (FieldContext f : genericType.getValueContexts(value))
-				save(n2, f);
+			save(n2, value);
 		}
 	}
 
@@ -102,19 +99,11 @@ public class PersistOperation {
 
 	private void relate(Node node, FieldContext field) {
 		if (field.value() == null)
-			return;
-
-		// prevent infinite loop on cycles
-		if (visited.containsKey(node.getId()))
-			return;
-		visited.put(node.getId(), node);
-		
+			return;		
 		Node n2 = field.targetNode(neo);
 		node.createRelationshipTo(n2, field.toRelationship(neo
 				.getRelationFactory()));
-
-		for (FieldContext f : field.getTargetFields())
-			save(n2, f);		
+		save(n2, field.value());
 	}
 
 }

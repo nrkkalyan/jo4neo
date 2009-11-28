@@ -111,11 +111,6 @@ public class FieldContext {
 		return null;		
 	}
 
-	public FieldContext[] getTargetFields() {
-		TypeWrapper t = TypeWrapperFactory.wrap(field);
-		return t.getValueContexts(value());
-	}
-
 	public Collection<Object> values() {
 		try {
 			field.setAccessible(true);

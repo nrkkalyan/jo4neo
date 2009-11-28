@@ -27,7 +27,7 @@ public class PersistenceManager {
 
 	public void save(Object o) {
 		TypeWrapper type = TypeWrapperFactory.wrap(o);
-		new PersistOperation(type, ineo).save(o);
+		new PersistOperation(ineo).save(o);
 	}
 
 	public void delete(Object o) {
