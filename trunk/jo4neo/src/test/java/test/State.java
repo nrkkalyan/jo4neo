@@ -8,8 +8,9 @@ import thewebsemantic.Neo;
 
 public class State {
 	transient Neo neo;
+	public static final String STATE_CODE_IDX = "statecode";
 	
-	@Graph(index="statecode") String code;
+	@Graph(index=STATE_CODE_IDX) String code;
 	@Graph String name;	
 	@Graph Collection<City> cities = new ArrayList<City>();
 	
