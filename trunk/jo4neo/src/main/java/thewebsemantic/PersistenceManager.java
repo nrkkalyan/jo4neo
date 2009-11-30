@@ -26,7 +26,6 @@ public class PersistenceManager {
 	}
 
 	public void save(Object o) {
-		TypeWrapper type = TypeWrapperFactory.wrap(o);
 		new PersistOperation(ineo).save(o);
 	}
 
@@ -69,7 +68,8 @@ public class PersistenceManager {
 	}
 	
 	public <T> T loadSingle(Class<T> t, String indexname, Object value) {
-		return load(t,indexname, value).iterator().next();
+		Node n = ineo.getIndexService().getSingleNode(indexname, value);
+		return (n != null) ?load(t, n.getId()) : null;
 	}
 
 	public <T> Collection<T> load(Class<T> t) {
