@@ -80,7 +80,7 @@ public class TestTravelDomain {
 		Collection<City> cities = pm.load(City.class);
 		assertEquals(7, cities.size());
 		
-		State texas = pm.loadSingle(State.class, "statecode", "TX");
+		State texas = pm.loadSingle(State.class, State.STATE_CODE_IDX, "TX");
 		assertNotNull(texas);
 		assertEquals(3, texas.getCities().size());
 		
