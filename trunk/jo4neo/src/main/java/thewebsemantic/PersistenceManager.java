@@ -7,7 +7,6 @@ import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.Transaction;
-import org.neo4j.util.index.IndexHits;
 
 public class PersistenceManager {
 
@@ -25,7 +24,7 @@ public class PersistenceManager {
 		ineo = new IndexedNeo(neo, f);
 	}
 
-	public void save(Object o) {
+	public void persist(Object o) {
 		new PersistOperation(ineo).save(o);
 	}
 
@@ -52,7 +51,7 @@ public class PersistenceManager {
 		}
 	}
 
-	public <T> T load(Class<T> t, long key) {
+	public <T> T get(Class<T> t, long key) {
 		return new LoadOperation<T>(t, ineo).load(key);
 	}
 
@@ -60,19 +59,19 @@ public class PersistenceManager {
 		ineo.close();
 	}
 
-	public <T> Collection<T> load(Class<T> t, String indexname, Object value) {
+	public <T> Collection<T> get(Class<T> t, String indexname, Object value) {
 		ArrayList<T> list = new ArrayList<T>();
 		for (Node n : ineo.getIndexService().getNodes(indexname, value))
-			list.add(load(t, n.getId()));
+			list.add(get(t, n.getId()));
 		return list;
 	}
 	
-	public <T> T loadSingle(Class<T> t, String indexname, Object value) {
+	public <T> T getSingle(Class<T> t, String indexname, Object value) {
 		Node n = ineo.getIndexService().getSingleNode(indexname, value);
-		return (n != null) ?load(t, n.getId()) : null;
+		return (n != null) ?get(t, n.getId()) : null;
 	}
 
-	public <T> Collection<T> load(Class<T> t) {
+	public <T> Collection<T> get(Class<T> t) {
 		return new LoadOperation<T>(t, ineo).loadAll();
 	}
 
