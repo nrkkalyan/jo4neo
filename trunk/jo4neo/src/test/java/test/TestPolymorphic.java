@@ -47,9 +47,9 @@ public class TestPolymorphic {
 		semweb.getItems().add(post); post.getTags().add(semweb);
 		semweb.getItems().add(review); 
 		
-		pm.save(semweb);
+		pm.persist(semweb);
 		
-		Collection<Tag> test = pm.load(Tag.class, "tagname", "semweb");
+		Collection<Tag> test = pm.get(Tag.class, "tagname", "semweb");
 		
 		for (Tag tag : test) {
 			

@@ -38,11 +38,11 @@ public class TestBasic {
 		try {
 			Hotel h = new Hotel();
 			h.setName("Hyatt Boston");
-			pm.save(h);			
-			Collection<Hotel> hotels = pm.load(Hotel.class, "hotelname", "Hyatt Boston");
+			pm.persist(h);			
+			Collection<Hotel> hotels = pm.get(Hotel.class, "hotelname", "Hyatt Boston");
 			assertEquals(hotels.size(), 1);		
 			pm.delete(h);
-			hotels = pm.load(Hotel.class, "hotelname", "Hyatt Boston");
+			hotels = pm.get(Hotel.class, "hotelname", "Hyatt Boston");
 			assertEquals(hotels.size(), 0);		
 			t.success();
 		} finally {
@@ -72,10 +72,10 @@ public class TestBasic {
 			s1.getCourses().add(c2);
 			s1.getCourses().add(c3);
 			
-			pm.save(s1);
+			pm.persist(s1);
 			
 			
-			Student s1ref = pm.load(Student.class, s1.neo.id());
+			Student s1ref = pm.get(Student.class, s1.neo.id());
 			assertEquals(s1ref.getCourses().size(), 3);
 			t.success();
 		} finally {
@@ -101,11 +101,11 @@ public class TestBasic {
 			s1.getCourses().add(c1);
 			s1.getCourses().add(c2);
 			s1.getCourses().add(c3);		
-			pm.save(s1);			
+			pm.persist(s1);			
 			t.success();
 			t.finish();
 			
-			Student s1ref = pm.load(Student.class, s1.neo.id());
+			Student s1ref = pm.get(Student.class, s1.neo.id());
 			assertEquals(s1ref.getCourses().size(), 3);
 		} finally {
 			pm.close();
@@ -131,17 +131,17 @@ public class TestBasic {
 		
 		s1.setCourses(Arrays.asList(c1, c2, c3));
 		
-		pm.save(s1);
+		pm.persist(s1);
 		
 		assertNotNull(c3.neo);
 		c1.setName("modified");
 		c2.setName("modified");
 		c3.setName("modified");
-		pm.save(c1);
-		pm.save(c2);
-		pm.save(c3);
+		pm.persist(c1);
+		pm.persist(c2);
+		pm.persist(c3);
 		
-		s1 = pm.load(Student.class, s1.neo.id());
+		s1 = pm.get(Student.class, s1.neo.id());
 		assertEquals(3, s1.getCourses().size());
 		for (Course c : s1.getCourses()) {
 			assertEquals("modified", c.getName());
@@ -162,7 +162,7 @@ public class TestBasic {
 		try {
 			Student s1 = new Student();			
 			s1.setCourses(null);			
-			pm.save(s1);
+			pm.persist(s1);
 			t.success();
 		} finally {
 			t.finish();
@@ -189,11 +189,11 @@ public class TestBasic {
 			s1.getCourses().add(c1);
 			s1.getCourses().add(c2);
 			s1.getCourses().add(c3);			
-			pm.save(s1);
+			pm.persist(s1);
 			long id = s1.neo.id();
 			
 			
-			Student s1ref = pm.load(Student.class, id);
+			Student s1ref = pm.get(Student.class, id);
 			assertEquals(s1ref.getCourses().size(), 3);
 			Course remove = null;
 			for (Course course : s1ref.getCourses()) {
@@ -201,9 +201,9 @@ public class TestBasic {
 						remove = course;
 			}
 			s1ref.getCourses().remove(remove);
-			pm.save(s1ref);
+			pm.persist(s1ref);
 			
-			s1 = pm.load(Student.class, id);
+			s1 = pm.get(Student.class, id);
 			assertEquals(2,s1.getCourses().size());
 			assertEquals(s1.getName(), "student");
 		} finally {
@@ -233,9 +233,9 @@ public class TestBasic {
 			p1.setAddress(a);
 			p1.setFriend(friend);
 			friend.setFriend(p1);
-			pm.save(p1);
+			pm.persist(p1);
 
-			Person p2 = pm.load(Person.class, p1.neo.id());
+			Person p2 = pm.get(Person.class, p1.neo.id());
 			assertEquals(32, p2.getAge());
 			assertNotNull(p2.getFriend());
 			assertEquals(p2.getFriend().getFirstName(), "friend");
@@ -270,9 +270,9 @@ public class TestBasic {
 			p1.setAddress(a);
 			p1.setFriend(friend);
 			friend.setFriend(p1);
-			pm.save(p1);
+			pm.persist(p1);
 
-			Person p2 = pm.load(Person.class, p1.neo.id());
+			Person p2 = pm.get(Person.class, p1.neo.id());
 			assertEquals(32, p2.getAge());
 			assertNotNull(p2.getFriend());
 			assertEquals(p2.getFriend().getFirstName(), "friend");
@@ -296,7 +296,7 @@ public class TestBasic {
 			
 			ammenities.add(pool);
 			h.setAmmenities(ammenities);
-			pm.save(h);
+			pm.persist(h);
 			
 			
 		} finally {

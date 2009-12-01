@@ -45,10 +45,10 @@ public class TestTravelDomain {
 		for (String[] row : citydata) {
 			City c = new City();
 			c.setName(row[0]);
-			State s = pm.loadSingle(State.class, "statecode", row[1]);
+			State s = pm.getSingle(State.class, "statecode", row[1]);
 			c.setState(s);
 			s.getCities().add(c);
-			pm.save(c);
+			pm.persist(c);
 		}
 		pm.close();
 		
@@ -60,7 +60,7 @@ public class TestTravelDomain {
 			State s = new State();
 			s.setCode(row[0]);
 			s.setName(row[1]);
-			pm.save(s);
+			pm.persist(s);
 		}
 		pm.close();
 		
@@ -74,13 +74,13 @@ public class TestTravelDomain {
 	@Test
 	public void basic() {
 		PersistenceManager pm = new PersistenceManager(neo);
-		Collection<State> states = pm.load(State.class);
+		Collection<State> states = pm.get(State.class);
 		assertEquals(3, states.size());
 		
-		Collection<City> cities = pm.load(City.class);
+		Collection<City> cities = pm.get(City.class);
 		assertEquals(7, cities.size());
 		
-		State texas = pm.loadSingle(State.class, State.STATE_CODE_IDX, "TX");
+		State texas = pm.getSingle(State.class, State.STATE_CODE_IDX, "TX");
 		assertNotNull(texas);
 		assertEquals(3, texas.getCities().size());
 		

@@ -33,9 +33,9 @@ public class TestTypes {
 			bean.setNames( new String[] {"a", "b", "c", "d" });
 			bean.setTags(Arrays.asList("a", "b", "c", "d"));
 			
-			p.save(bean);
+			p.persist(bean);
 			
-			TypeBean check = p.load(TypeBean.class, bean.neo.id());
+			TypeBean check = p.get(TypeBean.class, bean.neo.id());
 			assertEquals(15, check.getIntItem());
 			assertArrayEquals(new String[] {"a", "b", "c", "d" }, check.getNames());
 			assertArrayEquals(new int[] {1,2,3,4,10}, check.getAges());		

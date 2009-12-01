@@ -33,7 +33,7 @@ public class TestRelFactory {
 			Person p1 = new Person();
 			Person p2 = new Person();
 			p1.setFriend(p2);
-			pm.save(p1);
+			pm.persist(p1);
 			t.success();			
 		} finally {
 			t.finish();

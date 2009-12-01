@@ -20,7 +20,7 @@ public class TestErrors {
 		try {
 			AintGotId bad = new AintGotId();
 			bad.setName("I'm bad");
-			pm.save(bad);
+			pm.persist(bad);
 		} catch (Exception e) {
 			caught = true;
 		} finally {
