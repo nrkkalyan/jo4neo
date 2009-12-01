@@ -3,6 +3,7 @@ package thewebsemantic;
 import java.io.Serializable;
 import java.util.Map;
 
+import org.neo4j.api.core.DynamicRelationshipType;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
@@ -15,9 +16,7 @@ public class IndexedNeo implements NeoService {
 	
 	private NeoService neo;
 	private IndexService index;
-	private RelationFactory relFactory;
-	public static final String entityIndex = "ENTITY_INDEX";
-	
+	private RelationFactory relFactory;	
 
 	public IndexedNeo(NeoService neo, RelationFactory factory) {
 		this.neo = neo;
@@ -52,10 +51,6 @@ public class IndexedNeo implements NeoService {
 	public Node getNodeById(long arg0) {
 		return neo.getNodeById(arg0);
 	}
-	
-	public Node getNodeByIndex(Object o) {
-		return index.getSingleNode(entityIndex, o);
-	}
 
 	public Node getReferenceNode() {
 		return neo.getReferenceNode();
@@ -79,6 +74,20 @@ public class IndexedNeo implements NeoService {
 	
 	public Node createNode() {
 		return neo.createNode();
+	}
+	
+	protected Node getMetaNode(String name) {
+		Node metanode;
+		RelationshipType relType = DynamicRelationshipType.withName(name);
+		Node root = neo.getReferenceNode();
+		Iterable<Relationship> r =  root.getRelationships(relType);
+		if (r.iterator().hasNext())
+			metanode = r.iterator().next().getEndNode();
+		else {
+			metanode = neo.createNode();
+			root.createRelationshipTo(metanode, relType);
+		}
+		return metanode;
 	}
 
 }

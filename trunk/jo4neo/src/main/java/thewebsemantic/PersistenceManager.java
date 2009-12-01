@@ -10,7 +10,6 @@ import org.neo4j.api.core.Transaction;
 
 public class PersistenceManager {
 
-	public static final String JAVA_CLASS = "javaclass";
 	NeoService neo;
 	IndexedNeo ineo;
 

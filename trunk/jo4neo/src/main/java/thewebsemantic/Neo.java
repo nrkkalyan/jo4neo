@@ -33,14 +33,17 @@ public class Neo {
 		return id != Long.MIN_VALUE;
 	}
 	
-	public Node mirror(NeoService ns) {
+	public Node mirror(IndexedNeo ns) {
 		return (valid()) ? ns.getNodeById(id):newNode(ns);
 	}
 
-	private Node newNode(NeoService ns) {
+	private Node newNode(IndexedNeo ns) {
 		Node n = ns.createNode();
 		n.setProperty(Neo.class.getName(), type.getName());
 		id = n.getId();
+		//find metanode for type t
+		Node metanode = ns.getMetaNode(type.getName());		
+		metanode.createRelationshipTo(n, Relationships.HAS_MEMBER);
 		return n;	
 	}
 

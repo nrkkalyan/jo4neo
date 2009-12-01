@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import static thewebsemantic.PersistenceManager.JAVA_CLASS;
 
 import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
@@ -53,14 +52,29 @@ public class LoadOperation<T> {
 	}
 
 	public Collection<T> loadAll() {
-		return load(neo.getIndexService().getNodes(JAVA_CLASS, cls.getName()));
+		Node n = neo.getMetaNode(cls.getName());
+		return load2(n.getRelationships(Relationships.HAS_MEMBER));
 	}
+	
 	public Collection<T> load(Iterable<Node> nodes) {
 		Transaction t = neo.beginTx();
 		try {
 			ArrayList<T> results = new ArrayList<T>();
 			for (Node node : nodes)
 				results.add((T) loadFully(node));
+			t.success();
+			return results;
+		} finally {
+			t.finish();
+		}
+	}
+	
+	private Collection<T> load2(Iterable<Relationship> relations) {
+		Transaction t = neo.beginTx();
+		try {
+			ArrayList<T> results = new ArrayList<T>();
+			for (Relationship r : relations)
+				results.add((T) loadFully(r.getEndNode()));
 			t.success();
 			return results;
 		} finally {

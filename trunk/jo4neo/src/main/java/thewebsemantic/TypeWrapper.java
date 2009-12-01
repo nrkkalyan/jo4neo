@@ -23,4 +23,5 @@ public abstract class TypeWrapper {
 
 	public abstract void setId(Object bean, Neo n);
 	public abstract Class<?> getWrappedType();
+	public abstract String name();
 }

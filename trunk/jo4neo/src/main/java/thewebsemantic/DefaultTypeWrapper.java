@@ -71,5 +71,9 @@ public class DefaultTypeWrapper extends TypeWrapper {
 	public Class<?> getWrappedType() {
 		return this.me;
 	}
+	
+	public String name() {
+		return this.me.getName();
+	}
 
 }
