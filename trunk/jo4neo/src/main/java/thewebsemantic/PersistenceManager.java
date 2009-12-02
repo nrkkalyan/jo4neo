@@ -10,19 +10,16 @@ import org.neo4j.api.core.Transaction;
 
 public class PersistenceManager {
 
-	NeoService neo;
 	IndexedNeo ineo;
 
 	public PersistenceManager(NeoService neo) {
-		this.neo = neo;
 		ineo = new IndexedNeo(neo, new RelationFactoryImpl());
 	}
 
 	public PersistenceManager(NeoService neo, RelationFactory f) {
-		this.neo = neo;
 		ineo = new IndexedNeo(neo, f);
 	}
-
+	
 	public void persist(Object o) {
 		new PersistOperation(ineo).save(o);
 	}
@@ -35,7 +32,6 @@ public class PersistenceManager {
 			Node delNode = ineo.getNodeById(neo.id());
 			if (neo == null)
 				return;
-
 			for (FieldContext field : type.getValueContexts(o)) {
 				if (field.isIndexed())
 					ineo.getIndexService().removeIndex(delNode,

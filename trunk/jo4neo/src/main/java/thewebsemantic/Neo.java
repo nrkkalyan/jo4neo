@@ -1,6 +1,5 @@
 package thewebsemantic;
 
-import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 
 /**
@@ -38,13 +37,14 @@ public class Neo {
 	}
 
 	private Node newNode(IndexedNeo ns) {
-		Node n = ns.createNode();
-		n.setProperty(Neo.class.getName(), type.getName());
-		id = n.getId();
+		Node newNode = ns.createNode();
+		newNode.setProperty(Neo.class.getName(), type.getName());
+		id = newNode.getId();
 		//find metanode for type t
 		Node metanode = ns.getMetaNode(type.getName());		
-		metanode.createRelationshipTo(n, Relationships.HAS_MEMBER);
-		return n;	
+		metanode.createRelationshipTo(newNode, Relationships.HAS_MEMBER);
+		newNode.createRelationshipTo(metanode, Relationships.HAS_TYPE);
+		return newNode;	
 	}
 
 }

@@ -52,7 +52,7 @@ public class LoadOperation<T> {
 	}
 
 	public Collection<T> loadAll() {
-		Node n = neo.getMetaNode(cls.getName());
+		Node n = neo.getMetaNode(cls);
 		return load2(n.getRelationships(Relationships.HAS_MEMBER));
 	}
 	

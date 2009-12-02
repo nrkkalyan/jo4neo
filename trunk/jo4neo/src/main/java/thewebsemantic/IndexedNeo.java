@@ -85,9 +85,14 @@ public class IndexedNeo implements NeoService {
 			metanode = r.iterator().next().getEndNode();
 		else {
 			metanode = neo.createNode();
+			metanode.setProperty(Neo.class.getName(), name);
 			root.createRelationshipTo(metanode, relType);
 		}
 		return metanode;
+	}
+	
+	protected Node getMetaNode(Class<?> c) {
+		return getMetaNode(c.getName());
 	}
 
 }
