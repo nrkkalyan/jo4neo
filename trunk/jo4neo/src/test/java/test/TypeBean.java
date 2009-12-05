@@ -3,20 +3,20 @@ package test;
 import java.util.Collection;
 import java.util.Date;
 
-import thewebsemantic.Neo;
-import thewebsemantic.Graph;
+import thewebsemantic.Nodeid;
+import thewebsemantic.neo;
 
 public class TypeBean {
 	
-	Neo neo;
+	Nodeid neo;
 	
-	@Graph Date date;
-	@Graph int intItem;
-	@Graph long longItem;
-	@Graph int[] ages;
-	@Graph String[] names;
-	@Graph Collection<String> tags;
-	@Graph Collection<Double> values;
+	@neo Date date;
+	@neo int intItem;
+	@neo long longItem;
+	@neo int[] ages;
+	@neo String[] names;
+	@neo Collection<String> tags;
+	@neo Collection<Double> values;
 
 	public Collection<Double> getValues() {
 		return values;

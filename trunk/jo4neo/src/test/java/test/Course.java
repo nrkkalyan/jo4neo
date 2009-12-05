@@ -1,12 +1,12 @@
 package test;
 
-import thewebsemantic.Neo;
-import thewebsemantic.Graph;
+import thewebsemantic.Nodeid;
+import thewebsemantic.neo;
 
 public class Course {
 	
-	Neo neo;
-	@Graph String name;
+	Nodeid neo;
+	@neo String name;
 
 	public String getName() {
 		return name;

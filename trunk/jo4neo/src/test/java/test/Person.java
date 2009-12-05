@@ -1,18 +1,18 @@
 package test;
 
 import thewebsemantic.Embed;
-import thewebsemantic.Neo;
-import thewebsemantic.Graph;
+import thewebsemantic.Nodeid;
+import thewebsemantic.neo;
 
 public class Person {
 	
-	transient Neo neo;
+	transient Nodeid neo;
 	
-	@Graph int age;
-	@Graph String firstName;
-	@Graph String lastName;
+	@neo int age;
+	@neo String firstName;
+	@neo String lastName;
 	@Embed Address address;
-	@Graph("FRIEND") 
+	@neo("FRIEND") 
 	Person friend;
 	
 	

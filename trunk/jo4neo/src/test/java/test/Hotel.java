@@ -2,15 +2,15 @@ package test;
 
 import java.util.Collection;
 
-import thewebsemantic.Neo;
-import thewebsemantic.Graph;
+import thewebsemantic.Nodeid;
+import thewebsemantic.neo;
 
 public class Hotel {
 
-	transient Neo neo;
+	transient Nodeid neo;
 	
-	@Graph Collection<Ammenity> ammenities;
-	@Graph(index="hotelname") String name;
+	@neo Collection<Ammenity> ammenities;
+	@neo(index="hotelname") String name;
 	
 	public Collection<Ammenity> getAmmenities() {
 		return ammenities;

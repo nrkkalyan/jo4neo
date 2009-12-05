@@ -7,16 +7,20 @@ import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
+import thewebsemantic.IndexedNeo;
 import thewebsemantic.PersistenceManager;
 
 public class TestRelFactory {
 
-	static NeoService neo;
-	
+	static NeoService neobase;
+	static IndexedNeo neo;
+
 	@BeforeClass
 	public static void setup() {
-		neo = new EmbeddedNeo("neo_store");
+		neobase = new EmbeddedNeo("neo_store");
+		neo = new IndexedNeo(neobase);
 	}
+
 	
 	@AfterClass
 	public static void teardown() {

@@ -3,12 +3,12 @@ package test;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import thewebsemantic.Neo;
-import thewebsemantic.Graph;
+import thewebsemantic.Nodeid;
+import thewebsemantic.neo;
 
 public class ContentItem {
-	Neo neo;
-	@Graph
+	Nodeid neo;
+	@neo
 	Collection<Tag> tags = new ArrayList<Tag>();
 
 	public Collection<Tag> getTags() {

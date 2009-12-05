@@ -3,16 +3,16 @@ package test;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import thewebsemantic.Neo;
-import thewebsemantic.Graph;
+import thewebsemantic.Nodeid;
+import thewebsemantic.neo;
 
 public class Tag {
-	Neo neo;
+	Nodeid neo;
 	
-	@Graph(index="tagname")
+	@neo(index="tagname")
 	String name;
 	
-	@Graph
+	@neo
 	Collection<Taggable> items = new ArrayList<Taggable>();
 	
 	public Collection<Taggable> getItems() {

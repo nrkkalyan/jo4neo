@@ -2,14 +2,14 @@ package test;
 
 import java.util.Date;
 
-import thewebsemantic.Graph;
+import thewebsemantic.neo;
 
 public class HotelReview extends ContentItem implements Taggable {
 
-	@Graph
+	@neo
 	String reviewContent;
 	
-	@Graph
+	@neo
 	Date reviewDate;
 
 	public String getReviewContent() {

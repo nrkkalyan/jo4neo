@@ -1,13 +1,13 @@
 package test;
 
-import thewebsemantic.Neo;
-import thewebsemantic.Graph;
+import thewebsemantic.Nodeid;
+import thewebsemantic.neo;
 
 public class Ammenity {
-	transient Neo neo;
+	transient Nodeid neo;
 	
-	@Graph String name;
-	@Graph String code;
+	@neo String name;
+	@neo String code;
 	
 	public String getName() {
 		return name;

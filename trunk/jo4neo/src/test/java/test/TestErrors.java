@@ -6,6 +6,7 @@ import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
+import thewebsemantic.IndexedNeo;
 import thewebsemantic.PersistenceManager;
 
 public class TestErrors {
@@ -13,7 +14,7 @@ public class TestErrors {
 	@Test
 	public void basic() {
 		NeoService neo = new EmbeddedNeo("neo_store");
-		PersistenceManager pm = new PersistenceManager(neo);
+		PersistenceManager pm = new PersistenceManager(new IndexedNeo(neo));
 		Transaction t = neo.beginTx();
 		neo.beginTx();
 		boolean caught = false;

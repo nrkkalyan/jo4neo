@@ -3,16 +3,16 @@ package test;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import thewebsemantic.Neo;
-import thewebsemantic.Graph;
+import thewebsemantic.Nodeid;
+import thewebsemantic.neo;
 
 public class Student {
-	Neo neo;
+	Nodeid neo;
 	
-	@Graph 
+	@neo 
 	Collection<Course> courses = new ArrayList<Course>();
 
-	@Graph 
+	@neo 
 	String name;
 	
 	public Collection<Course> getCourses() {

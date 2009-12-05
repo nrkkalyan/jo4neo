@@ -2,15 +2,15 @@ package test;
 
 import java.util.Collection;
 
-import thewebsemantic.Graph;
-import thewebsemantic.Neo;
+import thewebsemantic.neo;
+import thewebsemantic.Nodeid;
 
 public class Airport {
-	transient Neo neo;
+	transient Nodeid neo;
 
-	@Graph(index="airportcode") String code;
-	@Graph String name;
-	@Graph Collection<City> citiesServed;
+	@neo(index="airportcode") String code;
+	@neo String name;
+	@neo Collection<City> citiesServed;
 	public String getName() {
 		return name;
 	}

@@ -2,13 +2,13 @@ package test;
 
 import java.util.Date;
 
-import thewebsemantic.Graph;
+import thewebsemantic.neo;
 
 public class BlogPost extends ContentItem implements Taggable {
 	
-	@Graph
+	@neo
 	String title;
-	@Graph
+	@neo
 	Date publishDate;
 	
 	public String getTitle() {

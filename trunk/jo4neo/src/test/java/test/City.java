@@ -1,14 +1,14 @@
 package test;
 
-import thewebsemantic.Graph;
-import thewebsemantic.Neo;
+import thewebsemantic.neo;
+import thewebsemantic.Nodeid;
 
 public class City {
-	transient Neo neo;
-	@Graph(index="cityname") String name;
-	@Graph State state;
-	@Graph double lat;
-	@Graph double lon;
+	transient Nodeid neo;
+	@neo(index="cityname") String name;
+	@neo State state;
+	@neo double lat;
+	@neo double lon;
 	
 	public String getName() {
 		return name;

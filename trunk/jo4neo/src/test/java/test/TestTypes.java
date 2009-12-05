@@ -11,13 +11,16 @@ import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
+import thewebsemantic.IndexedNeo;
 import thewebsemantic.PersistenceManager;
 
 public class TestTypes {
 	
 	@Test
 	public void basic() {
-		NeoService neo = new EmbeddedNeo("neo_store");
+		NeoService neobase = new EmbeddedNeo("neo_store");
+		IndexedNeo neo = new IndexedNeo(neobase);
+		
 		
 		PersistenceManager pm = new PersistenceManager(neo);
 		Transaction t = neo.beginTx();

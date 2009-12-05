@@ -3,16 +3,16 @@ package test;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import thewebsemantic.Graph;
-import thewebsemantic.Neo;
+import thewebsemantic.neo;
+import thewebsemantic.Nodeid;
 
 public class State {
-	transient Neo neo;
+	transient Nodeid neo;
 	public static final String STATE_CODE_IDX = "statecode";
 	
-	@Graph(index=STATE_CODE_IDX) String code;
-	@Graph String name;	
-	@Graph Collection<City> cities = new ArrayList<City>();
+	@neo(index=STATE_CODE_IDX) String code;
+	@neo String name;	
+	@neo Collection<City> cities = new ArrayList<City>();
 	
 	public String getName() {
 		return name;
