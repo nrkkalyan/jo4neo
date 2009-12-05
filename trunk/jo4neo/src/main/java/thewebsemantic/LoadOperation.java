@@ -3,6 +3,7 @@ package thewebsemantic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -61,19 +62,19 @@ public class LoadOperation<T> {
 		return load2(n.getRelationships(Relationships.HAS_MEMBER));
 	}
 	
-	public Collection<T> since(long since) {
-		
+	public Collection<T> since(long since) {		
 		Transaction t = neo.beginTx();
 		try {
-			org.neo4j.util.timeline.Timeline tl = neo.getTimeLine(cls);
-			
+			if (!cls.isAnnotationPresent(Timeline.class))
+				throw new UnsupportedOperationException();
+			org.neo4j.util.timeline.Timeline tl = neo.getTimeLine(cls);		
 			return load(tl.getAllNodesAfter(since));
-
 		} finally {
 			t.finish();
 		}
 	}
 	
+
 	public Collection<T> load(Iterable<Node> nodes) {
 		Transaction t = neo.beginTx();
 		try {

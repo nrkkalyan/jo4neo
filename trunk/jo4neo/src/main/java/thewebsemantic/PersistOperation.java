@@ -102,7 +102,7 @@ public class PersistOperation {
 		RelationshipType reltype = field.toRelationship(neo.getRelationFactory());
 		deleteAll(node, reltype);		
 		if (field.value() == null)
-			return;	
+			return;
 		Object value = field.value();
 		Node n2 = asNode(value);
 		node.createRelationshipTo(n2, reltype);
