@@ -19,7 +19,7 @@ public class FieldContext {
 	Object subject;
 
 	public FieldContext(Object o, Field field) {
-		this.field = field;
+		this.field = field; 
 		subject = o;
 	}
 

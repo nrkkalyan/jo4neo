@@ -12,7 +12,7 @@ public class DefaultTypeWrapper extends TypeWrapper {
 
 	public DefaultTypeWrapper(Class<?> c) {
 		me = c;
-		fields = Util.getDeclaredFields(c);
+		fields = getDeclaredFields(c);
 		for (Field f : fields)
 			if (f.getType().equals(Nodeid.class))
 				idfield = f;
@@ -77,6 +77,19 @@ public class DefaultTypeWrapper extends TypeWrapper {
 	
 	public String name() {
 		return this.me.getName();
+	}
+	
+	public Field[] getDeclaredFields(Class c) {
+		ArrayList<Field> fields = new ArrayList<Field>();
+		for (Field field : c.getDeclaredFields())
+			fields.add(field);
+		Class<?> cls = c;
+		while (cls.getSuperclass() != Object.class && cls.getSuperclass() != null) {
+			cls = cls.getSuperclass();
+			for (Field field : cls.getDeclaredFields())
+				fields.add(field);
+		}
+		return fields.toArray(new Field[0]);
 	}
 
 }
