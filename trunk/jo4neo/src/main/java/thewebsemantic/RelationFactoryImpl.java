@@ -8,10 +8,10 @@ import org.neo4j.api.core.RelationshipType;
 public class RelationFactoryImpl implements RelationFactory {
 
 	public RelationshipType relationshipType(Field f) {		
-		if ( f.isAnnotationPresent(Graph.class)) {
-			Graph p = f.getAnnotation(Graph.class);
+		if ( f.isAnnotationPresent(neo.class)) {
+			neo p = f.getAnnotation(neo.class);
 			String name = p.value();
-			if (!Graph.DEFAULT.equals(name))
+			if (!neo.DEFAULT.equals(name))
 				return relationshipType(name);
 			
 		}

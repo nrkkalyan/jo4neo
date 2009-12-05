@@ -19,9 +19,9 @@ public abstract class TypeWrapper {
 	
 	public abstract Object newInstance();	
 	public abstract FieldContext[] getValueContexts(Object o);
-	public abstract Neo id(Object o);
+	public abstract Nodeid id(Object o);
 
-	public abstract void setId(Object bean, Neo n);
+	public abstract void setId(Object bean, Nodeid n);
 	public abstract Class<?> getWrappedType();
 	public abstract String name();
 }

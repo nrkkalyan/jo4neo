@@ -2,8 +2,8 @@ package thewebsemantic;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
-import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.Transaction;
@@ -12,12 +12,16 @@ public class PersistenceManager {
 
 	IndexedNeo ineo;
 
-	public PersistenceManager(NeoService neo) {
-		ineo = new IndexedNeo(neo, new RelationFactoryImpl());
+	public PersistenceManager(IndexedNeo neo) {
+		ineo = neo;
 	}
 
-	public PersistenceManager(NeoService neo, RelationFactory f) {
-		ineo = new IndexedNeo(neo, f);
+	public PersistenceManager(IndexedNeo neo, RelationFactory f) {
+		ineo = neo;
+	}
+	
+	public Transaction beginTx() {
+		return ineo.beginTx();
 	}
 	
 	public void persist(Object o) {
@@ -28,7 +32,7 @@ public class PersistenceManager {
 		Transaction t = ineo.beginTx();
 		try {
 			TypeWrapper type = TypeWrapperFactory.wrap(o);
-			Neo neo = type.id(o);
+			Nodeid neo = type.id(o);
 			Node delNode = ineo.getNodeById(neo.id());
 			if (neo == null)
 				return;
@@ -68,6 +72,10 @@ public class PersistenceManager {
 
 	public <T> Collection<T> get(Class<T> t) {
 		return new LoadOperation<T>(t, ineo).loadAll();
+	}
+	
+	public <T> Collection<T> getSince(Class<T> t, Date d) {
+		return new LoadOperation<T>(t, ineo).since(d.getTime());
 	}
 
 }

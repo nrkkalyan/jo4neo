@@ -1,6 +1,7 @@
 package thewebsemantic;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.neo4j.api.core.DynamicRelationshipType;
@@ -11,21 +12,30 @@ import org.neo4j.api.core.RelationshipType;
 import org.neo4j.api.core.Transaction;
 import org.neo4j.util.index.IndexService;
 import org.neo4j.util.index.NeoIndexService;
+import org.neo4j.util.timeline.Timeline;
 
 public class IndexedNeo implements NeoService {
 	
 	private NeoService neo;
 	private IndexService index;
 	private RelationFactory relFactory;	
+	private boolean isClosed = false;
+	private Map<Class<?>, Timeline> timelines;
 
 	public IndexedNeo(NeoService neo, RelationFactory factory) {
 		this.neo = neo;
 		index = new NeoIndexService(neo);
 		relFactory = factory;
+		timelines = new HashMap<Class<?>, Timeline>();
+	}
+	
+	public IndexedNeo(NeoService neo) {
+		this(neo, new RelationFactoryImpl());
 	}
 
-	public void close() {
+	public synchronized void close() {
 		index.shutdown();
+		isClosed = true;
 	}
 	
 	public IndexService getIndexService() {
@@ -65,34 +75,47 @@ public class IndexedNeo implements NeoService {
 	}
 
 	public void shutdown() {
+		close();
 		neo.shutdown();
 	}
 
 	public RelationFactory getRelationFactory() {
 		return relFactory;
 	}
-	
+
 	public Node createNode() {
 		return neo.createNode();
 	}
 	
-	protected Node getMetaNode(String name) {
+	protected Node getMetaNode(Class<?> type) {
 		Node metanode;
-		RelationshipType relType = DynamicRelationshipType.withName(name);
+		RelationshipType relType = DynamicRelationshipType.withName(type.getName());
 		Node root = neo.getReferenceNode();
 		Iterable<Relationship> r =  root.getRelationships(relType);
 		if (r.iterator().hasNext())
 			metanode = r.iterator().next().getEndNode();
 		else {
 			metanode = neo.createNode();
-			metanode.setProperty(Neo.class.getName(), name);
+			metanode.setProperty(Nodeid.class.getName(), type.getName());
 			root.createRelationshipTo(metanode, relType);
 		}
 		return metanode;
 	}
 	
-	protected Node getMetaNode(Class<?> c) {
-		return getMetaNode(c.getName());
+	protected Timeline getTimeLine(Class<?> c) {
+		
+		if (timelines.containsKey(c))
+			return timelines.get(c);
+		
+		Node metaNode = getMetaNode(c);
+		org.neo4j.util.timeline.Timeline t = 
+			new org.neo4j.util.timeline.Timeline( c.getName(), metaNode, neo );
+		timelines.put(c, t);
+		return t;
+	} 
+
+	public boolean isClosed() {
+		return isClosed;
 	}
 
 }

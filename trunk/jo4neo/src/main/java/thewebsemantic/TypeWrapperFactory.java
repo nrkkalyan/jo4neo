@@ -27,7 +27,6 @@ public class TypeWrapperFactory {
 		try {
 			return wrap(Class.forName(s));
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

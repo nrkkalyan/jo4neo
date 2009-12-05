@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME) 
-public @interface Graph {
+public @interface neo {
 	public static final String DEFAULT = "default";	
 	String value() default DEFAULT;
 	String index() default DEFAULT;

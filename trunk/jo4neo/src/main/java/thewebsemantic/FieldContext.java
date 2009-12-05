@@ -30,9 +30,9 @@ public class FieldContext {
 	}
 
 	public boolean isIndexed() {
-		return (field.isAnnotationPresent(Graph.class) && 
-				!field.getAnnotation(Graph.class).index().equals(
-						Graph.DEFAULT));
+		return (field.isAnnotationPresent(neo.class) && 
+				!field.getAnnotation(neo.class).index().equals(
+						neo.DEFAULT));
 	}
 
 	private boolean arrayPrimitive() {
@@ -89,7 +89,7 @@ public class FieldContext {
 			field.setAccessible(true);
 			o = field.get(subject);
 			TypeWrapper t = TypeWrapperFactory.wrap(o);
-			Neo id = t.id(o);
+			Nodeid id = t.id(o);
 			Node node = id.mirror(neo);
 			t.setId(o, id);
 			return node;
@@ -100,16 +100,11 @@ public class FieldContext {
 	}
 	
 	public Node subjectNode(IndexedNeo neo) {
-		try {
-			field.setAccessible(true);
-			TypeWrapper t = TypeWrapperFactory.wrap(subject);
-			Neo id = t.id(subject);
-			return neo.getNodeById(id.id());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;		
+		TypeWrapper t = TypeWrapperFactory.wrap(subject);
+		Nodeid id = t.id(subject);
+		return neo.getNodeById(id.id());		
 	}
+
 
 	public Collection<Object> values() {
 		try {
@@ -126,10 +121,10 @@ public class FieldContext {
 	}
 
 	public RelationshipType toRelationship(RelationFactory f) {
-		if (field.isAnnotationPresent(Graph.class)) {
-			Graph p = field.getAnnotation(Graph.class);
+		if (field.isAnnotationPresent(neo.class)) {
+			neo p = field.getAnnotation(neo.class);
 			String name = p.value();
-			if (!Graph.DEFAULT.equals(name))
+			if (!neo.DEFAULT.equals(name))
 				return f.relationshipType(name);
 
 		}
@@ -180,7 +175,7 @@ public class FieldContext {
 	}
 
 	public String getIndexName() {
-		return field.getAnnotation(Graph.class).index();		
+		return field.getAnnotation(neo.class).index();		
 	}
 
 }

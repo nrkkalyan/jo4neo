@@ -3,14 +3,15 @@ package thewebsemantic;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
+import static org.neo4j.api.core.Direction.*;
+import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
+import org.neo4j.api.core.RelationshipType;
 import org.neo4j.api.core.Transaction;
 
 public class PersistOperation {
 
-	//TypeWrapper type;
 	IndexedNeo neo;
 	Map<Long, Object> visited;
 
@@ -22,8 +23,7 @@ public class PersistOperation {
 	public void save(Object bean) {
 		Transaction t = neo.beginTx();
 		try {
-			TypeWrapper type = TypeWrapperFactory.wrap(bean);
-			save(asNode(type, bean), bean);
+			save(asNode(bean), bean);
 			t.success();
 		} finally {
 			t.finish();
@@ -66,6 +66,7 @@ public class PersistOperation {
 
 	private void relations(Node node, FieldContext field) {
 		Collection<Object> values = field.values();
+		RelationshipType reltype = field.toRelationship(neo.getRelationFactory());
 		if (values == null)
 			return;	
 		
@@ -73,24 +74,32 @@ public class PersistOperation {
 		 *  Ignore unmodified collections.
 		 */
 		if (values instanceof Lazy) {
-			if (!((Lazy) values).modified())
+			if (!((LazyList) values).modified())
 				return;
-			for (Relationship r : field.getRelationships(node, neo
-					.getRelationFactory()))
-				r.delete();
+			values = ((LazyList)values).newdata();
 		}
 		
 		for (Object value : values) {
-			TypeWrapper genericType = TypeWrapperFactory.wrap(value);
-			Node n2 = asNode(genericType, value);
-			node.createRelationshipTo(n2, field.toRelationship(neo
-					.getRelationFactory()));
+			Node n2 = asNode(value);
+			if (! related(node, n2, reltype))
+				node.createRelationshipTo(n2, reltype);
 			save(n2, value);
 		}
+		
 	}
 
-	private Node asNode(TypeWrapper t, Object value) {
-		Neo id = t.id(value);
+	private boolean related(Node a, Node b, RelationshipType type) {
+		 for ( Relationship rel : a.getRelationships( type, OUTGOING ) ) {
+	          if ( rel.getOtherNode( a ).equals( b ) )
+	              return true;
+	          
+	      }
+		 return false;
+	}
+
+	private Node asNode(Object value) {
+		TypeWrapper t = TypeWrapperFactory.wrap(value);
+		Nodeid id = t.id(value);
 		Node n = id.mirror(neo);
 		t.setId(value, id);		
 		return n;
@@ -102,8 +111,7 @@ public class PersistOperation {
 		if (field.value() == null)
 			return;		
 		Node n2 = field.targetNode(neo);
-		node.createRelationshipTo(n2, field.toRelationship(neo
-				.getRelationFactory()));
+		node.createRelationshipTo(n2, field.toRelationship(neo.getRelationFactory()));
 		save(n2, field.value());
 	}
 

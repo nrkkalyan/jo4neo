@@ -1,16 +1,18 @@
 package thewebsemantic;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Set;
 
 @SuppressWarnings("unchecked")
-public class LazyList implements List, Lazy {
+public class LazyList implements Set<Object>, Lazy {
 
 	private transient FieldContext field;
 	private transient LoadOperation loader;
-	private List data;
+	private transient Collection newdata;
+
+	private Collection data;
 	private boolean modified = false;
 	
 	public LazyList(FieldContext f, LoadOperation neo) {
@@ -18,21 +20,31 @@ public class LazyList implements List, Lazy {
 		this.loader = neo;
 	}
 
-	private List data() {
+	private Collection data() {
 		if ( data == null)
 			data = loader.load(field);
 		return data;
 	}
 	
-
-	public void add(int index, Object element) {
-		modified = true;
-		data().add(index, element);
+	protected Collection newdata() {
+		if ( newdata == null)
+			newdata = new ArrayList<Object>();
+		return newdata;
+	}
+	
+	protected Collection consumeUpdates() {
+		Collection updates = newdata();
+		newdata = null;
+		return updates;
 	}
 
 	public boolean add(Object e) {
 		modified = true;
-		return data().add(e);
+		if (data().add(e)) {
+			newdata().add(e);
+			return true;
+		}
+		return false;
 	}
 
 	public boolean addAll(Collection c) {
@@ -40,10 +52,6 @@ public class LazyList implements List, Lazy {
 		return data().addAll(c);
 	}
 
-	public boolean addAll(int index, Collection c) {
-		modified = true;
-		return data().addAll(index, c);
-	}
 
 	public void clear() {
 		modified = true;
@@ -62,16 +70,8 @@ public class LazyList implements List, Lazy {
 		return data().equals(o);
 	}
 
-	public Object get(int index) {
-		return data().get(index);
-	}
-
 	public int hashCode() {
 		return data().hashCode();
-	}
-
-	public int indexOf(Object o) {
-		return data().indexOf(o);
 	}
 
 	public boolean isEmpty() {
@@ -82,25 +82,9 @@ public class LazyList implements List, Lazy {
 		return data().iterator();
 	}
 
-	public int lastIndexOf(Object o) {
-		return data().lastIndexOf(o);
-	}
-
-	public ListIterator listIterator() {
-		return data().listIterator();
-	}
-
-	public ListIterator listIterator(int index) {
-		return data().listIterator(index);
-	}
-
-	public Object remove(int index) {
-		modified = true;
-		return data().remove(index);
-	}
-
 	public boolean remove(Object o) {
 		modified = true;
+		loader.removeRelationship(field, o);
 		return data().remove(o);
 	}
 
@@ -113,18 +97,9 @@ public class LazyList implements List, Lazy {
 		modified = true;
 		return data().retainAll(c);
 	}
-
-	public Object set(int index, Object element) {
-		modified = true;
-		return data().set(index, element);
-	}
-
+	
 	public int size() {
 		return data().size();
-	}
-
-	public List subList(int fromIndex, int toIndex) {
-		return data().subList(fromIndex, toIndex);
 	}
 
 	public Object[] toArray() {

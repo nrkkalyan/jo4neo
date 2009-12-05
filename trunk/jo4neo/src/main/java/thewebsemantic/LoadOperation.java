@@ -3,8 +3,9 @@ package thewebsemantic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
@@ -36,6 +37,10 @@ public class LoadOperation<T> {
 			t.finish();
 		}
 	}
+	
+	public boolean isClosed() {
+		return neo.isClosed();
+	}
 
 	private Object loadFully(Node n) {
 		TypeWrapper type = nodesJavaType(n);
@@ -54,6 +59,19 @@ public class LoadOperation<T> {
 	public Collection<T> loadAll() {
 		Node n = neo.getMetaNode(cls);
 		return load2(n.getRelationships(Relationships.HAS_MEMBER));
+	}
+	
+	public Collection<T> since(long since) {
+		
+		Transaction t = neo.beginTx();
+		try {
+			org.neo4j.util.timeline.Timeline tl = neo.getTimeLine(cls);
+			
+			return load(tl.getAllNodesAfter(since));
+
+		} finally {
+			t.finish();
+		}
 	}
 	
 	public Collection<T> load(Iterable<Node> nodes) {
@@ -89,19 +107,41 @@ public class LoadOperation<T> {
 		}
 	}
 
-	public List<Object> load(FieldContext field) {
+	public Collection<Object> load(FieldContext field) {
 		Transaction t = neo.beginTx();
-		try {
-			ArrayList<Object> values = new ArrayList<Object>();
+		try { 
+			Set<Object> values = new TreeSet<Object>(new NeoComparator());
 			Node n = field.subjectNode(neo);
 			for (Relationship r : outgoingRelationships(field, n)) {
-				values.add(loadDirect(r));
+				if (!values.add(loadDirect(r)))
+					System.err.println("duplicate relations in graph.");
 			}
 			t.success();
 			return values;
 		} finally {
 			t.finish();
 		}
+	}
+	
+	public void removeRelationship(FieldContext field, Object o) {
+		Transaction t = neo.beginTx();
+		try {
+			Node source = field.subjectNode(neo);
+			Node target = asNode(o);
+			for (Relationship r : outgoingRelationships(field, source)) {
+				if (r.getEndNode().equals(target))
+					r.delete();
+			}
+			t.success();
+		} finally {
+			t.finish();
+		}
+	}
+	
+	private Node asNode(Object o) {
+		TypeWrapper t = TypeWrapperFactory.wrap(o);
+		Nodeid id = t.id(o);
+		return neo.getNodeById(id.id());
 	}
 
 	private Iterable<Relationship> outgoingRelationships(FieldContext field,
@@ -119,7 +159,7 @@ public class LoadOperation<T> {
 			return cache.get(n.getId());
 		TypeWrapper type = nodesJavaType(n);
 		Object o = type.newInstance();
-		type.setId(o, new Neo(n.getId(), type.getWrappedType()));
+		type.setId(o, new Nodeid(n.getId(), type.getWrappedType()));
 		cache.put(n.getId(), o);
 		for (FieldContext field : type.getValueContexts(o))
 			if (field.isSimpleType())
@@ -136,7 +176,7 @@ public class LoadOperation<T> {
 	 * @return
 	 */
 	private TypeWrapper nodesJavaType(Node n) {
-		String typename = (String) n.getProperty(Neo.class.getName());
+		String typename = (String) n.getProperty(Nodeid.class.getName());
 		TypeWrapper type = TypeWrapperFactory.wrap(typename);
 		return type;
 	}

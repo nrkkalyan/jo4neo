@@ -5,17 +5,17 @@ import org.neo4j.api.core.Node;
 /**
  * Used to inject neo4j context into a javabean.
  */
-public class Neo {
+public class Nodeid {
 	
 	long id;
 	Class<?> type;
 	
-	public Neo(long id, Class<?> c) {
+	public Nodeid(long id, Class<?> c) {
 		this.id = id;
 		type = c;
 	}
 	
-	public Neo(Class<?> c) {
+	public Nodeid(Class<?> c) {
 		this.id = Long.MIN_VALUE;
 		type = c;
 	}
@@ -38,12 +38,14 @@ public class Neo {
 
 	private Node newNode(IndexedNeo ns) {
 		Node newNode = ns.createNode();
-		newNode.setProperty(Neo.class.getName(), type.getName());
+		newNode.setProperty(Nodeid.class.getName(), type.getName());
 		id = newNode.getId();
 		//find metanode for type t
-		Node metanode = ns.getMetaNode(type.getName());		
+		Node metanode = ns.getMetaNode(type);		
 		metanode.createRelationshipTo(newNode, Relationships.HAS_MEMBER);
 		newNode.createRelationshipTo(metanode, Relationships.HAS_TYPE);
+		
+		ns.getTimeLine(type).addNode(newNode, System.currentTimeMillis());
 		return newNode;	
 	}
 
