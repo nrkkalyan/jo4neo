@@ -127,7 +127,7 @@ public class LoadOperation<T> {
 		Transaction t = neo.beginTx();
 		try {
 			Node source = field.subjectNode(neo);
-			Node target = asNode(o);
+			Node target = neo.asNode(o);
 			for (Relationship r : outgoingRelationships(field, source)) {
 				if (r.getEndNode().equals(target))
 					r.delete();
@@ -136,12 +136,6 @@ public class LoadOperation<T> {
 		} finally {
 			t.finish();
 		}
-	}
-	
-	private Node asNode(Object o) {
-		TypeWrapper t = TypeWrapperFactory.wrap(o);
-		Nodeid id = t.id(o);
-		return neo.getNodeById(id.id());
 	}
 
 	private Iterable<Relationship> outgoingRelationships(FieldContext field,

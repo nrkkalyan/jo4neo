@@ -15,7 +15,7 @@ public class TypeWrapperFactory {
 		return (cache.containsKey(c)) ? cache.get(c) : TypeWrapperFactory.newwrapper(c);
 	}
 	
-	public static synchronized TypeWrapper wrap(Object o) {
+	public static synchronized TypeWrapper $(Object o) {
 		return wrap(o.getClass());
 	}
 	

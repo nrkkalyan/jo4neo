@@ -21,16 +21,19 @@ public class DefaultTypeWrapper extends TypeWrapper {
 	}
 
 	public Nodeid id(Object o) {
+		Nodeid n = null;
 		try {
 			if (!idfield.isAccessible())
 				idfield.setAccessible(true);
-			Nodeid n = (Nodeid)idfield.get(o);
-			if (n!=null)
-				return n;
+			n = (Nodeid)idfield.get(o);
+			if (n== null)
+				n = new Nodeid(o.getClass());
+			idfield.set(o, n);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error retrieving id field value.", e);
 		}
-		return new Nodeid(o.getClass());
+		return n;
+
 	}
 
 	public FieldContext[] getValueContexts(Object o) {

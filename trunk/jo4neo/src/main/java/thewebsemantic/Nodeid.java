@@ -36,16 +36,15 @@ public class Nodeid {
 		return (valid()) ? ns.getNodeById(id):newNode(ns);
 	}
 
-	private Node newNode(IndexedNeo ns) {
-		Node newNode = ns.createNode();
+	private Node newNode(IndexedNeo neo) {
+		Node newNode = neo.createNode();
 		newNode.setProperty(Nodeid.class.getName(), type.getName());
 		id = newNode.getId();
 		//find metanode for type t
-		Node metanode = ns.getMetaNode(type);		
+		Node metanode = neo.getMetaNode(type);		
 		metanode.createRelationshipTo(newNode, Relationships.HAS_MEMBER);
-		newNode.createRelationshipTo(metanode, Relationships.HAS_TYPE);
-		
-		ns.getTimeLine(type).addNode(newNode, System.currentTimeMillis());
+		newNode.createRelationshipTo(metanode, Relationships.HAS_TYPE);		
+		neo.getTimeLine(type).addNode(newNode, System.currentTimeMillis());
 		return newNode;	
 	}
 

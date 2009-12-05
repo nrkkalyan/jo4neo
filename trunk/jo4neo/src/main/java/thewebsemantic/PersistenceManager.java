@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.Transaction;
@@ -12,26 +13,26 @@ public class PersistenceManager {
 
 	IndexedNeo ineo;
 
-	public PersistenceManager(IndexedNeo neo) {
-		ineo = neo;
-	}
-
-	public PersistenceManager(IndexedNeo neo, RelationFactory f) {
-		ineo = neo;
+	public PersistenceManager(NeoService neo) {
+		ineo = new IndexedNeo(neo);
 	}
 	
 	public Transaction beginTx() {
-		return ineo.beginTx();
+		return ineo.beginTx(); 
 	}
 	
 	public void persist(Object o) {
 		new PersistOperation(ineo).save(o);
 	}
+	
+	public Node get(Object o) {
+		return ineo.asNode(o);
+	}
 
 	public void delete(Object o) {
+		TypeWrapper type = TypeWrapperFactory.$(o);
 		Transaction t = ineo.beginTx();
 		try {
-			TypeWrapper type = TypeWrapperFactory.wrap(o);
 			Nodeid neo = type.id(o);
 			Node delNode = ineo.getNodeById(neo.id());
 			if (neo == null)

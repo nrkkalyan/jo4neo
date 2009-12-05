@@ -9,6 +9,7 @@ import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.RelationshipType;
 import org.neo4j.api.core.Transaction;
+import static thewebsemantic.TypeWrapperFactory.*;
 
 public class PersistOperation {
 
@@ -39,10 +40,7 @@ public class PersistOperation {
 		if (visited.containsKey(node.getId()))
 			return;
 		visited.put(node.getId(), node);
-		
-		TypeWrapper type = TypeWrapperFactory.wrap(o);		
-		
-		for (FieldContext field : type.getValueContexts(o))
+		for (FieldContext field : $(o).getValueContexts(o))
 			save(node, field);
 	}
 
@@ -91,28 +89,30 @@ public class PersistOperation {
 	private boolean related(Node a, Node b, RelationshipType type) {
 		 for ( Relationship rel : a.getRelationships( type, OUTGOING ) ) {
 	          if ( rel.getOtherNode( a ).equals( b ) )
-	              return true;
-	          
+	              return true;	          
 	      }
 		 return false;
 	}
 
 	private Node asNode(Object value) {
-		TypeWrapper t = TypeWrapperFactory.wrap(value);
-		Nodeid id = t.id(value);
-		Node n = id.mirror(neo);
-		t.setId(value, id);		
-		return n;
+		return $(value).id(value).mirror(neo);		
 	}
 
-
-
 	private void relate(Node node, FieldContext field) {
+		RelationshipType reltype = field.toRelationship(neo.getRelationFactory());
+		deleteAll(node, reltype);		
 		if (field.value() == null)
-			return;		
-		Node n2 = field.targetNode(neo);
-		node.createRelationshipTo(n2, field.toRelationship(neo.getRelationFactory()));
+			return;	
+		Object value = field.value();
+		Node n2 = asNode(value);
+		node.createRelationshipTo(n2, reltype);
 		save(n2, field.value());
+	}
+
+	private void deleteAll(Node node, RelationshipType reltype) {
+		for (Relationship r : node.getRelationships(reltype, Direction.OUTGOING)) {
+			r.delete();
+		}
 	}
 
 }

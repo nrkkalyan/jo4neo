@@ -13,6 +13,7 @@ import org.neo4j.api.core.Transaction;
 import org.neo4j.util.index.IndexService;
 import org.neo4j.util.index.NeoIndexService;
 import org.neo4j.util.timeline.Timeline;
+import static thewebsemantic.TypeWrapperFactory.*;
 
 public class IndexedNeo implements NeoService {
 	
@@ -22,15 +23,11 @@ public class IndexedNeo implements NeoService {
 	private boolean isClosed = false;
 	private Map<Class<?>, Timeline> timelines;
 
-	public IndexedNeo(NeoService neo, RelationFactory factory) {
+	public IndexedNeo(NeoService neo) {
 		this.neo = neo;
 		index = new NeoIndexService(neo);
-		relFactory = factory;
+		relFactory = new RelationFactoryImpl();
 		timelines = new HashMap<Class<?>, Timeline>();
-	}
-	
-	public IndexedNeo(NeoService neo) {
-		this(neo, new RelationFactoryImpl());
 	}
 
 	public synchronized void close() {
@@ -61,6 +58,10 @@ public class IndexedNeo implements NeoService {
 	public Node getNodeById(long arg0) {
 		return neo.getNodeById(arg0);
 	}
+	
+	public Node getNodeById(Nodeid id) {
+		return neo.getNodeById(id.id());
+	}
 
 	public Node getReferenceNode() {
 		return neo.getReferenceNode();
@@ -85,6 +86,10 @@ public class IndexedNeo implements NeoService {
 
 	public Node createNode() {
 		return neo.createNode();
+	}
+	
+	protected Node asNode(Object o) {
+		return getNodeById($(o).id(o));
 	}
 	
 	protected Node getMetaNode(Class<?> type) {

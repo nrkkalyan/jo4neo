@@ -1,7 +1,7 @@
 package thewebsemantic;
 
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
-
+import static thewebsemantic.TypeWrapperFactory.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
@@ -80,31 +80,11 @@ public class FieldContext {
 	public void applyTo(Node n) {
 		if (value() != null)
 			n.setProperty(name(), value());
-
 	}
 
-	public Node targetNode(IndexedNeo neo) {
-		Object o;
-		try {
-			field.setAccessible(true);
-			o = field.get(subject);
-			TypeWrapper t = TypeWrapperFactory.wrap(o);
-			Nodeid id = t.id(o);
-			Node node = id.mirror(neo);
-			t.setId(o, id);
-			return node;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
 	public Node subjectNode(IndexedNeo neo) {
-		TypeWrapper t = TypeWrapperFactory.wrap(subject);
-		Nodeid id = t.id(subject);
-		return neo.getNodeById(id.id());		
+		return neo.getNodeById($(subject).id(subject));		
 	}
-
 
 	public Collection<Object> values() {
 		try {
@@ -157,10 +137,6 @@ public class FieldContext {
 	}
 
 	public Class<?> type2() {
-		return getGenericType();
-	}
-
-	public Class<?> getGenericType() {
 		return getGenericType((ParameterizedType) field.getGenericType());
 	}
 
