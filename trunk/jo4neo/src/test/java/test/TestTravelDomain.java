@@ -1,6 +1,6 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
@@ -103,6 +103,13 @@ public class TestTravelDomain {
 		
 		Collection<State> states = pm.getSince(State.class,c.getTime());
 		assertEquals(6, states.size());
+		boolean caught = false;
+		try {
+			Collection<City> cities = pm.getSince(City.class,c.getTime());
+		} catch (UnsupportedOperationException e) {
+			caught = true;
+		}
+		assertTrue(caught);
 		pm.close();
 		
 	}
