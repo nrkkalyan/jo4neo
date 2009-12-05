@@ -1,6 +1,6 @@
 package test;
 
-import thewebsemantic.Embed;
+import thewebsemantic.embed;
 import thewebsemantic.Nodeid;
 import thewebsemantic.neo;
 
@@ -11,7 +11,7 @@ public class Person {
 	@neo int age;
 	@neo String firstName;
 	@neo String lastName;
-	@Embed Address address;
+	@embed Address address;
 	@neo("FRIEND") 
 	Person friend;
 	

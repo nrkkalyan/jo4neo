@@ -1,16 +1,16 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import java.io.File;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
 
 import thewebsemantic.IndexedNeo;
 import thewebsemantic.PersistenceManager;
