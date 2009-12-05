@@ -21,14 +21,12 @@ import thewebsemantic.TypeWrapperFactory;
 
 public class TestLazyCollection {
 
-	static NeoService neobase;
-	static IndexedNeo neo;
+	static NeoService neo;
 	
 	@BeforeClass
 	public static void setup() {
 		deleteDirectory(new File("neo_store"));
-		neobase = new EmbeddedNeo("neo_store");
-		neo = new IndexedNeo(neobase);
+		neo = new EmbeddedNeo("neo_store");
 	}
 	
 	@AfterClass
@@ -44,7 +42,7 @@ public class TestLazyCollection {
 		Person p2 = new Person();
 		Person p3 = new Person();
 
-		TypeWrapper tw = TypeWrapperFactory.wrap(p3);
+		TypeWrapper tw = TypeWrapperFactory.$(p3);
 		Nodeid neo = new Nodeid(12, Person.class);
 		tw.setId(p3, neo);
 

@@ -1,27 +1,24 @@
 package test;
 
-import java.util.Collection;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.Date;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-
 import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 
-import thewebsemantic.IndexedNeo;
 import thewebsemantic.PersistenceManager;
 
 public class TestPolymorphic {
-	static NeoService neobase;
-	static IndexedNeo neo;
+	static NeoService neo;
 
 	@BeforeClass
 	public static void setup() {
-		neobase = new EmbeddedNeo("neo_store");
-		neo = new IndexedNeo(neobase);
+		neo = new EmbeddedNeo("neo_store");
 	}
 
 	@AfterClass
@@ -64,6 +61,7 @@ public class TestPolymorphic {
 		assertEquals(3, tag.getItems().size());
 
 		pm.delete(semweb);
+		pm.close();
 
 	}
 }

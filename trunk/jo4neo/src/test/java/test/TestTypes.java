@@ -1,7 +1,8 @@
 package test;
 
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -11,19 +12,18 @@ import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
-import thewebsemantic.IndexedNeo;
 import thewebsemantic.PersistenceManager;
 
 public class TestTypes {
 	
 	@Test
 	public void basic() {
-		NeoService neobase = new EmbeddedNeo("neo_store");
-		IndexedNeo neo = new IndexedNeo(neobase);
+		NeoService neo = new EmbeddedNeo("neo_store");
+		
 		
 		
 		PersistenceManager pm = new PersistenceManager(neo);
-		Transaction t = neo.beginTx();
+		Transaction t = pm.beginTx();
 		try {
 			PersistenceManager p = new PersistenceManager(neo);
 			

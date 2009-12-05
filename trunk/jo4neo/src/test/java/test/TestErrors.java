@@ -1,12 +1,11 @@
 package test;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
-import org.neo4j.api.core.Transaction;
 
-import thewebsemantic.IndexedNeo;
 import thewebsemantic.PersistenceManager;
 
 public class TestErrors {
@@ -14,9 +13,7 @@ public class TestErrors {
 	@Test
 	public void basic() {
 		NeoService neo = new EmbeddedNeo("neo_store");
-		PersistenceManager pm = new PersistenceManager(new IndexedNeo(neo));
-		Transaction t = neo.beginTx();
-		neo.beginTx();
+		PersistenceManager pm = new PersistenceManager(neo);
 		boolean caught = false;
 		try {
 			AintGotId bad = new AintGotId();

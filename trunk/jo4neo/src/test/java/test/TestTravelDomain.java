@@ -11,13 +11,14 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.neo4j.api.core.EmbeddedNeo;
+import org.neo4j.api.core.NeoService;
 
 import thewebsemantic.IndexedNeo;
 import thewebsemantic.PersistenceManager;
 
 public class TestTravelDomain {
 	
-	static IndexedNeo neo;
+	static NeoService neo;
 
 	static String[][] statedata = {
 			{"TX", "Texas"},
@@ -38,7 +39,7 @@ public class TestTravelDomain {
 	@BeforeClass
 	public static void setup() {
 		deleteDirectory(new File("neo_store"));
-		neo = new IndexedNeo( new EmbeddedNeo("neo_store") );
+		neo = new EmbeddedNeo("neo_store");
 		createStates();
 		createCities();
 	}
@@ -83,7 +84,8 @@ public class TestTravelDomain {
 		assertEquals(7, cities.size());
 		State texas = pm.getSingle(State.class, State.STATE_CODE_IDX, "TX");
 		assertNotNull(texas);
-		assertEquals(3, texas.getCities().size());		
+		assertEquals(3, texas.getCities().size());	
+		pm.close();
 	}
 	
 	@Test
@@ -101,6 +103,7 @@ public class TestTravelDomain {
 		
 		Collection<State> states = pm.getSince(State.class,c.getTime());
 		assertEquals(6, states.size());
+		pm.close();
 		
 	}
 	
