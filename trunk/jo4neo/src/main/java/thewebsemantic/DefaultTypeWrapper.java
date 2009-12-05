@@ -38,7 +38,7 @@ public class DefaultTypeWrapper extends TypeWrapper {
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(neo.class))
 				values.add(new FieldContext(o, field));
-			else if ( field.isAnnotationPresent(Embed.class))
+			else if ( field.isAnnotationPresent(embed.class))
 				values.add(new EmbeddedContext(o,field));
 		}
 		return values.toArray(new FieldContext[0]);

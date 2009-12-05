@@ -25,7 +25,7 @@ public class FieldContext {
 
 	public boolean isSimpleType() {
 		return PrimitiveWrapper.isPrimitive(field.getType())
-				|| field.isAnnotationPresent(Embed.class)
+				|| isEmbedded()
 				|| arrayPrimitive();
 	}
 
@@ -141,7 +141,7 @@ public class FieldContext {
 	}
 
 	public boolean isEmbedded() {
-		return field.isAnnotationPresent(Embed.class);
+		return field.isAnnotationPresent(embed.class);
 	}
 
 	public Class<?> type() {
