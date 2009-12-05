@@ -1,5 +1,9 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.util.TreeSet;
 
@@ -10,11 +14,8 @@ import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
-import static org.junit.Assert.*;
-
-import thewebsemantic.IndexedNeo;
-import thewebsemantic.Nodeid;
 import thewebsemantic.NeoComparator;
+import thewebsemantic.Nodeid;
 import thewebsemantic.PersistenceManager;
 import thewebsemantic.TypeWrapper;
 import thewebsemantic.TypeWrapperFactory;

@@ -3,9 +3,11 @@ package test;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import thewebsemantic.Timeline;
 import thewebsemantic.neo;
 import thewebsemantic.Nodeid;
 
+@Timeline
 public class State {
 	transient Nodeid neo;
 	public static final String STATE_CODE_IDX = "statecode";
