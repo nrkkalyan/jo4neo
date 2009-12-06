@@ -75,8 +75,12 @@ public class PersistenceManager {
 		return new LoadOperation<T>(t, ineo).loadAll();
 	}
 	
-	public <T> Collection<T> getSince(Class<T> t, Date d) {
+	public <T> Collection<T> getAddedSince(Class<T> t, Date d) {
 		return new LoadOperation<T>(t, ineo).since(d.getTime());
+	}
+
+	public <T> Collection<T> getAddedBetwee(Class<T> t, Date from, Date to) {
+		return new LoadOperation<T>(t, ineo).within(from.getTime(), to.getTime());
 	}
 
 }
