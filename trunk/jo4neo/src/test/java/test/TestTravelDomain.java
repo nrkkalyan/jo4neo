@@ -101,11 +101,11 @@ public class TestTravelDomain {
 			pm.persist(s);
 		}
 		
-		Collection<State> states = pm.getSince(State.class,c.getTime());
+		Collection<State> states = pm.getAddedSince(State.class,c.getTime());
 		assertEquals(6, states.size());
 		boolean caught = false;
 		try {
-			Collection<City> cities = pm.getSince(City.class,c.getTime());
+			Collection<City> cities = pm.getAddedSince(City.class,c.getTime());
 		} catch (UnsupportedOperationException e) {
 			caught = true;
 		}
