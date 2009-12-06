@@ -2,7 +2,7 @@ package thewebsemantic;
 
 import java.lang.reflect.Field;
 
-public class FieldContextFactory {
+class FieldContextFactory {
 
 	public static FieldContext get(Field f, Object o) {
 		Class<?> c = f.getType();

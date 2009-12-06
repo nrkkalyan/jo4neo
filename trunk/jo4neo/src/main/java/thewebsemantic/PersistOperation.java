@@ -11,7 +11,7 @@ import org.neo4j.api.core.RelationshipType;
 import org.neo4j.api.core.Transaction;
 import static thewebsemantic.TypeWrapperFactory.*;
 
-public class PersistOperation {
+class PersistOperation {
 
 	IndexedNeo neo;
 	Map<Long, Object> visited;

@@ -6,7 +6,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 
-public class EmbeddedContext extends FieldContext {
+class EmbeddedContext extends FieldContext {
 
 	public EmbeddedContext(Object o, Field field) {
 		super(o, field);

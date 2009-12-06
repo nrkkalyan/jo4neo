@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 @SuppressWarnings("unchecked")
-public class LazyList implements Set<Object>, Lazy {
+class LazyList implements Set<Object>, Lazy {
 
 	private transient FieldContext field;
 	private transient LoadOperation loader;

@@ -36,6 +36,17 @@ public class Nodeid {
 		return (valid()) ? ns.getNodeById(id):newNode(ns);
 	}
 
+	/**
+	 * Creates a new node within the context of a given javaclass.  First the node
+	 * is annotated with the classname.  The neo4j node's id, as a long, is remembered
+	 * so that the containing java object knows to where and from where its values will be persisted.
+	 * Next the node is related to a "metanode" which represents metainformation about the javaclass
+	 * within the neo graph.  This allows jo4neo to find all instances of a given type easily.
+	 * Finally, if the javaclass is annotated with the Timeline annotation, the new node
+	 * is stored within a timeline rooted at the javaclasses metanode. 
+	 * @param neo
+	 * @return
+	 */
 	private Node newNode(IndexedNeo neo) {
 		Node newNode = neo.createNode();
 		newNode.setProperty(Nodeid.class.getName(), type.getName());

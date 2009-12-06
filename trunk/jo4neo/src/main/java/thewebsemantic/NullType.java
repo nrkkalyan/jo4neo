@@ -1,5 +1,5 @@
 package thewebsemantic;
 
-public class NullType {
+class NullType {
 
 }

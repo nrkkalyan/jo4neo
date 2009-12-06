@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 
-public class DefaultTypeWrapper extends TypeWrapper {
+class DefaultTypeWrapper extends TypeWrapper {
 	Field[] fields;
 	Field idfield;
 	Class<?> me;

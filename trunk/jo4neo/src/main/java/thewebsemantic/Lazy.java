@@ -1,6 +1,6 @@
 package thewebsemantic;
 
-public interface Lazy {
+interface Lazy {
 
 	boolean isConnected();
 	boolean modified();
