@@ -1,5 +1,7 @@
 package thewebsemantic;
 
+import static thewebsemantic.Resources.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -187,7 +189,7 @@ class LoadOperation<T> {
 	 */
 	private void timelineAnnotationRequired() {
 		if (!cls.isAnnotationPresent(Timeline.class))
-			throw new UnsupportedOperationException();
+			throw new UnsupportedOperationException(msg(MISSING_TIMELINE_ANNOTATION, cls));
 	}
 	
 	/**

@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
+import static thewebsemantic.Resources.*;
 
 
 class DefaultTypeWrapper extends TypeWrapper {
@@ -18,7 +19,7 @@ class DefaultTypeWrapper extends TypeWrapper {
 			if (f.getType().equals(Nodeid.class))
 				idfield = f;
 		if (idfield==null && !c.isAssignableFrom(Collection.class))
-			throw new PersistenceException(Resources.msg("MISSING_ID", c.getName()));
+			throw new PersistenceException(msg(MISSING_ID, c.getName()));
 	}
 
 	public Nodeid id(Object o) {

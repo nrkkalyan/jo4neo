@@ -7,6 +7,8 @@ public class Resources {
 	
 	ResourceBundle bundle;
 	private static Resources myself = new Resources();
+	public static String MISSING_ID = "MISSING_ID";
+	public static String MISSING_TIMELINE_ANNOTATION = "MISSING_TIMELINE_ANNOTATION";
 	
 	private Resources() {
 		bundle = ResourceBundle.getBundle("thewebsemantic.message");
