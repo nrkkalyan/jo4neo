@@ -12,6 +12,7 @@ import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.Transaction;
 
+
 class LoadOperation<T> {
 
 	IndexedNeo neo;

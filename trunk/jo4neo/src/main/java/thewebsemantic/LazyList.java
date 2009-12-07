@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
+
 @SuppressWarnings("unchecked")
 class LazyList implements Set<Object>, Lazy {
 

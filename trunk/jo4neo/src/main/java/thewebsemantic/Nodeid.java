@@ -3,7 +3,21 @@ package thewebsemantic;
 import org.neo4j.api.core.Node;
 
 /**
- * Used to inject neo4j context into a javabean.
+ * Used to inject neo4j context into a javabean.  Before persisting a 
+ * javabean/POJO with jo4neo your bean should have a Nodeid field declared
+ * as transient:
+ * 
+ * <code>
+ * public DomainObject {
+ *     //used be jo4neo
+ *     private transient Nodeid id;  
+ *     // indicates a field to be persistend in graph  
+ *     @neo private String name;
+ *     ...
+ * }
+ * </code>
+ * This example is the minumum necessary to augment a graph with a single node
+ * holding a single property.
  */
 public class Nodeid {
 	

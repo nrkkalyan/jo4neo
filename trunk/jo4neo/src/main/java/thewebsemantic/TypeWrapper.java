@@ -5,6 +5,7 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.util.logging.Logger;
 
+
 public abstract class TypeWrapper {
 	public static Logger logger = Logger.getLogger("com.thewebsemantic");
 	

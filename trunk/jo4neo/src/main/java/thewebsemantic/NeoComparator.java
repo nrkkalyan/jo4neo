@@ -2,6 +2,7 @@ package thewebsemantic;
 
 import java.util.Comparator;
 
+
 public  class NeoComparator implements Comparator<Object> {
 
 	public int compare(Object o1, Object o2) {

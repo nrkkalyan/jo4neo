@@ -2,6 +2,7 @@ package thewebsemantic;
 
 import static thewebsemantic.PrimitiveWrapper.isPrimitive;
 import static thewebsemantic.TypeWrapperFactory.*;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
@@ -9,9 +10,11 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.neo4j.api.core.Direction;
+import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.RelationshipType;
+
 
 class FieldContext {
 
@@ -82,8 +85,8 @@ class FieldContext {
 			n.setProperty(name(), value());
 	}
 
-	public Node subjectNode(IndexedNeo neo) {
-		return neo.getNodeById($(subject).id(subject));		
+	public Node subjectNode(NeoService neo) {
+		return neo.getNodeById($(subject).id(subject).id());		
 	}
 
 	public Collection<Object> values() {

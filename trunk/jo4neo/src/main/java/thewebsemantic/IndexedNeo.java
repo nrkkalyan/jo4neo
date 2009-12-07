@@ -13,6 +13,7 @@ import org.neo4j.api.core.Transaction;
 import org.neo4j.util.index.IndexService;
 import org.neo4j.util.index.NeoIndexService;
 import org.neo4j.util.timeline.Timeline;
+
 import static thewebsemantic.TypeWrapperFactory.*;
 
 public class IndexedNeo implements NeoService {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 
+
 class DefaultTypeWrapper extends TypeWrapper {
 	Field[] fields;
 	Field idfield;
