@@ -51,8 +51,8 @@ public class TestPolymorphic {
 		semweb.getItems().add(review);
 
 		pm.persist(semweb);
-
-		Tag tag = pm.getSingle(Tag.class, Tag.NAME_INDEX, "semweb");
+		Tag tag = new Tag();
+		tag = pm.find(tag).where(tag.name).is("semweb").result();
 
 		for (Taggable thing : tag.getItems()) {
 			System.out.println(thing);

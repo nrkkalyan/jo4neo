@@ -49,7 +49,8 @@ public class TestTravelDomain {
 		for (String[] row : citydata) {
 			City c = new City();
 			c.setName(row[0]);
-			State s = pm.getSingle(State.class, State.STATE_CODE_IDX, row[1]);
+			State s = new State();
+			s = pm.find(s).where(s.code).is(row[1]).result();
 			c.setState(s);
 			s.getCities().add(c);
 			pm.persist(c);
@@ -82,7 +83,8 @@ public class TestTravelDomain {
 		assertEquals(3, states.size());
 		Collection<City> cities = pm.get(City.class);
 		assertEquals(7, cities.size());
-		State texas = pm.getSingle(State.class, State.STATE_CODE_IDX, "TX");
+		State texas = new State();
+		texas = pm.find(texas).where(texas.code).is("TX").result();
 		assertNotNull(texas);
 		assertEquals(3, texas.getCities().size());	
 		pm.close();

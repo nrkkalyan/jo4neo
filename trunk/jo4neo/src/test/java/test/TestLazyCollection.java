@@ -73,7 +73,8 @@ public class TestLazyCollection {
 				PersistenceManager pm2 = new PersistenceManager(neo);
 				Transaction t = pm2.beginTx();
 				try {
-					State s = pm2.getSingle(State.class, State.STATE_CODE_IDX, "NY");
+					State state = new State();
+					State s = pm2.find(state).where(state.code).is("NY").result();
 					
 					City c = new City();
 					c.setName("unknown");
@@ -94,8 +95,8 @@ public class TestLazyCollection {
 			new Thread(doit).start();
 
 		Thread.sleep(5000);
-		
-		ny = pm.getSingle(State.class, State.STATE_CODE_IDX, "NY");
+		State state = new State();
+		ny = pm.find(state).where(state.code).is("NY").result();
 		assertEquals(101, ny.getCities().size());
 
 	}

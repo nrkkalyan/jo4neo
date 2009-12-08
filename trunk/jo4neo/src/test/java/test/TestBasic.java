@@ -40,11 +40,12 @@ public class TestBasic {
 			Hotel h = new Hotel();
 			h.setName("Hyatt Boston");
 			pm.persist(h);
-			Hotel ex = new Hotel();
-			Collection<Hotel> hotels = pm.find(ex).where(ex.name).is("Hyatt Boston");
+			Hotel hotel = new Hotel();
+			Collection<Hotel> hotels = pm.find(hotel).where(hotel.name).is("Hyatt Boston").results();
+			
 			assertEquals(hotels.size(), 1);
 			pm.delete(h);
-			hotels = pm.find(ex).where(ex.name).is("Hyatt Boston");
+			hotels = pm.find(hotel).where(hotel.name).is("Hyatt Boston").results();
 			assertEquals(hotels.size(), 0);
 			t.success();
 		} finally {
