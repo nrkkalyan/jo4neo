@@ -38,7 +38,7 @@ public class PersistenceManager {
 			Node delNode = ineo.getNodeById(neo.id());
 			if (neo == null)
 				return;
-			for (FieldContext field : type.getValueContexts(o)) {
+			for (FieldContext field : type.getFields(o)) {
 				if (field.isIndexed())
 					ineo.getIndexService().removeIndex(delNode,
 							field.getIndexName(), field.value());

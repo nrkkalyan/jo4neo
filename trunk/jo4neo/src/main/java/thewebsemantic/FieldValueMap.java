@@ -14,7 +14,7 @@ public class FieldValueMap<A> implements Where<A> {
 		this.pm = pm;
 		map = new HashMap<Object, FieldContext>();
 		TypeWrapper type = TypeWrapperFactory.$(a);	
-		for (FieldContext f : type.getValueContexts(a)) {
+		for (FieldContext f : type.getFields(a)) {
 			Object val = f.initWithNewObject();
 			map.put(val, f);
 		} 

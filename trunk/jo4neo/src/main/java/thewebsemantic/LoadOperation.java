@@ -48,7 +48,7 @@ class LoadOperation<T> {
 	private Object loadFully(Node n) {
 		TypeWrapper type = nodesJavaType(n);
 		Object o = loadDirect(n);
-		for (FieldContext field : type.getValueContexts(o)) {
+		for (FieldContext field : type.getFields(o)) {
 			if (field.isSingular())
 				single(n, field);
 			else if (field.isPluralPrimitive())
@@ -145,7 +145,7 @@ class LoadOperation<T> {
 		Object o = type.newInstance();
 		type.setId(o, new Nodeid(n.getId(), type.getWrappedType()));
 		cache.put(n.getId(), o);
-		for (FieldContext field : type.getValueContexts(o))
+		for (FieldContext field : type.getFields(o))
 			if (field.isSimpleType())
 				field.applyFrom(n);
 			else if (field.isSingular())

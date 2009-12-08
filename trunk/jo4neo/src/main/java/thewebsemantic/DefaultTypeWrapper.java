@@ -40,7 +40,7 @@ class DefaultTypeWrapper extends TypeWrapper {
 
 	}
 
-	public FieldContext[] getValueContexts(Object o) {
+	public FieldContext[] getFields(Object o) {
 		ArrayList<FieldContext> values = new ArrayList<FieldContext>();
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(neo.class))

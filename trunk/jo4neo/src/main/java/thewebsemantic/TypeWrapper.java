@@ -19,7 +19,7 @@ public abstract class TypeWrapper {
 	}
 	
 	public abstract Object newInstance();	
-	public abstract FieldContext[] getValueContexts(Object o);
+	public abstract FieldContext[] getFields(Object o);
 	public abstract Nodeid id(Object o);
 
 	public abstract void setId(Object bean, Nodeid n);

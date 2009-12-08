@@ -42,7 +42,7 @@ class PersistOperation {
 		if (visited.containsKey(node.getId()))
 			return;
 		visited.put(node.getId(), node);
-		for (FieldContext field : $(o).getValueContexts(o))
+		for (FieldContext field : $(o).getFields(o))
 			save(node, field);
 	}
 
