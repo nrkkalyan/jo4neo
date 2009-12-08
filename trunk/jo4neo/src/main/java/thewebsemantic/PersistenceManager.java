@@ -38,11 +38,10 @@ public class PersistenceManager {
 			Node delNode = ineo.getNodeById(neo.id());
 			if (neo == null)
 				return;
-			for (FieldContext field : type.getFields(o)) {
+			for (FieldContext field : type.getFields(o))
 				if (field.isIndexed())
-					ineo.getIndexService().removeIndex(delNode,
-							field.getIndexName(), field.value());
-			}
+					indexRemove(delNode, field);
+			
 			for (Relationship r : delNode.getRelationships())
 				r.delete();
 			delNode.delete();
@@ -50,6 +49,11 @@ public class PersistenceManager {
 		} finally {
 			t.finish();
 		}
+	}
+
+	private void indexRemove(Node delNode, FieldContext field) {
+		ineo.getIndexService().removeIndex(delNode,
+				field.getIndexName(), field.value());
 	}
 
 	public <T> T get(Class<T> t, long key) {
