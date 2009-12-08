@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Test;
@@ -14,14 +15,43 @@ import org.neo4j.api.core.Transaction;
 
 import thewebsemantic.PersistenceManager;
 
-public class TestTypes {
+public class TestTypes extends BaseTest {
 	
 	@Test
-	public void basic() {
+	public void index() {
 		NeoService neo = new EmbeddedNeo("neo_store");
+		PersistenceManager p = new PersistenceManager(neo);
+		Transaction t = p.beginTx();
+		try {
+			
+			for (int i=0; i<100; i++) {
+				FunkyWinkerBean o = new FunkyWinkerBean();
+				o.setJ(i%10);
+				p.persist(o);
+			}
+			t.success();
+		} finally {
+			t.finish();
+		}
 		
 		
-		
+		t = p.beginTx();
+		try {
+			
+			FunkyWinkerBean bean = new FunkyWinkerBean();
+			Collection<FunkyWinkerBean> results = p.find(bean).where(bean.j).is(9).results();
+			assertEquals(10, results.size());
+			
+			results = p.find(bean).where(bean.j).is(3).results();
+			assertEquals(10, results.size());
+
+		} finally {
+			t.finish();
+			p.close();			
+		}
+	}
+	@Test
+	public void basic() {
 		PersistenceManager pm = new PersistenceManager(neo);
 		Transaction t = pm.beginTx();
 		try {

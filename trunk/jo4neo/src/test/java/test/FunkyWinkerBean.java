@@ -7,7 +7,7 @@ public class FunkyWinkerBean {
 	
 	transient Nodeid id;
 	@neo public int i;
-	@neo public int j;
+	@neo(index=true) public int j;
 	@neo public long x;
 	@neo Boolean bad;
 	@neo Boolean good;
