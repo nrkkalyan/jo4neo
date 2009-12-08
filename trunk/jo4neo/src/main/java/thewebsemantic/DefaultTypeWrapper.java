@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
+
+import util.Utils;
 import static thewebsemantic.Resources.*;
 
 
@@ -56,7 +58,7 @@ class DefaultTypeWrapper extends TypeWrapper {
 		try {
 			return me.newInstance();
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.runtime(e);
 		}
 		return null;
 	}
@@ -68,7 +70,7 @@ class DefaultTypeWrapper extends TypeWrapper {
 				idfield.setAccessible(true);			
 			idfield.set(bean, n);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.runtime(e);
 		}
 	}
 

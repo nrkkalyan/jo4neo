@@ -3,6 +3,8 @@ package thewebsemantic;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 
+import util.Utils;
+
 public class TypeWrapperFactory {
 	
 	public static HashMap<Class, TypeWrapper> cache = new HashMap<Class, TypeWrapper>();
@@ -27,7 +29,7 @@ public class TypeWrapperFactory {
 		try {
 			return wrap(Class.forName(s));
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			Utils.runtime(e);
 		}
 		return null;
 	}

@@ -57,7 +57,7 @@ public class FieldContext {
 			field.setAccessible(true);
 			result = field.get(subject);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.runtime(e);
 		}
 		if (result == null)
 			return result;
@@ -74,7 +74,7 @@ public class FieldContext {
 			field.setAccessible(true);
 			return field.get(subject);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.runtime(e);
 		}
 		return null;
 	}
@@ -86,7 +86,7 @@ public class FieldContext {
 			field.set(subject, o);
 			return o;
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.runtime(e);
 		}
 		return null;
     }
@@ -100,7 +100,7 @@ public class FieldContext {
 				v = Arrays.asList((Object[]) v);
 			field.set(subject, v);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.runtime(e);
 		}
 	}
 
@@ -118,7 +118,7 @@ public class FieldContext {
 			field.setAccessible(true);
 			return (Collection) field.get(subject);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.runtime(e);
 		}
 		return null;
 	}

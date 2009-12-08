@@ -6,6 +6,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 
+import util.Utils;
+
 class EmbeddedContext extends FieldContext {
 
 	public EmbeddedContext(Object o, Field field) {
@@ -22,7 +24,7 @@ class EmbeddedContext extends FieldContext {
 			os.writeObject(result);
 			result = bos.toByteArray();			
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.runtime(e);
 		}
 		return result;
 	}
@@ -35,7 +37,7 @@ class EmbeddedContext extends FieldContext {
 			field.setAccessible(true);
 			field.set(subject, o);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Utils.runtime(e);
 		}
 	}
 	
