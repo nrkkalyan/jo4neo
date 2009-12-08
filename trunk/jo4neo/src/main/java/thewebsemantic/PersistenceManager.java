@@ -60,7 +60,7 @@ public class PersistenceManager {
 		ineo.close();
 	}
 
-	protected <T> Collection<T> get(Class<T> t, String indexname, Object value) {
+	<T> Collection<T> get(Class<T> t, String indexname, Object value) {
 		ArrayList<T> list = new ArrayList<T>();
 		for (Node n : ineo.getIndexService().getNodes(indexname, value))
 			list.add(get(t, n.getId()));
