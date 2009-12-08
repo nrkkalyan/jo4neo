@@ -14,12 +14,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
-//## Java 1.5 end ##
 
 /**
  * Generic utility methods.
@@ -149,6 +143,10 @@ public class Utils {
         throw new RuntimeException("Can not convert the value " + o +
                 " from " + currentType + " to " + targetType);
     }
+
+	public static void runtime(Exception e) {
+		throw new RuntimeException(e);		
+	}
 
 //## Java 1.5 end ##
 }
