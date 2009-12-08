@@ -9,14 +9,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.lang.model.type.PrimitiveType;
+
 import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.RelationshipType;
 
+import util.Utils;
 
-class FieldContext {
+
+public class FieldContext {
 
 	Field field;
 	Object subject;
@@ -27,7 +31,7 @@ class FieldContext {
 	}
 
 	public boolean isSimpleType() {
-		return PrimitiveWrapper.isPrimitive(field.getType())
+		return isPrimitive(field.getType())
 				|| isEmbedded()
 				|| arrayPrimitive();
 	}
@@ -56,7 +60,6 @@ class FieldContext {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		if (result == null)
 			return result;
 		if (result instanceof Date)
@@ -66,6 +69,28 @@ class FieldContext {
 		else
 			return result;
 	}
+	
+	Object rawValue() {
+		try {
+			field.setAccessible(true);
+			return field.get(subject);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	Object initWithNewObject() {
+		try {
+			field.setAccessible(true);
+			Object o = Utils.newObject(field.getType());
+			field.set(subject, o);
+			return o;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+    }
 
 	public void setProperty(Object v) {
 		try {
@@ -143,7 +168,7 @@ class FieldContext {
 		return getGenericType((ParameterizedType) field.getGenericType());
 	}
 
-	public Class<?> getGenericType(ParameterizedType type) {
+	private Class<?> getGenericType(ParameterizedType type) {
 		return (type == null) ? NullType.class : (Class<?>) type
 				.getActualTypeArguments()[0];
 	}
@@ -155,6 +180,10 @@ class FieldContext {
 
 	public String getIndexName() {
 		return field.getAnnotation(neo.class).index();		
+	}
+	
+	public String getFieldname() {
+		return field.getName();
 	}
 
 }
