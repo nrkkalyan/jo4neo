@@ -60,18 +60,18 @@ public class PersistenceManager {
 		ineo.close();
 	}
 
-	public <T> Collection<T> get(Class<T> t, String indexname, Object value) {
+	protected <T> Collection<T> get(Class<T> t, String indexname, Object value) {
 		ArrayList<T> list = new ArrayList<T>();
 		for (Node n : ineo.getIndexService().getNodes(indexname, value))
 			list.add(get(t, n.getId()));
 		return list;
 	}
 	
-	public <A> FieldValueMap<A> find(A a) {
+	public <A> Where<A> find(A a) {
 		return new FieldValueMap<A>(a, this);
 	}
 	
-	public <T> T getSingle(Class<T> t, String indexname, Object value) {
+	<T> T getSingle(Class<T> t, String indexname, Object value) {
 		Node n = ineo.getIndexService().getSingleNode(indexname, value);
 		return (n != null) ?get(t, n.getId()) : null;
 	}
