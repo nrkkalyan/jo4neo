@@ -10,9 +10,9 @@ import thewebsemantic.Nodeid;
 @Timeline
 public class State {
 	transient Nodeid neo;
-	public static final String STATE_CODE_IDX = "statecode";
+	public static final String STATE_CODE_IDX = "test.State.code_INDEX";
 	
-	@neo(index=STATE_CODE_IDX) String code;
+	@neo(index=true) String code;
 	@neo String name;	
 	@neo Collection<City> cities = new ArrayList<City>();
 	

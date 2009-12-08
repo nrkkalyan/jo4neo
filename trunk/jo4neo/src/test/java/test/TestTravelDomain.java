@@ -49,7 +49,7 @@ public class TestTravelDomain {
 		for (String[] row : citydata) {
 			City c = new City();
 			c.setName(row[0]);
-			State s = pm.getSingle(State.class, "statecode", row[1]);
+			State s = pm.getSingle(State.class, State.STATE_CODE_IDX, row[1]);
 			c.setState(s);
 			s.getCities().add(c);
 			pm.persist(c);
@@ -108,6 +108,7 @@ public class TestTravelDomain {
 			Collection<City> cities = pm.getAddedSince(City.class,c.getTime());
 		} catch (UnsupportedOperationException e) {
 			caught = true;
+			//e.printStackTrace();
 		}
 		assertTrue(caught);
 		pm.close();

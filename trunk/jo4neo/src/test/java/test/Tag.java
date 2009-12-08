@@ -9,7 +9,9 @@ import thewebsemantic.neo;
 public class Tag {
 	Nodeid neo;
 	
-	@neo(index="tagname")
+	public static final String NAME_INDEX = "test.Tag.name_INDEX";
+	
+	@neo(index=true)
 	String name;
 	
 	@neo

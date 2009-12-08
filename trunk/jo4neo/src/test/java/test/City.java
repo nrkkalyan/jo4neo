@@ -5,7 +5,7 @@ import thewebsemantic.Nodeid;
 
 public class City {
 	transient Nodeid neo;
-	@neo(index="cityname") String name;
+	@neo(index=true) String name;
 	@neo State state;
 	@neo double lat;
 	@neo double lon;

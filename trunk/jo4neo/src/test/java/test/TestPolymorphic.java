@@ -52,7 +52,7 @@ public class TestPolymorphic {
 
 		pm.persist(semweb);
 
-		Tag tag = pm.getSingle(Tag.class, "tagname", "semweb");
+		Tag tag = pm.getSingle(Tag.class, Tag.NAME_INDEX, "semweb");
 
 		for (Taggable thing : tag.getItems()) {
 			System.out.println(thing);

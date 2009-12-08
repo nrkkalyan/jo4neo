@@ -7,11 +7,11 @@ import thewebsemantic.neo;
 
 public class Hotel {
 
-	public static final String HOTEL_NAME_IDX = "hotelname";
+	public static final String HOTEL_NAME_IDX = "test.Hotel.name_INDEX";
 	transient Nodeid neo;
 	
 	@neo Collection<Ammenity> ammenities;
-	@neo(index=HOTEL_NAME_IDX) String name;
+	@neo(index=true) String name;
 	
 	public Collection<Ammenity> getAmmenities() {
 		return ammenities;

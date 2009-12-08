@@ -8,7 +8,7 @@ import thewebsemantic.Nodeid;
 public class Airport {
 	transient Nodeid neo;
 
-	@neo(index="airportcode") String code;
+	@neo(index=true) String code;
 	@neo String name;
 	@neo Collection<City> citiesServed;
 	public String getName() {
