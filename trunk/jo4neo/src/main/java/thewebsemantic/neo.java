@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 public @interface neo {
 	public static final String DEFAULT = "default";	
 	String value() default DEFAULT;
-	String index() default DEFAULT;
+	boolean index() default false;
 }

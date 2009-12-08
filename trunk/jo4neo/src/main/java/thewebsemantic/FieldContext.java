@@ -38,8 +38,7 @@ public class FieldContext {
 
 	public boolean isIndexed() {
 		return (field.isAnnotationPresent(neo.class) && 
-				!field.getAnnotation(neo.class).index().equals(
-						neo.DEFAULT));
+				field.getAnnotation(neo.class).index());
 	}
 
 	private boolean arrayPrimitive() {
@@ -179,7 +178,7 @@ public class FieldContext {
 	}
 
 	public String getIndexName() {
-		return field.getAnnotation(neo.class).index();		
+		return subject.getClass().getName() + '.' +  field.getName() + "_INDEX";
 	}
 	
 	public String getFieldname() {

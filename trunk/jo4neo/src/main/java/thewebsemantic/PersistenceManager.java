@@ -67,6 +67,10 @@ public class PersistenceManager {
 		return list;
 	}
 	
+	public <A> FieldValueMap<A> find(A a) {
+		return new FieldValueMap<A>(a, this);
+	}
+	
 	public <T> T getSingle(Class<T> t, String indexname, Object value) {
 		Node n = ineo.getIndexService().getSingleNode(indexname, value);
 		return (n != null) ?get(t, n.getId()) : null;
