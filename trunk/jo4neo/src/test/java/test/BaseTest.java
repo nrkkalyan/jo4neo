@@ -4,6 +4,7 @@ import java.io.File;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 
@@ -20,6 +21,10 @@ public class BaseTest {
 	@AfterClass
 	public static void teardown() {
 		neo.shutdown();
+	}
+	
+	@Test
+	public void donothing() {
 	}
 	
 	static public boolean deleteDirectory(File path) {

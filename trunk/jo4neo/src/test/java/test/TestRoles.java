@@ -30,6 +30,7 @@ public class TestRoles extends BaseTest {
 			User a = new User();
 			a.id = "user2";
 			a.roles.add(roleadmin);
+			a.roles.add(roleuser);
 
 			p.persist(roleuser, roleadmin, roledeveloper, rolesuperuser, u, a);			
 			t.success();
@@ -48,7 +49,7 @@ public class TestRoles extends BaseTest {
 			assertEquals("user", r.name);
 			
 			r = p.find(r).where(r.name).is("user").result();
-			assertEquals(1, r.users.size());
+			assertEquals(2, r.users.size());
 			t.success();
 		} finally {
 			t.finish();
