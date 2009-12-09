@@ -129,14 +129,12 @@ public class FieldContext {
 	}
 
 	public RelationshipType toRelationship(RelationFactory f) {
-		if (field.isAnnotationPresent(neo.class)) {
-			neo p = field.getAnnotation(neo.class);
-			String name = p.value();
-			if (!neo.DEFAULT.equals(name))
-				return f.relationshipType(name);
-
-		}
 		String n = field.getName();
+		if (field.isAnnotationPresent(neo.class)) {
+			String name = field.getAnnotation(neo.class).value();
+			if (!neo.DEFAULT.equals(name))
+				n = name;
+		}
 		return f.relationshipType(n);
 	}
 
