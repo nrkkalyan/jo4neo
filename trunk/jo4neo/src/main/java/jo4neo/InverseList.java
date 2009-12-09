@@ -1,11 +1,17 @@
 package jo4neo;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
 import jo4neo.util.Lazy;
 
+/**
+ * Represents implied relationships.
+ * members cannot be added or removed as this
+ * is contingent upon relationships declared from another
+ * entity.
+ *
+ */
 @SuppressWarnings("unchecked")
 public class InverseList implements Lazy {
 

@@ -92,7 +92,7 @@ class LoadOperation<T> {
 
 	private void single(Node n, FieldContext field) {
 		for (Relationship r : field.relationships(n, neo.getRelationFactory())) {
-			field.setProperty(loadDirect(r));
+			field.setProperty(loadDirect(r.getEndNode()));
 			return;
 		}
 	}
@@ -103,7 +103,7 @@ class LoadOperation<T> {
 			Set<Object> values = new TreeSet<Object>(new NeoComparator());
 			Node n = field.subjectNode(neo);
 			for (Relationship r : outgoingRelationships(field, n)) {
-				if (!values.add(loadDirect(r)))
+				if (!values.add(loadDirect(r.getEndNode())))
 					System.err.println("duplicate relations in graph.");
 			}
 			t.success();
@@ -119,7 +119,7 @@ class LoadOperation<T> {
 			Set<Object> values = new TreeSet<Object>(new NeoComparator());
 			Node n = field.subjectNode(neo);
 			for (Relationship r : incommingRelationships(field, n)) {
-				if (!values.add(loadDirect(r)))
+				if (!values.add(loadDirect(r.getStartNode())))
 					System.err.println("duplicate relations in graph.");
 			}
 			t.success();
@@ -156,9 +156,7 @@ class LoadOperation<T> {
 				.getRelationFactory()), Direction.INCOMING);
 	}
 
-	protected Object loadDirect(Relationship r) {
-		return loadDirect(r.getEndNode());
-	}
+	
 
 	protected Object loadDirect(Node n) {
 		if (cache.containsKey(n.getId()))
