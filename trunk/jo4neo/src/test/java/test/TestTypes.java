@@ -75,13 +75,10 @@ public class TestTypes extends BaseTest {
 			assertNotNull(check.getTags());
 			assertEquals(4, check.getTags().size());
 			t.success();
-		} catch (Exception e) {
-			e.printStackTrace();
-			t.failure();
+		
 		} finally {
 			t.finish();
 			pm.close();
-			neo.shutdown();
 		}
 	}
 
