@@ -14,9 +14,6 @@ import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.RelationshipType;
 import org.neo4j.api.core.Transaction;
 
-
-
-
 class PersistOperation {
 
 	IndexedNeo neo;
@@ -30,10 +27,8 @@ class PersistOperation {
 	public void save(Object... o) {
 		Transaction t = neo.beginTx();
 		try {
-			for (Object bean : o) {
-				save(asNode(bean), bean);
-			}
-			
+			for (Object bean : o) 
+				save(asNode(bean), bean);			
 			t.success();
 		} finally {
 			t.finish();
