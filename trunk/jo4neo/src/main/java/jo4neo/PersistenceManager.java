@@ -30,8 +30,7 @@ public class PersistenceManager {
 	}
 	
 	public void persist(Object... o) {
-		for (Object obj : o)
-			new PersistOperation(ineo).save(obj);		
+		new PersistOperation(ineo).save(o);		
 	}
 	
 	public Node get(Object o) {

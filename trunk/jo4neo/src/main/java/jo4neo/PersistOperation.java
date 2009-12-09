@@ -27,10 +27,13 @@ class PersistOperation {
 		visited = new HashMap<Long, Object>();
 	}
 
-	public void save(Object bean) {
+	public void save(Object... o) {
 		Transaction t = neo.beginTx();
 		try {
-			save(asNode(bean), bean);
+			for (Object bean : o) {
+				save(asNode(bean), bean);
+			}
+			
 			t.success();
 		} finally {
 			t.finish();
