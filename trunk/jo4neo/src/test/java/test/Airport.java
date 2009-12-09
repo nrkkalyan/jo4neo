@@ -2,8 +2,9 @@ package test;
 
 import java.util.Collection;
 
-import thewebsemantic.neo;
-import thewebsemantic.Nodeid;
+import jo4neo.Nodeid;
+import jo4neo.neo;
+
 
 public class Airport {
 	transient Nodeid neo;

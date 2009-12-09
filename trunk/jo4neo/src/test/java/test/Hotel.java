@@ -2,8 +2,9 @@ package test;
 
 import java.util.Collection;
 
-import thewebsemantic.Nodeid;
-import thewebsemantic.neo;
+import jo4neo.Nodeid;
+import jo4neo.neo;
+
 
 public class Hotel {
 

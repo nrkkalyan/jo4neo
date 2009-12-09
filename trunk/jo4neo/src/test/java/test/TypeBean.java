@@ -3,8 +3,9 @@ package test;
 import java.util.Collection;
 import java.util.Date;
 
-import thewebsemantic.Nodeid;
-import thewebsemantic.neo;
+import jo4neo.Nodeid;
+import jo4neo.neo;
+
 
 public class TypeBean {
 	

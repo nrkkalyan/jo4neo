@@ -5,13 +5,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
+import jo4neo.PersistenceManager;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 
-import thewebsemantic.PersistenceManager;
 
 public class TestPolymorphic {
 	static NeoService neo;

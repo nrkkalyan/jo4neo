@@ -7,6 +7,12 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.TreeSet;
 
+import jo4neo.NeoComparator;
+import jo4neo.Nodeid;
+import jo4neo.PersistenceManager;
+import jo4neo.TypeWrapper;
+import jo4neo.TypeWrapperFactory;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -14,11 +20,6 @@ import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
-import thewebsemantic.NeoComparator;
-import thewebsemantic.Nodeid;
-import thewebsemantic.PersistenceManager;
-import thewebsemantic.TypeWrapper;
-import thewebsemantic.TypeWrapperFactory;
 
 public class TestLazyCollection {
 

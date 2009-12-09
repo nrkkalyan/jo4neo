@@ -2,7 +2,8 @@ package test;
 
 import java.util.Date;
 
-import thewebsemantic.neo;
+import jo4neo.neo;
+
 
 public class BlogPost extends ContentItem implements Taggable {
 	

@@ -1,7 +1,7 @@
 package test;
 
-import thewebsemantic.neo;
-import thewebsemantic.Nodeid;
+import jo4neo.Nodeid;
+import jo4neo.neo;
 
 public class City {
 	transient Nodeid neo;

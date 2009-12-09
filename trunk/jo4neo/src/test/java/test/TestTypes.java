@@ -8,18 +8,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import jo4neo.PersistenceManager;
+
 import org.junit.Test;
 import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
-import thewebsemantic.PersistenceManager;
 
 public class TestTypes extends BaseTest {
 	
 	@Test
 	public void index() {
-		NeoService neo = new EmbeddedNeo("neo_store");
 		PersistenceManager p = new PersistenceManager(neo);
 		Transaction t = p.beginTx();
 		try {

@@ -1,12 +1,12 @@
 package test;
 
 import static org.junit.Assert.assertTrue;
+import jo4neo.PersistenceManager;
 
 import org.junit.Test;
 import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 
-import thewebsemantic.PersistenceManager;
 
 public class TestErrors {
 	

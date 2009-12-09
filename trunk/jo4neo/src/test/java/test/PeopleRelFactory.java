@@ -1,8 +1,9 @@
 package test;
 
+import jo4neo.RelationFactory;
+
 import org.neo4j.api.core.RelationshipType;
 
-import thewebsemantic.RelationFactory;
 
 public class PeopleRelFactory implements RelationFactory {
 

@@ -1,8 +1,9 @@
 package test;
 
+import jo4neo.FieldValueMap;
+
 import org.junit.Test;
 
-import thewebsemantic.FieldValueMap;
 
 public class TestFieldValueMap {
 	

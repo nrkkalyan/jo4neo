@@ -1,8 +1,8 @@
 package test;
 
-import thewebsemantic.embed;
-import thewebsemantic.Nodeid;
-import thewebsemantic.neo;
+import jo4neo.Nodeid;
+import jo4neo.embed;
+import jo4neo.neo;
 
 public class Person {
 	

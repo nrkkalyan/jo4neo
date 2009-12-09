@@ -3,9 +3,10 @@ package test;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import thewebsemantic.Timeline;
-import thewebsemantic.neo;
-import thewebsemantic.Nodeid;
+import jo4neo.Nodeid;
+import jo4neo.Timeline;
+import jo4neo.neo;
+
 
 @Timeline
 public class State {
