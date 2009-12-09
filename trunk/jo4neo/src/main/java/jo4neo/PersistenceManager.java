@@ -98,6 +98,10 @@ public class PersistenceManager {
 	public <T> Collection<T> getAddedBetween(Class<T> t, Date from, Date to) {
 		return new LoadOperation<T>(t, ineo).within(from.getTime(), to.getTime());
 	}
+	
+	public <T> Collection<T> getMostRecent(Class<T> t, int max) {
+		return new LoadOperation<T>(t, ineo).latest(max);
+	}
 
 }
 

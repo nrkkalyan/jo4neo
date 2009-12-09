@@ -50,6 +50,13 @@ public class TestRoles extends BaseTest {
 			
 			r = p.find(r).where(r.name).is("user").result();
 			assertEquals(2, r.users.size());
+
+			assertEquals(4, p.getMostRecent(Role.class, 4).size());
+			assertEquals(3, p.getMostRecent(Role.class, 3).size());
+			assertEquals(2, p.getMostRecent(Role.class, 2).size());
+			assertEquals(1, p.getMostRecent(Role.class, 1).size());
+			assertEquals(4, p.getMostRecent(Role.class, 5).size());
+
 			t.success();
 		} finally {
 			t.finish();

@@ -1,6 +1,9 @@
 package jo4neo;
 
+import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
+import org.neo4j.api.core.Relationship;
+import static jo4neo.Relationships.*;
 
 /**
  * Used to inject neo4j context into a javabean.  Before persisting a 
@@ -67,10 +70,20 @@ public class Nodeid {
 		id = newNode.getId();
 		//find metanode for type t
 		Node metanode = neo.getMetaNode(type);		
-		metanode.createRelationshipTo(newNode, Relationships.HAS_MEMBER);
-		newNode.createRelationshipTo(metanode, Relationships.HAS_TYPE);	
+		metanode.createRelationshipTo(newNode, HAS_MEMBER);
+		newNode.createRelationshipTo(metanode, HAS_TYPE);	
 		if (type.isAnnotationPresent(Timeline.class))
 			neo.getTimeLine(type).addNode(newNode, System.currentTimeMillis());
+		
+		//delete "latest" relation
+		Node latest=null;
+		for(Relationship r : metanode.getRelationships(NEXT_MOST_RECENT, Direction.OUTGOING)) {
+			latest = r.getEndNode();
+			r.delete();
+		}
+		if (latest!=null)
+			newNode.createRelationshipTo(latest, NEXT_MOST_RECENT);
+		metanode.createRelationshipTo(newNode, NEXT_MOST_RECENT);		
 		return newNode;	
 	}
 

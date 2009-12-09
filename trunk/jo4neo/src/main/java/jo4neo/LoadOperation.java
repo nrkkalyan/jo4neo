@@ -5,6 +5,7 @@ import static jo4neo.util.Resources.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -12,7 +13,11 @@ import java.util.TreeSet;
 import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
+import org.neo4j.api.core.ReturnableEvaluator;
+import org.neo4j.api.core.StopEvaluator;
 import org.neo4j.api.core.Transaction;
+import org.neo4j.api.core.Traverser;
+import org.neo4j.api.core.Traverser.Order;
 
 
 class LoadOperation<T> {
@@ -64,18 +69,27 @@ class LoadOperation<T> {
 		return load2(n.getRelationships(Relationships.HAS_MEMBER));
 	}
 	
-	public Collection<T> load(Iterable<Node> nodes) {
+	private Collection<T> load(Iterable<Node> nodes, long max) {
 		Transaction t = neo.beginTx();
+		long l = 0;
 		try {
 			ArrayList<T> results = new ArrayList<T>();
-			for (Node node : nodes)
+			for (Node node : nodes) {
+				if (l++ >= max) break;
 				results.add((T) loadFully(node));
+			}
 			t.success();
 			return results;
 		} finally {
 			t.finish();
 		}
 	}
+
+	private Collection<T> load(Iterable<Node> nodes) {
+		return load(nodes, Long.MAX_VALUE);
+	}
+
+	
 	
 	private Collection<T> load2(Iterable<Relationship> relations) {
 		Transaction t = neo.beginTx();
@@ -224,6 +238,18 @@ class LoadOperation<T> {
 		try {
 			org.neo4j.util.timeline.Timeline tl = neo.getTimeLine(cls);			
 			return load(tl.getAllNodesBetween(from, to));
+		} finally {
+			t.finish();
+		}
+	}
+	
+	public Collection<T> latest(long max) {
+		Transaction t = neo.beginTx();
+		try {
+			Node metanode = neo.getMetaNode(cls);
+			Traverser tvsr = metanode.traverse(Order.BREADTH_FIRST, StopEvaluator.END_OF_GRAPH, 
+					ReturnableEvaluator.ALL_BUT_START_NODE, Relationships.NEXT_MOST_RECENT, Direction.OUTGOING);
+			return load(tvsr, max);
 		} finally {
 			t.finish();
 		}
