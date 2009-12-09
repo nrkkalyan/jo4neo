@@ -13,18 +13,11 @@ public class User {
 	@neo(index=true) String id;
 	@neo String firstName;
 	@neo String lastName;
-	@neo Collection<Role> roles;
+	@neo("role") Collection<Role> roles;
 	
 	public User() {
 		roles = new LinkedList<Role>();
 	}
 	
-	public boolean hasRole(Role role) {
-		for (Role r : roles) {
-			if (r.getClass().isAssignableFrom(role.getClass()))
-				return true;
-		}
-		return false;
-	}
 
 }

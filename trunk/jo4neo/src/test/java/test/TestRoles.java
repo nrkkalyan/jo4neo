@@ -46,6 +46,9 @@ public class TestRoles extends BaseTest {
 			
 			Role r = user.roles.iterator().next();
 			assertEquals("user", r.name);
+			
+			r = p.find(r).where(r.name).is("user").result();
+			assertEquals(1, r.users.size());
 			t.success();
 		} finally {
 			t.finish();

@@ -10,7 +10,6 @@ public class Role {
 	transient Nodeid id;
 	
 	@neo(index=true) String name;
-	@neo Collection<Role> includes;
-	
-	
+	@neo Collection<Role> includes;	
+	@neo(inverse="role") Collection<User> users;
 }
