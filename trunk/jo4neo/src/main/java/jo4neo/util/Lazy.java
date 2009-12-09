@@ -1,6 +1,8 @@
 package jo4neo.util;
 
-public interface Lazy {
+import java.util.Set;
+
+public interface Lazy extends Set<Object> {
 
 	boolean isConnected();
 	boolean modified();

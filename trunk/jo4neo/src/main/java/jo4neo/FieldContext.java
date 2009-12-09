@@ -19,27 +19,27 @@ import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.RelationshipType;
 
-
-
 public class FieldContext {
 
 	Field field;
 	Object subject;
 
 	public FieldContext(Object o, Field field) {
-		this.field = field; 
+		this.field = field;
 		subject = o;
 	}
 
+	public boolean isInverse() {
+		return !field.getAnnotation(neo.class).inverse().equals(neo.DEFAULT);
+	}
+
 	public boolean isSimpleType() {
-		return isPrimitive(field.getType())
-				|| isEmbedded()
-				|| arrayPrimitive();
+		return isPrimitive(field.getType()) || isEmbedded() || arrayPrimitive();
 	}
 
 	public boolean isIndexed() {
-		return (field.isAnnotationPresent(neo.class) && 
-				field.getAnnotation(neo.class).index());
+		return (field.isAnnotationPresent(neo.class) && field.getAnnotation(
+				neo.class).index());
 	}
 
 	private boolean arrayPrimitive() {
@@ -69,7 +69,7 @@ public class FieldContext {
 		else
 			return result;
 	}
-	
+
 	Object rawValue() {
 		try {
 			field.setAccessible(true);
@@ -79,7 +79,7 @@ public class FieldContext {
 		}
 		return null;
 	}
-	
+
 	Object initWithNewObject() {
 		try {
 			field.setAccessible(true);
@@ -90,7 +90,7 @@ public class FieldContext {
 			Utils.runtime(e);
 		}
 		return null;
-    }
+	}
 
 	public void setProperty(Object v) {
 		try {
@@ -111,7 +111,7 @@ public class FieldContext {
 	}
 
 	public Node subjectNode(NeoService neo) {
-		return neo.getNodeById($(subject).id(subject).id());		
+		return neo.getNodeById($(subject).id(subject).id());
 	}
 
 	public Collection<Object> values() {
@@ -131,9 +131,11 @@ public class FieldContext {
 	public RelationshipType toRelationship(RelationFactory f) {
 		String n = field.getName();
 		if (field.isAnnotationPresent(neo.class)) {
-			String name = field.getAnnotation(neo.class).value();
-			if (!neo.DEFAULT.equals(name))
-				n = name;
+			neo annot = field.getAnnotation(neo.class);
+			if (!neo.DEFAULT.equals(annot.value()))
+				n = annot.value();
+			else if (!neo.DEFAULT.equals(annot.inverse()))
+				n = annot.inverse();
 		}
 		return f.relationshipType(n);
 	}
@@ -177,9 +179,9 @@ public class FieldContext {
 	}
 
 	public String getIndexName() {
-		return subject.getClass().getName() + '.' +  field.getName() + "_INDEX";
+		return subject.getClass().getName() + '.' + field.getName() + "_INDEX";
 	}
-	
+
 	public String getFieldname() {
 		return field.getName();
 	}
@@ -188,16 +190,16 @@ public class FieldContext {
 
 /**
  * Copyright (C) 2009
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
  */

@@ -11,6 +11,7 @@ public @interface neo {
 	public static final String DEFAULT = "default";	
 	String value() default DEFAULT;
 	boolean index() default false;
+	String inverse() default DEFAULT;
 }
 
 /**

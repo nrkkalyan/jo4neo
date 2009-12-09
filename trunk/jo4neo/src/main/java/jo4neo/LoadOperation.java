@@ -54,7 +54,7 @@ class LoadOperation<T> {
 			else if (field.isPluralPrimitive())
 				field.applyFrom(n);
 			else if (field.isPlural())
-				field.setProperty(new LazyList(field, this));
+				field.setProperty(ListFactory.get(field, this));
 		}
 		return o;
 	}
@@ -113,6 +113,22 @@ class LoadOperation<T> {
 		}
 	}
 	
+	public Collection<Object> loadInverse(FieldContext field) {
+		Transaction t = neo.beginTx();
+		try { 
+			Set<Object> values = new TreeSet<Object>(new NeoComparator());
+			Node n = field.subjectNode(neo);
+			for (Relationship r : incommingRelationships(field, n)) {
+				if (!values.add(loadDirect(r)))
+					System.err.println("duplicate relations in graph.");
+			}
+			t.success();
+			return values;
+		} finally {
+			t.finish();
+		}
+	}
+	
 	public void removeRelationship(FieldContext field, Object o) {
 		Transaction t = neo.beginTx();
 		try {
@@ -132,6 +148,12 @@ class LoadOperation<T> {
 			Node n) {
 		return n.getRelationships(field.toRelationship(neo
 				.getRelationFactory()), Direction.OUTGOING);
+	}
+	
+	private Iterable<Relationship> incommingRelationships(FieldContext field,
+			Node n) {
+		return n.getRelationships(field.toRelationship(neo
+				.getRelationFactory()), Direction.INCOMING);
 	}
 
 	protected Object loadDirect(Relationship r) {
@@ -208,6 +230,8 @@ class LoadOperation<T> {
 			t.finish();
 		}
 	}
+
+
 	
 }
 
