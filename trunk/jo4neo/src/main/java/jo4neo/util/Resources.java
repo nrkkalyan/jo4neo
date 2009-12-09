@@ -11,7 +11,7 @@ public class Resources {
 	public static String MISSING_TIMELINE_ANNOTATION = "MISSING_TIMELINE_ANNOTATION";
 	
 	private Resources() {
-		bundle = ResourceBundle.getBundle("thewebsemantic.message");
+		bundle = ResourceBundle.getBundle("jo4neo.message");
 	}
 	
 	public String message(String key) {
