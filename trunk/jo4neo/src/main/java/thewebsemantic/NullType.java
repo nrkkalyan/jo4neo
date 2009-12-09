@@ -1,5 +1,0 @@
-package thewebsemantic;
-
-class NullType {
-
-}
