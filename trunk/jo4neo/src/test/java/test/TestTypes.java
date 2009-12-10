@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import jo4neo.PersistenceManager;
+import jo4neo.ObjectGraph;
 
 import org.junit.Test;
 import org.neo4j.api.core.EmbeddedNeo;
@@ -20,7 +20,7 @@ public class TestTypes extends BaseTest {
 	
 	@Test
 	public void index() {
-		PersistenceManager p = new PersistenceManager(neo);
+		ObjectGraph p = new ObjectGraph(neo);
 		Transaction t = p.beginTx();
 		try {
 			
@@ -52,10 +52,10 @@ public class TestTypes extends BaseTest {
 	}
 	@Test
 	public void basic() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = pm.beginTx();
 		try {
-			PersistenceManager p = new PersistenceManager(neo);
+			ObjectGraph p = new ObjectGraph(neo);
 			
 			TypeBean bean = new TypeBean();
 			//bean.setId(27);

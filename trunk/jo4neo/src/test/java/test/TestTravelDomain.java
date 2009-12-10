@@ -8,7 +8,7 @@ import java.io.File;
 import java.util.Calendar;
 import java.util.Collection;
 
-import jo4neo.PersistenceManager;
+import jo4neo.ObjectGraph;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -46,7 +46,7 @@ public class TestTravelDomain {
 	}
 	
 	private static void createCities() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		for (String[] row : citydata) {
 			City c = new City();
 			c.setName(row[0]);
@@ -61,7 +61,7 @@ public class TestTravelDomain {
 	}
 
 	private static void createStates() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		for (String[] row : statedata) {
 			State s = new State();
 			s.setCode(row[0]);
@@ -79,7 +79,7 @@ public class TestTravelDomain {
 	
 	@Test
 	public void basic() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		Collection<State> states = pm.get(State.class);
 		assertEquals(3, states.size());
 		Collection<City> cities = pm.get(City.class);
@@ -93,7 +93,7 @@ public class TestTravelDomain {
 	
 	@Test
 	public void timeline() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.HOUR, -1);

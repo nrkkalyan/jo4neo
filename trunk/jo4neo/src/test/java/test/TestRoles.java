@@ -1,6 +1,6 @@
 package test;
 
-import jo4neo.PersistenceManager;
+import jo4neo.ObjectGraph;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -11,7 +11,7 @@ public class TestRoles extends BaseTest {
 
 	@Test
 	public void basic() {
-		PersistenceManager p = new PersistenceManager(neo);
+		ObjectGraph p = new ObjectGraph(neo);
 		Transaction t = p.beginTx();
 		try {
 			
@@ -38,7 +38,7 @@ public class TestRoles extends BaseTest {
 			t.finish();
 		}
 		
-		p = new PersistenceManager(neo);
+		p = new ObjectGraph(neo);
 		t = p.beginTx();
 		try {
 			User user = new User();

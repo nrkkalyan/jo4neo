@@ -9,7 +9,7 @@ import java.util.TreeSet;
 
 import jo4neo.NeoComparator;
 import jo4neo.Nodeid;
-import jo4neo.PersistenceManager;
+import jo4neo.ObjectGraph;
 import jo4neo.TypeWrapper;
 import jo4neo.TypeWrapperFactory;
 
@@ -59,7 +59,7 @@ public class TestLazyCollection {
 	@Test
 	public void threaded() throws InterruptedException {
 
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		State ny = new State();
 		ny.setCode("NY");
 		ny.setName("New York");
@@ -71,7 +71,7 @@ public class TestLazyCollection {
 		pm.persist(nyc);
 		Runnable doit = new Runnable() {
 			public void run() {
-				PersistenceManager pm2 = new PersistenceManager(neo);
+				ObjectGraph pm2 = new ObjectGraph(neo);
 				Transaction t = pm2.beginTx();
 				try {
 					State state = new State();

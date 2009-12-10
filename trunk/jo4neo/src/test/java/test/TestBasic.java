@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import jo4neo.PersistenceManager;
+import jo4neo.ObjectGraph;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -34,7 +34,7 @@ public class TestBasic {
 
 	@Test
 	public void testIndex() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = neo.beginTx();
 		neo.beginTx();
 		try {
@@ -58,7 +58,7 @@ public class TestBasic {
 	@Test
 	public void collections() {
 
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = neo.beginTx();
 		neo.beginTx();
 		try {
@@ -89,7 +89,7 @@ public class TestBasic {
 
 	@Test
 	public void collections2() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = neo.beginTx();
 		neo.beginTx();
 		try {
@@ -117,7 +117,7 @@ public class TestBasic {
 
 	@Test
 	public void collections3() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 
 		try {
 			Course c1 = new Course();
@@ -155,7 +155,7 @@ public class TestBasic {
 
 	@Test
 	public void nullCollections() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = neo.beginTx();
 		neo.beginTx();
 		try {
@@ -172,7 +172,7 @@ public class TestBasic {
 	@Test
 	public void collections4() {
 
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		try {
 			Student s1 = new Student();
 			s1.setName("student");
@@ -210,7 +210,7 @@ public class TestBasic {
 
 	@Test
 	public void nullrelation() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = pm.beginTx();
 		long id = 0;
 		try {
@@ -258,7 +258,7 @@ public class TestBasic {
 
 	@Test
 	public void basic() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = neo.beginTx();
 		try {
 			Address a = new Address();
@@ -295,7 +295,7 @@ public class TestBasic {
 
 	@Test
 	public void notransaction() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		try {
 			Address a = new Address();
 			a.state = "TX";
@@ -327,7 +327,7 @@ public class TestBasic {
 
 	@Test
 	public void travel() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		try {
 			Hotel h = new Hotel();
 			h.setName("Elite Hotel Savoy");

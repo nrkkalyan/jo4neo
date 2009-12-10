@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import jo4neo.PersistenceManager;
+import jo4neo.ObjectGraph;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -29,7 +29,7 @@ public class TestPolymorphic {
 
 	@Test
 	public void basic() {
-		PersistenceManager pm = new PersistenceManager(neo);
+		ObjectGraph pm = new ObjectGraph(neo);
 		BlogPost post = new BlogPost();
 		post.setPublishDate(new Date());
 		post.setTitle("Nosql: take that Oracle");
