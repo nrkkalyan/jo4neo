@@ -65,8 +65,13 @@ class LoadOperation<T> {
 	}
 
 	public Collection<T> loadAll() {
-		Node n = neo.getMetaNode(cls);
-		return load2(n.getRelationships(Relationships.HAS_MEMBER));
+		Transaction t = neo.beginTx();
+		try {
+			Node n = neo.getMetaNode(cls);
+			return load2(n.getRelationships(Relationships.HAS_MEMBER));
+		} finally {
+			t.finish();
+		}			
 	}
 	
 	private Collection<T> load(Iterable<Node> nodes, long max) {
@@ -92,16 +97,11 @@ class LoadOperation<T> {
 	
 	
 	private Collection<T> load2(Iterable<Relationship> relations) {
-		Transaction t = neo.beginTx();
-		try {
 			ArrayList<T> results = new ArrayList<T>();
 			for (Relationship r : relations)
 				results.add((T) loadFully(r.getEndNode()));
-			t.success();
 			return results;
-		} finally {
-			t.finish();
-		}
+		
 	}
 
 	private void single(Node n, FieldContext field) {
