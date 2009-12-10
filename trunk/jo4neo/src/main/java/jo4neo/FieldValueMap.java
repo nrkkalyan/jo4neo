@@ -11,9 +11,9 @@ public class FieldValueMap<A> implements Where<A> {
 	
 	Class<A> c;
 	Map<Object, FieldContext> map;
-	PersistenceManager pm;
+	ObjectGraph pm;
 	
-	public FieldValueMap(A a, PersistenceManager pm) {
+	public FieldValueMap(A a, ObjectGraph pm) {
 		c = (Class<A>) a.getClass();
 		this.pm = pm;
 		map = new HashMap<Object, FieldContext>();

@@ -17,11 +17,11 @@ import org.neo4j.api.core.Transaction;
  * 
  *
  */
-public class PersistenceManager {
+public class ObjectGraph {
 
 	IndexedNeo ineo;
 
-	public PersistenceManager(NeoService neo) {
+	public ObjectGraph(NeoService neo) {
 		ineo = new IndexedNeo(neo);
 	}
 	

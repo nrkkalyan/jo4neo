@@ -12,9 +12,9 @@ class ResultImpl<T> implements Result<T> {
 	Class<T> c;
 	String indexName;
 	Object o;
-	PersistenceManager pm;
+	ObjectGraph pm;
 	
-	public ResultImpl(PersistenceManager pm, Class<T> c, String indexName, Object o) {
+	public ResultImpl(ObjectGraph pm, Class<T> c, String indexName, Object o) {
 		this.o = o;
 		this.indexName = indexName;
 		this.c = c;
