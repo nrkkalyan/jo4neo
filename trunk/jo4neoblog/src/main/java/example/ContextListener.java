@@ -12,7 +12,7 @@ import jo4neo.*;
 
 public class ContextListener implements ServletContextListener {
 
-	public static PersistenceManager pm;
+	public static ObjectGraph pm;
 	private static NeoService neo;
 	
 	public void contextDestroyed(ServletContextEvent ev) {
@@ -21,9 +21,8 @@ public class ContextListener implements ServletContextListener {
 	}
 
 	public void contextInitialized(ServletContextEvent ev) {
-		System.out.println("hello");
 		neo = new EmbeddedNeo("neo_base"); 
-		pm = new PersistenceManager(neo);
+		pm = new ObjectGraph(neo);
 	}
 
 
