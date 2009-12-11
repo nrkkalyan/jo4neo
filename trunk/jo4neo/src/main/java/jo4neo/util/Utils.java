@@ -59,4 +59,8 @@ public class Utils {
 		throw new RuntimeException(e);		
 	}
 	
+	public static void runtime(String msg, Exception e) {
+		throw new RuntimeException(msg, e);		
+	}
+	
 }

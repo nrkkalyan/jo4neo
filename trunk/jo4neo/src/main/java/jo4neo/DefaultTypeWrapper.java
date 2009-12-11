@@ -59,7 +59,7 @@ class DefaultTypeWrapper extends TypeWrapper {
 		try {
 			return me.newInstance();
 		} catch (Exception e) {
-			Utils.runtime(e);
+			Utils.runtime("Your Java Object must provide jo4neo with a default constructor.", e);
 		}
 		return null;
 	}
