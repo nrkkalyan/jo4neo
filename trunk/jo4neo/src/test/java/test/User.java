@@ -7,10 +7,13 @@ import jo4neo.Nodeid;
 import jo4neo.neo;
 
 
+/**
+ * 
+ */
 public class User {
 	transient Nodeid neoid;
 	
-	/*
+	/**
 	 * this field is indexed.  This provides the ability 
 	 * to retrieve the node given 
 	 */
@@ -18,7 +21,7 @@ public class User {
 	@neo String firstName;
 	@neo String lastName;
 	
-	/*
+	/**
 	 * Direct roles are explicit.  A user may be a role member
 	 * based on the parent role of a direct role.  In other words,
 	 * the contents of directRoles may indicate a user is a member of 
