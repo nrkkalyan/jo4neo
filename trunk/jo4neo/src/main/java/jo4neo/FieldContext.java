@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.lang.model.type.PrimitiveType;
 
 import jo4neo.util.Utils;
 
