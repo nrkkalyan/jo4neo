@@ -8,8 +8,10 @@ jo4neo maps java objects to nodes and relations, however, it doesn't support all
 
 || *type* || *persistence support* || *indexing support* || *fluent api support* || *notes* ||
 || int, long, float, double  || yes  || yes        || yes || ||
-|| Integer, Long, Float, Double || yes || yes      || yes || ||
-|| {{{Collection<T>}}}             || yes || no || no || {{{<T>}}} must be primitive or have transient Nodeid field ||
+|| Integer, Long, Float, Double, String || yes || yes      || yes || ||
+|| Date || yes || yes || yes || java.util.Date's are stored as their time value (long). jo4neo converts back and forth between Date and long for you||
+
+|| {{{Collection<T>}}} || yes || no || no || {{{<T>}}} must be primitive or have transient Nodeid field ||
 || Serializable || yes || no || no || via the @embed annotation, serializable objects are persisted to neo as byte[] properties of the node ||
 || Boolean || yes || yes || yes || ||
 || boolean || yes || yes || no  || the fluent find(...).where(o.field) finder is unsupported for boolean, use Boolean instead ||
