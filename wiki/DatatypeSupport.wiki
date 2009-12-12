@@ -1,13 +1,11 @@
-#summary One-sentence summary of this page.
+#summary data types supported by jo4neo
 
 = Introduction =
 
-Add your content here.
-
+jo4neo maps java objects to nodes and relations, however, it doesn't support all java types.
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+|| type || persistence support || indexing support || fluent api support ||
+|| int, long, float, double  || yes                 || yes              || 
+|| Integer, Long, Float, Double || yes             || yes               ||
