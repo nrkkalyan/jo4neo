@@ -1,0 +1,9 @@
+<Module>
+<ModulePrefs title="Developer Forum" /> 
+	<Content type="html">
+		<![CDATA[ 
+hello
+  ]]> 
+  </Content>
+
+</Module>
