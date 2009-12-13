@@ -10,7 +10,7 @@ import org.neo4j.api.core.NeoService;
 
 public class BaseTest {
 
-	static NeoService neo;
+	public static NeoService neo;
 	
 	@BeforeClass
 	public static void setup() {
