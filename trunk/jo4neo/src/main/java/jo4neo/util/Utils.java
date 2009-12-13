@@ -1,8 +1,11 @@
 package jo4neo.util;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import com.sun.jndi.toolkit.url.Uri;
 
 public class Utils {
 
@@ -47,6 +50,8 @@ public class Utils {
         	return (T) new Double(counter++);
         } else if (c == Boolean.TYPE) {
             return (T) new Boolean(false);
+        } else if (c == URI.class) {
+        	return (T) URI.create("http://foo/" + counter++);
         }
         try {
             return c.newInstance();
