@@ -4,7 +4,7 @@
 	<groupId>thewebsemantic</groupId>
 	<artifactId>jo4neo</artifactId>
 	<name>jo4neo</name>
-	<version>0.1</version>
+	<version>0.1-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.neo4j</groupId>
@@ -56,6 +56,12 @@
             <id>googlecode</id>
             <url>svn:https://jo4neo.googlecode.com/svn/trunk/repo</url>
         </repository>
+        <snapshotRepository>
+            <uniqueVersion>false</uniqueVersion>
+            <id>googlecode.snapshot</id>
+            <url>svn:https://jo4neo.googlecode.com/svn/trunk/snapshotrepo</url>
+            
+        </snapshotRepository>
     </distributionManagement>
     
 	<repositories>
