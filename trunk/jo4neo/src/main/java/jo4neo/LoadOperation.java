@@ -176,7 +176,7 @@ class LoadOperation<T> {
 		if (cache.containsKey(n.getId()))
 			return cache.get(n.getId());
 		TypeWrapper type = nodesJavaType(n);
-		Object o = type.newInstance();
+		Object o = type.newInstance(n);
 		type.setId(o, new Nodeid(n.getId(), type.getWrappedType()));
 		cache.put(n.getId(), o);
 		for (FieldContext field : type.getFields(o))

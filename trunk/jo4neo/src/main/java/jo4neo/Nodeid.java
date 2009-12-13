@@ -27,6 +27,8 @@ public class Nodeid {
 	long id;
 	Class<?> type;
 	
+	public Nodeid() {}
+	
 	public Nodeid(long id, Class<?> c) {
 		this.id = id;
 		type = c;

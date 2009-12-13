@@ -1,6 +1,7 @@
 package jo4neo;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -122,6 +123,17 @@ public class IndexedNeo implements NeoService {
 
 	public boolean isClosed() {
 		return isClosed;
+	}
+
+	public Node getURINode(URI uri) {
+		Node n = getIndexService().getSingleNode(URI.class.getName(), uri.toString());
+		if (n == null) {
+			n = createNode();
+			getIndexService().index(n, URI.class.getName(), uri.toString());
+			n.setProperty("uri", uri.toString());
+			n.setProperty(Nodeid.class.getName(), URI.class.getName());
+		}
+		return n;
 	}
 
 }

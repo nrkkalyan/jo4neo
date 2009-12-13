@@ -18,7 +18,7 @@ public abstract class TypeWrapper {
 		return null;
 	}
 	
-	public abstract Object newInstance();	
+	public abstract Object newInstance(Object o);	
 	public abstract FieldContext[] getFields(Object o);
 	public abstract Nodeid id(Object o);
 

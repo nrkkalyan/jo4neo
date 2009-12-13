@@ -1,6 +1,7 @@
 package jo4neo;
 
 import java.lang.reflect.Field;
+import java.net.URI;
 import java.util.HashMap;
 
 import jo4neo.util.Utils;
@@ -10,7 +11,10 @@ public class TypeWrapperFactory {
 	
 	public static HashMap<Class, TypeWrapper> cache = new HashMap<Class, TypeWrapper>();
 
-
+    static {
+    	cache.put(URI.class, new URITypeWrapper());
+    }
+    
 	public static TypeWrapper newwrapper(Class<?> c) {
 		return new DefaultTypeWrapper(c);
 	}

@@ -114,9 +114,8 @@ class PersistOperation {
 	}
 
 	private void deleteAll(Node node, RelationshipType reltype) {
-		for (Relationship r : node.getRelationships(reltype, Direction.OUTGOING)) {
+		for (Relationship r : node.getRelationships(reltype, Direction.OUTGOING))
 			r.delete();
-		}
 	}
 
 }

@@ -55,7 +55,7 @@ class DefaultTypeWrapper extends TypeWrapper {
 	
 
 	@Override
-	public Object newInstance() {
+	public Object newInstance(Object o) {
 		try {
 			return me.newInstance();
 		} catch (Exception e) {

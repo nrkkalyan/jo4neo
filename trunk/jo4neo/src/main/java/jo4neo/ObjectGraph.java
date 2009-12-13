@@ -1,5 +1,6 @@
 package jo4neo;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -101,6 +102,10 @@ public class ObjectGraph {
 	
 	public <T> Collection<T> getMostRecent(Class<T> t, int max) {
 		return new LoadOperation<T>(t, ineo).latest(max);
+	}
+	
+	public Node get(URI uri) {
+		return ineo.getURINode(uri);
 	}
 
 }
