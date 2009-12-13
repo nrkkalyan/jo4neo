@@ -44,6 +44,8 @@ public class TestUriType extends BaseTest{
 			t.finish();
 		}
 		
+		reviews = graph.find(r).where(r.stars).is(5).results();
+		assertEquals(1, reviews.size());
 		
 	}
 

@@ -10,6 +10,6 @@ public class Review {
 	transient Nodeid node;
 	@neo public String content;
 	@neo public URI link;
-	@neo public int stars;
+	@neo(index=true) public int stars;
 
 }
