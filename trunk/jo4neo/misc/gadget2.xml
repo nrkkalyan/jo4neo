@@ -10,7 +10,7 @@ new TWTR.Widget({
   search: 'neo4j',
   interval: 10000,
   title: 'neo buz',
-  subject: 'neo',
+  subject: '',
   width: 250,
   height: 300,
   theme: {
