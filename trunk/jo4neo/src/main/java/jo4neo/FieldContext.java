@@ -20,6 +20,7 @@ import org.neo4j.api.core.RelationshipType;
 
 public class FieldContext {
 
+	private static final String INDEX = "_INDEX";
 	Field field;
 	Object subject;
 
@@ -178,7 +179,7 @@ public class FieldContext {
 	}
 
 	public String getIndexName() {
-		return subject.getClass().getName() + '.' + field.getName() + "_INDEX";
+		return subject.getClass().getName() + '.' + field.getName() + INDEX;
 	}
 
 	public String getFieldname() {

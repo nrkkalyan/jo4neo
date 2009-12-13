@@ -10,6 +10,7 @@ public class TypeWrapperFactory {
 	
 	public static HashMap<Class, TypeWrapper> cache = new HashMap<Class, TypeWrapper>();
 
+
 	public static TypeWrapper newwrapper(Class<?> c) {
 		return new DefaultTypeWrapper(c);
 	}
