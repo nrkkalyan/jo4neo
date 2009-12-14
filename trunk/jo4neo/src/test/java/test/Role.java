@@ -14,28 +14,22 @@ public class Role {
 	@neo Role parent;
 	@neo(inverse="role") Collection<User> users;
 	
-	public Role() {		
-	}
+	public Role() {}
 	
-	public Role(String name) {
-		this.name = name;
-	}
+	public Role(String name) { this.name = name; }
 	
 	public boolean hasRole(Role r) {
 		Role candidate = this;
-		while(candidate != null) {
+		while(candidate != null && candidate != candidate.parent) {
 			if (candidate.equals(r))
 				return true;
-			if (candidate == candidate.parent)
-				break;
 			candidate = candidate.parent;
 		}
 		return false;
 	}
 
 	public boolean equals(Object o) {
-		if (o==null || !(o instanceof Role))
-			return false;
+		if (!(o instanceof Role)) return false;
 		return equals((Role)o);
 	}
 
