@@ -15,8 +15,10 @@ public class TypeWrapperFactory {
     	cache.put(URI.class, new URITypeWrapper());
     }
     
-	public static TypeWrapper newwrapper(Class<?> c) {
-		return new DefaultTypeWrapper(c);
+	private static TypeWrapper newwrapper(Class<?> c) {
+		TypeWrapper t =  new DefaultTypeWrapper(c);
+		cache.put(c, t);
+		return t;
 	}
 	
 	public static synchronized TypeWrapper wrap(Class<?> c) {
