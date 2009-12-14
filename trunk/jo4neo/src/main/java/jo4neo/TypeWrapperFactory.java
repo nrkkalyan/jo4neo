@@ -23,15 +23,15 @@ public class TypeWrapperFactory {
 		return (cache.containsKey(c)) ? cache.get(c) : TypeWrapperFactory.newwrapper(c);
 	}
 	
-	public static synchronized TypeWrapper $(Object o) {
+	public static TypeWrapper $(Object o) {
 		return wrap(o.getClass());
 	}
 	
-	public static synchronized TypeWrapper wrap(Field o) {
+	public static TypeWrapper wrap(Field o) {
 		return wrap(o.getType());
 	}
 	
-	public static synchronized TypeWrapper wrap(String s) {
+	public static TypeWrapper wrap(String s) {
 		try {
 			return wrap(Class.forName(s));
 		} catch (ClassNotFoundException e) {
