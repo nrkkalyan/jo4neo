@@ -18,8 +18,8 @@ public class User {
 	 * to retrieve the node given 
 	 */
 	@neo(index=true) public String id;
-	@neo String firstName;
-	@neo String lastName;
+	@neo public String firstName;
+	@neo public String lastName;
 	
 	/**
 	 * Direct roles are explicit.  A user may be a role member

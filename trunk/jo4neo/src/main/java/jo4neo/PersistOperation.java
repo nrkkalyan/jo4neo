@@ -49,6 +49,8 @@ class PersistOperation {
 	}
 
 	private void save(Node node, FieldContext field) {
+		if (field.isInverse())
+			return;
 		if (field.isSimpleType())
 			saveAndIndex(node, field);
 		else if (field.isPluralPrimitive())

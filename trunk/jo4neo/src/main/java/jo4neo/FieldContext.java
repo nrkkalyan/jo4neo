@@ -30,7 +30,11 @@ public class FieldContext {
 	}
 
 	public boolean isInverse() {
-		return !field.getAnnotation(neo.class).inverse().equals(neo.DEFAULT);
+		if (field.isAnnotationPresent(neo.class)) {
+			neo n = field.getAnnotation(neo.class);
+			return !n.inverse().equals(neo.DEFAULT);
+		}
+		return false;		
 	}
 
 	public boolean isSimpleType() {
@@ -50,6 +54,10 @@ public class FieldContext {
 
 	public Iterable<Relationship> relationships(Node n, RelationFactory f) {
 		return n.getRelationships(toRelationship(f), Direction.OUTGOING);
+	}
+	
+	public Iterable<Relationship> inverseRelationships(Node n, RelationFactory f) {
+		return n.getRelationships(toRelationship(f), Direction.INCOMING);
 	}
 
 	public Object value() {
@@ -138,10 +146,6 @@ public class FieldContext {
 				n = annot.inverse();
 		}
 		return f.relationshipType(n);
-	}
-
-	public Iterable<Relationship> getRelationships(Node n, RelationFactory f) {
-		return n.getRelationships(toRelationship(f), Direction.OUTGOING);
 	}
 
 	public boolean isSingular() {

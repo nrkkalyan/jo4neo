@@ -8,34 +8,32 @@ import jo4neo.neo;
 
 public class Role {
 	transient Nodeid id;
-	
-	@neo(index=true) String name;
-	@neo Collection<Role> includes;	
-	@neo Role parent;
-	@neo(inverse="role") Collection<User> users;
+	@neo public Role parent;
+	@neo(index=true) public String name;	
+	@neo(inverse="parent") Role child;	
+	@neo(inverse="role") public Collection<User> users;	
 	
 	public Role() {}
-	
+
 	public Role(String name) { this.name = name; }
 	
-	public boolean hasRole(Role r) {
-		Role candidate = this;
-		while(candidate != null && candidate != candidate.parent) {
-			if (candidate.equals(r))
+	public Role(String name, Role parent) { 
+		this(name);
+		this.parent = parent;
+	}
+
+	public boolean hasRole(Role r) {		
+		for(Role c = this;c != null && c != c.parent;c = c.parent)
+			if (c.equals(r))
 				return true;
-			candidate = candidate.parent;
-		}
 		return false;
 	}
 
 	public boolean equals(Object o) {
 		if (!(o instanceof Role)) return false;
-		return equals((Role)o);
-	}
-
-	public boolean equals(Role r) {
+		if (o == this) return true;
 		if (name==null)
-			return r==null;
-		return name.equals(r.name);
+			return ((Role)o).name==null;
+		return name.equals(((Role)o).name);
 	}
 }

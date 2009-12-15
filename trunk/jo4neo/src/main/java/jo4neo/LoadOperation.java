@@ -1,11 +1,11 @@
 package jo4neo;
 
-import static jo4neo.util.Resources.*;
+import static jo4neo.util.Resources.MISSING_TIMELINE_ANNOTATION;
+import static jo4neo.util.Resources.msg;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -38,7 +38,7 @@ class LoadOperation<T> {
 			Node n = neo.getNodeById(key);
 			if (n == null)
 				return null;
-			Object o = loadFully(n);
+			Object o = loadDirect(n);
 			t.success();
 			return (T) o;
 		} finally {
@@ -50,19 +50,6 @@ class LoadOperation<T> {
 		return neo.isClosed();
 	}
 
-	private Object loadFully(Node n) {
-		TypeWrapper type = nodesJavaType(n);
-		Object o = loadDirect(n);
-		for (FieldContext field : type.getFields(o)) {
-			if (field.isSingular())
-				single(n, field);
-			else if (field.isPluralPrimitive())
-				field.applyFrom(n);
-			else if (field.isPlural())
-				field.setProperty(ListFactory.get(field, this));
-		}
-		return o;
-	}
 
 	public Collection<T> loadAll() {
 		Transaction t = neo.beginTx();
@@ -81,7 +68,7 @@ class LoadOperation<T> {
 			ArrayList<T> results = new ArrayList<T>();
 			for (Node node : nodes) {
 				if (l++ >= max) break;
-				results.add((T) loadFully(node));
+				results.add((T) loadDirect(node));
 			}
 			t.success();
 			return results;
@@ -99,7 +86,7 @@ class LoadOperation<T> {
 	private Collection<T> load2(Iterable<Relationship> relations) {
 			ArrayList<T> results = new ArrayList<T>();
 			for (Relationship r : relations)
-				results.add((T) loadFully(r.getEndNode()));
+				results.add((T) loadDirect(r.getEndNode()));
 			return results;
 		
 	}
@@ -107,6 +94,13 @@ class LoadOperation<T> {
 	private void single(Node n, FieldContext field) {
 		for (Relationship r : field.relationships(n, neo.getRelationFactory())) {
 			field.setProperty(loadDirect(r.getEndNode()));
+			return;
+		}
+	}
+	
+	private void inverse(Node n, FieldContext field) {
+		for (Relationship r : field.inverseRelationships(n, neo.getRelationFactory())) {
+			field.setProperty(loadDirect(r.getStartNode()));
 			return;
 		}
 	}
@@ -180,10 +174,17 @@ class LoadOperation<T> {
 		type.setId(o, new Nodeid(n.getId(), type.getWrappedType()));
 		cache.put(n.getId(), o);
 		for (FieldContext field : type.getFields(o))
-			if (field.isSimpleType())
+			if (field.isInverse() && field.isSingular())
+				inverse(n, field);
+			else if (field.isSimpleType())
 				field.applyFrom(n);
 			else if (field.isSingular())
 				single(n, field);
+			else if (field.isPluralPrimitive())
+				field.applyFrom(n);
+			else if (field.isPlural())
+				field.setProperty(ListFactory.get(field, this));
+
 		return o;
 	}
 
