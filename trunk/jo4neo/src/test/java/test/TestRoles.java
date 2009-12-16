@@ -29,8 +29,6 @@ public class TestRoles extends BaseTest {
 			t.finish();
 		}
 		
-
-		
 		Node n = neo.getNodeById(id);
 		for (Relationship rel : n.getRelationships()) {
 			System.out.println(n.getProperty("name").toString() + rel.getType());
@@ -61,6 +59,8 @@ public class TestRoles extends BaseTest {
 		Transaction t = p.beginTx();
 		try {
 			
+			for(Role r : p.get(Role.class))
+				p.delete(r);
 			Role roleuser = new Role("roleuser");
 			Role roleadmin = new Role("roleadmin", roleuser);
 			Role roledeveloper = new Role("roledeveloper", roleuser);
@@ -124,7 +124,7 @@ public class TestRoles extends BaseTest {
 			assertEquals(3, p.getMostRecent(Role.class, 3).size());
 			assertEquals(2, p.getMostRecent(Role.class, 2).size());
 			assertEquals(1, p.getMostRecent(Role.class, 1).size());
-			assertEquals(8, p.getMostRecent(Role.class, 20).size());
+			assertEquals(4, p.getMostRecent(Role.class, 20).size());
 			
 			
 
