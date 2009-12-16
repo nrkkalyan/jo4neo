@@ -90,8 +90,7 @@ public class ObjectGraph {
 	}
 	
 	<T> T getSingle(Class<T> t, String indexname, Object value) {
-		Node n = ineo.getIndexService().getSingleNode(indexname, value);
-		return (n != null) ?get(t, n.getId()) : null;
+		return new LoadOperation<T>(t, ineo).load(indexname,value);
 	}
 
 	public <T> Collection<T> get(Class<T> t) {
