@@ -24,15 +24,18 @@ import org.neo4j.api.core.Transaction;
 public class TestLazyCollection {
 
 	static NeoService neo;
+	static ObjectGraph pm;
 	
 	@BeforeClass
 	public static void setup() {
 		deleteDirectory(new File("neo_store"));
 		neo = new EmbeddedNeo("neo_store");
+		pm = new ObjectGraph(neo);
 	}
 	
 	@AfterClass
 	public static void teardown() {		
+		pm.close();
 		neo.shutdown();
 	}
 	
@@ -58,8 +61,6 @@ public class TestLazyCollection {
 
 	@Test
 	public void threaded() throws InterruptedException {
-		if (true) return;
-		ObjectGraph pm = new ObjectGraph(neo);
 		State ny = new State();
 		ny.setCode("NY");
 		ny.setName("New York");
@@ -71,18 +72,17 @@ public class TestLazyCollection {
 		pm.persist(nyc);
 		Runnable doit = new Runnable() {
 			public void run() {
-				ObjectGraph pm2 = new ObjectGraph(neo);
-				Transaction t = pm2.beginTx();
+				Transaction t = pm.beginTx();
 				try {
 					State state = new State();
-					State s = pm2.find(state).where(state.code).is("NY").result();
+					State s = pm.find(state).where(state.code).is("NY").result();
 					
 					City c = new City();
 					c.setName("unknown");
 					s.getCities().add(nyc);
 					s.getCities().add(c);
 				
-					pm2.persist(s);
+					pm.persist(s);
 					t.success();
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -92,13 +92,13 @@ public class TestLazyCollection {
 			}
 		};
 		
-		for (int i=0; i<10; i++)
+		for (int i=0; i<100; i++)
 			new Thread(doit).start();
 
-		Thread.sleep(5000);
+		Thread.sleep(10000);
 		State state = new State();
 		ny = pm.find(state).where(state.code).is("NY").result();
-		assertEquals(11, ny.getCities().size());
+		assertEquals(101, ny.getCities().size());
 
 	}
 
