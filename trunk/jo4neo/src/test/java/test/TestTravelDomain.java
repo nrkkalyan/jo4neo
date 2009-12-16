@@ -20,6 +20,8 @@ import org.neo4j.api.core.NeoService;
 public class TestTravelDomain {
 	
 	static NeoService neo;
+	static ObjectGraph pm;
+	
 
 	static String[][] statedata = {
 			{"TX", "Texas"},
@@ -41,12 +43,12 @@ public class TestTravelDomain {
 	public static void setup() {
 		deleteDirectory(new File("neo_store"));
 		neo = new EmbeddedNeo("neo_store");
+		pm = new ObjectGraph(neo);
 		createStates();
 		createCities();
 	}
 	
 	private static void createCities() {
-		ObjectGraph pm = new ObjectGraph(neo);
 		for (String[] row : citydata) {
 			City c = new City();
 			c.setName(row[0]);
@@ -56,30 +58,28 @@ public class TestTravelDomain {
 			s.getCities().add(c);
 			pm.persist(c);
 		}
-		pm.close();
+		
 		
 	}
 
 	private static void createStates() {
-		ObjectGraph pm = new ObjectGraph(neo);
 		for (String[] row : statedata) {
 			State s = new State();
 			s.setCode(row[0]);
 			s.setName(row[1]);
 			pm.persist(s);
 		}
-		pm.close();
-		
+	
 	}
 
 	@AfterClass
 	public static void teardown() {
+		pm.close();
 		neo.shutdown();
 	}
 	
 	@Test
 	public void basic() {
-		ObjectGraph pm = new ObjectGraph(neo);
 		Collection<State> states = pm.get(State.class);
 		assertEquals(3, states.size());
 		Collection<City> cities = pm.get(City.class);
@@ -88,12 +88,10 @@ public class TestTravelDomain {
 		texas = pm.find(texas).where(texas.code).is("TX").result();
 		assertNotNull(texas);
 		assertEquals(3, texas.getCities().size());	
-		pm.close();
 	}
 	
 	@Test
 	public void timeline() {
-		ObjectGraph pm = new ObjectGraph(neo);
 
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.HOUR, -1);
@@ -114,7 +112,6 @@ public class TestTravelDomain {
 			//e.printStackTrace();
 		}
 		assertTrue(caught);
-		pm.close();
 		
 	}
 	

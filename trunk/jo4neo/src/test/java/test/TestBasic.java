@@ -21,20 +21,23 @@ import org.neo4j.api.core.Transaction;
 public class TestBasic {
 
 	static NeoService neo;
+	static ObjectGraph pm;
 
 	@BeforeClass
 	public static void setup() {
 		neo = new EmbeddedNeo("neo_store");
+		pm = new ObjectGraph(neo);
 	}
 
 	@AfterClass
 	public static void teardown() {
+		pm.close();
 		neo.shutdown();
 	}
 
 	@Test
 	public void testIndex() {
-		ObjectGraph pm = new ObjectGraph(neo);
+		
 		Transaction t = neo.beginTx();
 		neo.beginTx();
 		try {
@@ -51,14 +54,12 @@ public class TestBasic {
 			t.success();
 		} finally {
 			t.finish();
-			pm.close();
 		}
 	}
 
 	@Test
 	public void collections() {
 
-		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = neo.beginTx();
 		neo.beginTx();
 		try {
@@ -82,14 +83,13 @@ public class TestBasic {
 			t.success();
 		} finally {
 			t.finish();
-			pm.close();
+			
 
 		}
 	}
 
 	@Test
 	public void collections2() {
-		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = neo.beginTx();
 		neo.beginTx();
 		try {
@@ -110,14 +110,13 @@ public class TestBasic {
 			Student s1ref = pm.get(Student.class, s1.neo.id());
 			assertEquals(s1ref.getCourses().size(), 3);
 		} finally {
-			pm.close();
+			
 		}
 
 	}
 
 	@Test
 	public void collections3() {
-		ObjectGraph pm = new ObjectGraph(neo);
 
 		try {
 			Course c1 = new Course();
@@ -148,14 +147,13 @@ public class TestBasic {
 				assertEquals("modified", c.getName());
 			}
 		} finally {
-			pm.close();
+			
 		}
 
 	}
 
 	@Test
 	public void nullCollections() {
-		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = neo.beginTx();
 		neo.beginTx();
 		try {
@@ -165,14 +163,13 @@ public class TestBasic {
 			t.success();
 		} finally {
 			t.finish();
-			pm.close();
+			
 		}
 	}
 
 	@Test
 	public void collections4() {
 
-		ObjectGraph pm = new ObjectGraph(neo);
 		try {
 			Student s1 = new Student();
 			s1.setName("student");
@@ -204,13 +201,12 @@ public class TestBasic {
 			assertEquals(2, s1.getCourses().size());
 			assertEquals(s1.getName(), "student");
 		} finally {
-			pm.close();
+			
 		}
 	}
 
 	@Test
 	public void nullrelation() {
-		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = pm.beginTx();
 		long id = 0;
 		try {
@@ -229,7 +225,7 @@ public class TestBasic {
 			t.success();
 		} finally {
 			t.finish();
-			pm.close();
+			
 		}
 
 		t = pm.beginTx();
@@ -242,7 +238,7 @@ public class TestBasic {
 			t.success();
 		} finally {
 			t.finish();
-			pm.close();
+			
 		}
 
 		t = pm.beginTx();
@@ -252,13 +248,12 @@ public class TestBasic {
 			t.success();
 		} finally {
 			t.finish();
-			pm.close();
+			
 		}
 	}
 
 	@Test
 	public void basic() {
-		ObjectGraph pm = new ObjectGraph(neo);
 		Transaction t = neo.beginTx();
 		try {
 			Address a = new Address();
@@ -289,13 +284,12 @@ public class TestBasic {
 			t.success();
 		} finally {
 			t.finish();
-			pm.close();
+			
 		}
 	}
 
 	@Test
 	public void notransaction() {
-		ObjectGraph pm = new ObjectGraph(neo);
 		try {
 			Address a = new Address();
 			a.state = "TX";
@@ -321,13 +315,12 @@ public class TestBasic {
 			assertEquals(p2.getFriend().getFirstName(), "friend");
 			System.out.println(p2.getAddress().getState());
 		} finally {
-			pm.close();
+			
 		}
 	}
 
 	@Test
 	public void travel() {
-		ObjectGraph pm = new ObjectGraph(neo);
 		try {
 			Hotel h = new Hotel();
 			h.setName("Elite Hotel Savoy");
@@ -342,7 +335,7 @@ public class TestBasic {
 			pm.persist(h);
 
 		} finally {
-			pm.close();
+			
 		}
 	}
 

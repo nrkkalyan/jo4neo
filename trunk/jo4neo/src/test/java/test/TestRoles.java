@@ -79,8 +79,9 @@ public class TestRoles extends BaseTest {
 			p.persist(roleuser, roleadmin, roledeveloper, rolesuperuser, u, a);			
 			t.success();
 		} finally {
-			p.close();
 			t.finish();
+			p.close();
+
 		}
 		
 		p = new ObjectGraph(neo);
@@ -118,15 +119,11 @@ public class TestRoles extends BaseTest {
 			
 			r = p.find(r).where(r.name).is("rolesuperuser").result();
 			assertTrue(user.hasRole(r));
-
-
 			assertEquals(4, p.getMostRecent(Role.class, 4).size());
 			assertEquals(3, p.getMostRecent(Role.class, 3).size());
 			assertEquals(2, p.getMostRecent(Role.class, 2).size());
 			assertEquals(1, p.getMostRecent(Role.class, 1).size());
-			assertEquals(4, p.getMostRecent(Role.class, 20).size());
-			
-			
+			assertEquals(4, p.getMostRecent(Role.class, 20).size());			
 
 			t.success();
 		} finally {
