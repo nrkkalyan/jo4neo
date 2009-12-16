@@ -58,6 +58,12 @@ public class ObjectGraph {
 			t.finish();
 		}
 	}
+	
+	public Node asNode(Object o) {
+		TypeWrapper type = TypeWrapperFactory.$(o);	
+		Nodeid neo = type.id(o);
+		return ineo.getNodeById(neo);
+	}
 
 	private void indexRemove(Node delNode, FieldContext field) {
 		ineo.getIndexService().removeIndex(delNode,

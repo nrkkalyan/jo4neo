@@ -29,16 +29,13 @@ public class TestRoles extends BaseTest {
 			t.finish();
 		}
 		
-		Role role = new Role();
-		for (Role r : p.get(Role.class)) {
-			System.out.println(r.name + ":" + r.parent + ":" + r.child);
-		}
+
 		
 		Node n = neo.getNodeById(id);
 		for (Relationship rel : n.getRelationships()) {
 			System.out.println(n.getProperty("name").toString() + rel.getType());
 		}
-		
+		Role role = new Role();
 		role = p.find(role).where(role.name).is("d").result();
 		System.out.println(role.parent.name);
 		//System.out.println(role.child.name);
@@ -95,16 +92,12 @@ public class TestRoles extends BaseTest {
 			Role r = new Role();
 			
 			r = p.find(r).where(r.name).is("rolesuperuser").result();
+			assertEquals(1, r.users.size());
 			while (r != null) {
 				System.out.println("has parent " + r.name);
 				r = r.parent;
 			}
-			r = new Role();
-			r = p.find(r).where(r.name).is("roleuser").result();
-			while (r != null) {
-				System.out.println(r.name);
-				r = r.child;
-			}
+			
 			
 
 			assertFalse(user.hasRole(r));
@@ -115,6 +108,7 @@ public class TestRoles extends BaseTest {
 			
 			r = p.find(r).where(r.name).is("roleuser").result();
 			assertEquals(1, r.users.size());
+
 			
 			user = p.find(user).where(user.id).is("user2").result();
 			assertTrue(user.hasRole(r));
@@ -130,7 +124,7 @@ public class TestRoles extends BaseTest {
 			assertEquals(3, p.getMostRecent(Role.class, 3).size());
 			assertEquals(2, p.getMostRecent(Role.class, 2).size());
 			assertEquals(1, p.getMostRecent(Role.class, 1).size());
-			assertEquals(4, p.getMostRecent(Role.class, 5).size());
+			assertEquals(8, p.getMostRecent(Role.class, 20).size());
 			
 			
 

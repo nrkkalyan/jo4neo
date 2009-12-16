@@ -1,6 +1,7 @@
 package test;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
 import jo4neo.Nodeid;
 import jo4neo.neo;
@@ -10,7 +11,7 @@ public class Role {
 	transient Nodeid id;
 	@neo public Role parent;
 	@neo(index=true) public String name;	
-	@neo(inverse="parent") Role child;	
+	@neo(inverse="parent") Collection<Role> children;	
 	@neo(inverse="role") public Collection<User> users;	
 	
 	public Role() {}
@@ -29,6 +30,18 @@ public class Role {
 		return false;
 	}
 
+	public Collection<User> getMembers() {
+		LinkedList<User> results = new LinkedList<User>();
+		getMembers(results, this);
+		return results;	
+	}
+	
+	private void getMembers(Collection<User> results, Role r) {
+			results.addAll(r.users);
+			for (Role role : r.children)
+				getMembers(results, role);
+	}
+	
 	public boolean equals(Object o) {
 		if (!(o instanceof Role)) return false;
 		if (o == this) return true;
