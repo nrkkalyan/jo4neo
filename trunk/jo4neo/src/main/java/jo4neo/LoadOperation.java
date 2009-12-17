@@ -80,15 +80,19 @@ class LoadOperation<T> {
 	private Collection<T> load(Iterable<Node> nodes) {
 		return load(nodes, Long.MAX_VALUE);
 	}
-
+	
 	public Collection<T> loadAndFilter(Iterable<Node> nodes) {
+		return (Collection<T>)loadAndFilter(nodes,cls);
+	}
+
+	public Collection<Object> loadAndFilter(Iterable<Node> nodes, Class<?> clazz) {
 		Transaction t = neo.beginTx();
 		try {
-			ArrayList<T> results = new ArrayList<T>();
+			ArrayList<Object> results = new ArrayList<Object>();
 			for (Node node : nodes) {
 				Class<?> nodeType = nodesJavaType(node).getWrappedType();
-				if (cls.isAssignableFrom(nodeType))
-					results.add((T)loadDirect(node));
+				if (clazz.isAssignableFrom(nodeType))
+					results.add(loadDirect(node));
 			}
 			t.success();
 			return results;
@@ -147,6 +151,18 @@ class LoadOperation<T> {
 			}
 			t.success();
 			return values;
+		} finally {
+			t.finish();
+		}
+	}
+	
+	public Collection<Object> loadTraverser(FieldContext field) {
+		Transaction t = neo.beginTx();
+		try { 
+			Node n = field.subjectNode(neo);
+			Traverser tvsr = field.getTraverserProvider().get(n);
+			t.success();
+			return loadAndFilter(tvsr,  field.type2());
 		} finally {
 			t.finish();
 		}

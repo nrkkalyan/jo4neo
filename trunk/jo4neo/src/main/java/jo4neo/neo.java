@@ -12,6 +12,7 @@ public @interface neo {
 	String value() default DEFAULT;
 	boolean index() default false;
 	String inverse() default DEFAULT;
+	Class<? extends TraverserProvider> traverser() default DefaultTraverserProvider.class;
 }
 
 /**

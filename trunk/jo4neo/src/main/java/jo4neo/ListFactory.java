@@ -6,6 +6,8 @@ public class ListFactory {
 	public static Lazy get(FieldContext field, LoadOperation load) {
 		if (field.isInverse())
 			return new InverseList(field, load);
+		else if (field.isTraverser())
+			return new TraverserList(field, load);
 		else
 			return new LazyList(field, load);
 	}

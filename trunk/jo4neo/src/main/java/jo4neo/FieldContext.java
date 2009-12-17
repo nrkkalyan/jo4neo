@@ -189,6 +189,23 @@ public class FieldContext {
 	public String getFieldname() {
 		return field.getName();
 	}
+	
+	public TraverserProvider getTraverserProvider() {
+		Class<? extends TraverserProvider> c = field.getAnnotation(neo.class).traverser();
+		try {
+			return c.newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException("Type lacks default constructor:" +  c.getName(), e);
+		}
+	}
+
+	public boolean isTraverser() {
+		if (field.isAnnotationPresent(neo.class)) {
+			neo n = field.getAnnotation(neo.class);
+			return !n.traverser().equals(DefaultTraverserProvider.class);
+		}
+		return false;		
+	}
 
 }
 
