@@ -3,7 +3,6 @@ package jo4neo;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
 
 import jo4neo.util.Lazy;
 

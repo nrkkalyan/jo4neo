@@ -13,7 +13,7 @@ import jo4neo.util.Lazy;
  *
  */
 @SuppressWarnings("unchecked")
-public class InverseList implements Lazy {
+class InverseList implements Lazy {
 
 	private transient FieldContext field;
 	private transient LoadOperation loader;
