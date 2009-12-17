@@ -58,7 +58,7 @@ public class ObjectGraph {
 		}
 	}
 
-	public Node asNode(Object o) {
+	private Node asNode(Object o) {
 		Transaction t = ineo.beginTx();
 		try {
 			TypeWrapper type = TypeWrapperFactory.$(o);
@@ -123,6 +123,10 @@ public class ObjectGraph {
 
 	public Node get(URI uri) {
 		return ineo.getURINode(uri);
+	}
+	
+	public <T> Collection<T> get(Class<T> type, Iterable<Node> nodes) {
+		return new LoadOperation<T>(type, ineo).loadAndFilter(nodes);
 	}
 
 }

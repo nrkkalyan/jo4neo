@@ -55,7 +55,7 @@ class LoadOperation<T> {
 		Transaction t = neo.beginTx();
 		try {
 			Node n = neo.getMetaNode(cls);
-			return load2(n.getRelationships(Relationships.HAS_MEMBER));
+			return loadAll(n.getRelationships(Relationships.HAS_MEMBER));
 		} finally {
 			t.finish();
 		}			
@@ -81,9 +81,24 @@ class LoadOperation<T> {
 		return load(nodes, Long.MAX_VALUE);
 	}
 
+	public Collection<T> loadAndFilter(Iterable<Node> nodes) {
+		Transaction t = neo.beginTx();
+		try {
+			ArrayList<T> results = new ArrayList<T>();
+			for (Node node : nodes) {
+				Class<?> nodeType = nodesJavaType(node).getWrappedType();
+				if (cls.isAssignableFrom(nodeType))
+					results.add((T)loadDirect(node));
+			}
+			t.success();
+			return results;
+		} finally {
+			t.finish();
+		}
+	}
+
 	
-	
-	private Collection<T> load2(Iterable<Relationship> relations) {
+	private Collection<T> loadAll(Iterable<Relationship> relations) {
 			ArrayList<T> results = new ArrayList<T>();
 			for (Relationship r : relations)
 				results.add((T) loadDirect(r.getEndNode()));
@@ -166,7 +181,7 @@ class LoadOperation<T> {
 
 	
 
-	protected Object loadDirect(Node n) {
+	public Object loadDirect(Node n) {
 		if (cache.containsKey(n.getId()))
 			return cache.get(n.getId());
 		TypeWrapper type = nodesJavaType(n);
@@ -194,7 +209,7 @@ class LoadOperation<T> {
 	 * @param n neo4j node.
 	 * @return
 	 */
-	private TypeWrapper nodesJavaType(Node n) {
+	public static TypeWrapper nodesJavaType(Node n) {
 		String typename = (String) n.getProperty(Nodeid.class.getName());
 		TypeWrapper type = TypeWrapperFactory.wrap(typename);
 		return type;
