@@ -84,6 +84,7 @@ public class TestLazyCollection {
 				
 					pm.persist(s);
 					t.success();
+					//System.out.println("finished");
 				} catch (Exception e) {
 					e.printStackTrace();
 				} finally {
@@ -92,10 +93,13 @@ public class TestLazyCollection {
 			}
 		};
 		
-		for (int i=0; i<100; i++)
-			new Thread(doit).start();
-
-		Thread.sleep(10000);
+		for (int i=0; i<100; i++) {
+			Thread t = new Thread(doit);
+			t.start();
+			t.join();
+		}
+		
+		
 		State state = new State();
 		ny = pm.find(state).where(state.code).is("NY").result();
 		assertEquals(101, ny.getCities().size());
