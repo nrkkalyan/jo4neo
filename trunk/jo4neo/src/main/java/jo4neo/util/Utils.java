@@ -5,8 +5,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import com.sun.jndi.toolkit.url.Uri;
-
 public class Utils {
 
     private static volatile long counter;
