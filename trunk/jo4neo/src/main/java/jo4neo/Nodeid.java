@@ -72,7 +72,6 @@ public class Nodeid {
 		id = newNode.getId();
 		//find metanode for type t
 		Node metanode = neo.getMetaNode(type);		
-		metanode.createRelationshipTo(newNode, JO4NEO_HAS_MEMBER);
 		newNode.createRelationshipTo(metanode, JO4NEO_HAS_TYPE);	
 		if (type.isAnnotationPresent(Timeline.class))
 			neo.getTimeLine(type).addNode(newNode, System.currentTimeMillis());

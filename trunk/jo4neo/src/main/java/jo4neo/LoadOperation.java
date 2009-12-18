@@ -55,7 +55,7 @@ class LoadOperation<T> {
 		Transaction t = neo.beginTx();
 		try {
 			Node n = neo.getMetaNode(cls);
-			return loadAll(n.getRelationships(Relationships.JO4NEO_HAS_MEMBER));
+			return loadAll(n.getRelationships(Relationships.JO4NEO_HAS_TYPE));
 		} finally {
 			t.finish();
 		}			

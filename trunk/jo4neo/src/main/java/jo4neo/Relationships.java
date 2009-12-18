@@ -3,7 +3,6 @@ package jo4neo;
 import org.neo4j.api.core.RelationshipType;
 
 public enum Relationships implements RelationshipType {
-	JO4NEO_HAS_MEMBER, 
 	JO4NEO_HAS_TYPE,
 	JO4NEO_NEXT_MOST_RECENT
 }
