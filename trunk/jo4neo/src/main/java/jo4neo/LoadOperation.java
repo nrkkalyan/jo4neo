@@ -55,7 +55,7 @@ class LoadOperation<T> {
 		Transaction t = neo.beginTx();
 		try {
 			Node n = neo.getMetaNode(cls);
-			return loadAll(n.getRelationships(Relationships.HAS_MEMBER));
+			return loadAll(n.getRelationships(Relationships.JO4NEO_HAS_MEMBER));
 		} finally {
 			t.finish();
 		}			
@@ -280,7 +280,7 @@ class LoadOperation<T> {
 		try {
 			Node metanode = neo.getMetaNode(cls);
 			Traverser tvsr = metanode.traverse(Order.BREADTH_FIRST, StopEvaluator.END_OF_GRAPH, 
-					ReturnableEvaluator.ALL_BUT_START_NODE, Relationships.NEXT_MOST_RECENT, Direction.OUTGOING);
+					ReturnableEvaluator.ALL_BUT_START_NODE, Relationships.JO4NEO_NEXT_MOST_RECENT, Direction.OUTGOING);
 			return load(tvsr, max);
 		} finally {
 			t.finish();

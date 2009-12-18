@@ -72,20 +72,20 @@ public class Nodeid {
 		id = newNode.getId();
 		//find metanode for type t
 		Node metanode = neo.getMetaNode(type);		
-		metanode.createRelationshipTo(newNode, HAS_MEMBER);
-		newNode.createRelationshipTo(metanode, HAS_TYPE);	
+		metanode.createRelationshipTo(newNode, JO4NEO_HAS_MEMBER);
+		newNode.createRelationshipTo(metanode, JO4NEO_HAS_TYPE);	
 		if (type.isAnnotationPresent(Timeline.class))
 			neo.getTimeLine(type).addNode(newNode, System.currentTimeMillis());
 		
 		//delete "latest" relation
 		Node latest=null;
-		for(Relationship r : metanode.getRelationships(NEXT_MOST_RECENT, Direction.OUTGOING)) {
+		for(Relationship r : metanode.getRelationships(JO4NEO_NEXT_MOST_RECENT, Direction.OUTGOING)) {
 			latest = r.getEndNode();
 			r.delete();
 		}
 		if (latest!=null)
-			newNode.createRelationshipTo(latest, NEXT_MOST_RECENT);
-		metanode.createRelationshipTo(newNode, NEXT_MOST_RECENT);		
+			newNode.createRelationshipTo(latest, JO4NEO_NEXT_MOST_RECENT);
+		metanode.createRelationshipTo(newNode, JO4NEO_NEXT_MOST_RECENT);		
 		return newNode;	
 	}
 
