@@ -14,7 +14,7 @@ import static jo4neo.Relationships.*;
  * public DomainObject {
  *     //used be jo4neo
  *     private transient Nodeid id;  
- *     // indicates a field to be persistend in graph  
+ *     // indicates a field to be persisted in graph  
  *     @neo private String name;
  *     ...
  * }
