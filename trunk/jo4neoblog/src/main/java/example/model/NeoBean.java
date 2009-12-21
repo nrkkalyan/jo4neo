@@ -7,6 +7,10 @@ public class NeoBean<T> {
 
 	transient Nodeid neo;
 
+	public long getId() {
+		return neo.id();
+	}
+	
 	public T save() { 
 		ContextListener.pm.persist(this);
 		return (T)this;

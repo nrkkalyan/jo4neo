@@ -2,6 +2,7 @@ package example.model;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import jo4neo.*;
@@ -9,7 +10,7 @@ import jo4neo.*;
 public class Post extends NeoBean<Post> {
 	
 	@neo private Collection<Comment> comments = new LinkedList<Comment>();
-	@neo private Collection<Tag> tags = new LinkedList<Tag>();
+	@neo("hasTag") private Collection<Tag> tags = new HashSet<Tag>();
 	@neo private User author;
 	@neo private Date createdAt;
 	@neo private String title;
@@ -21,10 +22,6 @@ public class Post extends NeoBean<Post> {
 	}
 	public Post() {
 		createdAt = new Date();
-	}
-
-	public long getId() {
-		return neo.id();
 	}
 	
 	public Collection<Comment> getComments() {

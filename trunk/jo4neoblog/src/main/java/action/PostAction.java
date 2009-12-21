@@ -1,6 +1,10 @@
 package action;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.neo4j.api.core.Transaction;
 
 import net.sourceforge.stripes.action.Before;
 import net.sourceforge.stripes.action.DefaultHandler;
@@ -19,7 +23,6 @@ import example.model.Tag;
 public class PostAction extends BaseAction {
 
 	private Post post;
-	private List<Tag> tags;
 	private String tag;
 
 	public String getTag() {
@@ -29,14 +32,14 @@ public class PostAction extends BaseAction {
 	public void setTag(String tag) {
 		this.tag = tag;
 	}
-
-	public List<Tag> getTags() {
-		return tags;
+	
+	private Collection<String> splitTags() {
+		Set<String> results = new HashSet<String>();
+		for (String	str : tag.split(","))
+			results.add(str.trim());
+		return results;
 	}
 
-	public void setTags(List<Tag> tags) {
-		this.tags = tags;
-	}
 
 	@Before(stages = LifecycleStage.EventHandling)
 	public Resolution secure() throws Exception {
@@ -63,10 +66,26 @@ public class PostAction extends BaseAction {
 
 	@HandlesEvent("post")
 	public Resolution post() {
-		post.setAuthor(context.getLogin());
-		post.setTags(tags);
-		post.save();
+		Transaction t = pm().beginTx();
+		try {
+			post.setAuthor(context.getLogin());
+			for (String tagname : splitTags())
+				post.addTag(forName(tagname));
+			post.save();
+			t.success();
+		} finally {
+			t.finish();
+		}
 		return new RedirectResolution(HubAction.class);
+	}
+	
+	private Tag forName(String str) {
+		Tag tag = new Tag();
+		tag = pm().find(tag).where(tag.name).is(str).result();
+		if (tag==null) {
+			tag = new Tag(str);
+		}
+		return tag;
 	}
 
 	@ValidateNestedProperties({

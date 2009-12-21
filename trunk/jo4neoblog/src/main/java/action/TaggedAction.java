@@ -1,7 +1,10 @@
 package action;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
+import java.util.List;
 
 import net.sourceforge.stripes.action.DefaultHandler;
 import net.sourceforge.stripes.action.ForwardResolution;
@@ -10,11 +13,11 @@ import net.sourceforge.stripes.action.UrlBinding;
 import example.model.Post;
 import example.model.Tag;
 
-@UrlBinding("/blog/home")
-public class HubAction extends BaseAction implements HubView {
+@UrlBinding("/blog/tags")
+public class TaggedAction extends BaseAction implements HubView, Comparator<Post> {
 	
-	private Collection<Post> posts;
-	private boolean singlePost = false;
+	private List<Post> posts;
+	private Tag tag;
 	
 	@DefaultHandler
 	public Resolution show() {
@@ -22,17 +25,22 @@ public class HubAction extends BaseAction implements HubView {
 		if ( pathInfo.length() > 6) {
 			selected = Long.valueOf(pathInfo.substring(6));		
 			posts = new LinkedList<Post>();
-			posts.add(load(Post.class, selected));
-			singlePost = true;
+			tag = load(Tag.class, selected);
+			posts.addAll(tag.posts);
+			Collections.sort(posts, this);
 		} else
-			posts = pm().getMostRecent(Post.class, 5);
+			posts =  new LinkedList<Post>(pm().getMostRecent(Post.class, 5));
 		return new ForwardResolution("/hub.jsp");
 	}
-	public Collection<Post> getPosts() {return posts;}
+	public Collection<Post> getPosts() {return tag.posts;}
+	public long getP() {return -1;}
 	public Collection<Tag> getTags() {return pm().get(Tag.class);}
-
 	public boolean isSinglePost() {
-		return singlePost;
+		return false;
 	}
-	
+	@Override
+	public int compare(Post o1, Post o2) {
+		// TODO Auto-generated method stub
+		return 0;
+	}	
 }

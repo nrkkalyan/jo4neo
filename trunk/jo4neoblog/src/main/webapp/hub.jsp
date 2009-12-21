@@ -2,29 +2,17 @@
 <stripes:layout-render name="/layout/default.jsp">
 <stripes:layout-component name="contents">
 
+Tags:
+<c:forEach items="${actionBean.tags}" var="tag" varStatus="loop">
+<c:if test="${!loop.first}">, </c:if>
+<c:if test="${actionBean.selected == tag.id}">&gt;</c:if>
+<a href="${pageContext.request.contextPath}/blog/tags/${tag.id}">${tag.name} (${fn:length(tag.posts)})</a>
+</c:forEach>
+
 <c:forEach items="${actionBean.posts}" var="row" varStatus="loop">
-
-<div class="entry">
-<h2><a href="${pageContext.request.contextPath}/blog/home/${row.id}">${row.title}</a></h2> 
-<span>${row.createdAt} : </span>
-${row.content}<br/>
-- ${row.author.screenName} ${row.commentsCount} comments | tags :
-<c:forEach items="${row.tags}" var="tag" varStatus="loop">
-<c:if test="${!loop.first}">, </c:if>${tag.name}</c:forEach>
-<br/>
-
-<c:if test="${actionBean.p > 0}">
-<c:forEach items="${row.comments}" var="comment">${comment.content}<br/></c:forEach>
-</c:if>
-</div>
-<c:if test="${actionBean.p > 0}">
-<stripes:form beanclass="action.CommentAction" method="post">
-Comments:<br/>
-<stripes:textarea name="comment.content" rows="5" cols="60"/><br/>
-<stripes:hidden name="p" value="${row.id}"/>
-<stripes:submit name="comment" value="comment"/>
-</stripes:form>
-</c:if>
+<c:set var="post" scope="request" value="${row}"/> 
+<c:set var="singlePost" scope="request" value="${actionBean.singlePost}"/> 
+<c:import url="/views/single_post.jsp"/>
 </c:forEach>
 
 

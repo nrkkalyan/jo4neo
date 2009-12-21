@@ -12,13 +12,9 @@ Post Title:<br/>
 Content:<br/>
 <stripes:textarea name="post.content" class="text" rows="15" cols="60" /><br/>
 <stripes:submit name="post" value="post" />
-<stripes:submit name="addTag" value="add tag" />
 
-<c:forEach items="${actionBean.tags}" var="tag" varStatus="loop">${tag.name} |
-  <stripes:hidden name="tags[${loop.index}].name" value="tag.name"/>
-  <c:set var="newIndex" value="${loop.index + 1}" scope="page"/> 
-</c:forEach>
-<stripes:text name="tags[${newIndex}]" class="text" size="15"/>
+
+<stripes:text name="tag" class="text" size="30"/>
 
 <stripes:hidden name="post.id"/>
 </stripes:form>

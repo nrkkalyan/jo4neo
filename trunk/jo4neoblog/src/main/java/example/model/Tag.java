@@ -1,15 +1,14 @@
 package example.model;
 
 import java.util.Collection;
-import java.util.LinkedList;
-import jo4neo.*;
+
+import jo4neo.neo;
 
 public class Tag extends NeoBean<Tag> {
 	
 	public static final String index = "tag.name";
-	
+	@neo(inverse="hasTag") public Collection<Post> posts;
 	@neo(index=true) public String name;
-	@neo private Collection<Post> members = new LinkedList<Post>();
 
 	public Tag() {}
 	
@@ -24,17 +23,17 @@ public class Tag extends NeoBean<Tag> {
 	public void setName(String s) {
 		name = s;
 	}
-
-	public Collection<Post> getMembers() {
-		return members;
-	}
-
-	public void setMembers(Collection<Post> members) {
-		this.members = members;
+	
+	public Collection<Post> getPosts() {
+		return posts;
 	}
 	
-	public void addMember(Post p) {
-		members.add(p);
+
+	
+	public boolean equals(Object o) {
+		if (! (o instanceof Tag)) return false;
+		if (this == o) return true;
+		return (name.equals(((Tag)o).name));
 	}
 
 }

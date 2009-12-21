@@ -12,7 +12,11 @@ import example.StripesContext;
 
 public class BaseAction implements ActionBean {
 	protected StripesContext context;
+	protected long selected = -1;
 	
+	public long getSelected() {
+		return selected;
+	}
 	
 	public StripesContext getContext() {
 		return context;
