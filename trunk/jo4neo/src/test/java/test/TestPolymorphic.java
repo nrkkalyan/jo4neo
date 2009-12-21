@@ -5,31 +5,14 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
 
-import jo4neo.ObjectGraph;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
 
-public class TestPolymorphic {
-	static NeoService neo;
 
-	@BeforeClass
-	public static void setup() {
-		neo = new EmbeddedNeo("neo_store");
-	}
+public class TestPolymorphic extends BaseTest {
 
-	@AfterClass
-	public static void teardown() {
-		neo.shutdown();
-	}
 
 	@Test
 	public void basic() {
-		ObjectGraph pm = new ObjectGraph(neo);
-		try {
 			BlogPost post = new BlogPost();
 			post.setPublishDate(new Date());
 			post.setTitle("Nosql: take that Oracle");
@@ -51,9 +34,9 @@ public class TestPolymorphic {
 			post.getTags().add(semweb);
 			semweb.getItems().add(review);
 
-			pm.persist(semweb);
+			graph.persist(semweb);
 			Tag tag = new Tag();
-			tag = pm.find(tag).where(tag.name).is("semweb").result();
+			tag = graph.find(tag).where(tag.name).is("semweb").result();
 
 			for (Taggable thing : tag.getItems()) {
 				System.out.println(thing);
@@ -61,10 +44,7 @@ public class TestPolymorphic {
 			}
 			assertEquals(3, tag.getItems().size());
 
-			pm.delete(semweb);
-		} finally {
-			pm.close();
-		}
-
+			graph.delete(semweb);
+	
 	}
 }

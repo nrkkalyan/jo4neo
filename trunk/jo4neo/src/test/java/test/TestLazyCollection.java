@@ -93,7 +93,7 @@ public class TestLazyCollection {
 			}
 		};
 		
-		for (int i=0; i<100; i++) {
+		for (int i=0; i<10; i++) {
 			Thread t = new Thread(doit);
 			t.start();
 			t.join();
@@ -102,7 +102,8 @@ public class TestLazyCollection {
 		
 		State state = new State();
 		ny = pm.find(state).where(state.code).is("NY").result();
-		assertEquals(101, ny.getCities().size());
+		assertEquals(11, ny.getCities().size());
+		pm.close();
 
 	}
 

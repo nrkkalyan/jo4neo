@@ -8,11 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
-import jo4neo.ObjectGraph;
-
 import org.junit.Test;
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
 
@@ -20,14 +16,13 @@ public class TestTypes extends BaseTest {
 	
 	@Test
 	public void index() {
-		ObjectGraph p = new ObjectGraph(neo);
-		Transaction t = p.beginTx();
+		Transaction t = graph.beginTx();
 		try {
 			
 			for (int i=0; i<100; i++) {
 				FunkyWinkerBean o = new FunkyWinkerBean();
 				o.setJ(i%10);
-				p.persist(o);
+				graph.persist(o);
 			}
 			t.success();
 		} finally {
@@ -35,27 +30,24 @@ public class TestTypes extends BaseTest {
 		}
 		
 		
-		t = p.beginTx();
+		t = graph.beginTx();
 		try {
 			
 			FunkyWinkerBean bean = new FunkyWinkerBean();
-			Collection<FunkyWinkerBean> results = p.find(bean).where(bean.j).is(9).results();
+			Collection<FunkyWinkerBean> results = graph.find(bean).where(bean.j).is(9).results();
 			assertEquals(10, results.size());
 			
-			results = p.find(bean).where(bean.j).is(3).results();
+			results = graph.find(bean).where(bean.j).is(3).results();
 			assertEquals(10, results.size());
 
 		} finally {
 			t.finish();
-			p.close();			
 		}
 	}
 	@Test
 	public void basic() {
-		ObjectGraph pm = new ObjectGraph(neo);
-		Transaction t = pm.beginTx();
+		Transaction t = graph.beginTx();
 		try {
-			ObjectGraph p = new ObjectGraph(neo);
 			
 			TypeBean bean = new TypeBean();
 			//bean.setId(27);
@@ -66,9 +58,9 @@ public class TestTypes extends BaseTest {
 			bean.setNames( new String[] {"a", "b", "c", "d" });
 			bean.setTags(Arrays.asList("a", "b", "c", "d"));
 			
-			p.persist(bean);
+			graph.persist(bean);
 			
-			TypeBean check = p.get(TypeBean.class, bean.neo.id());
+			TypeBean check = graph.get(TypeBean.class, bean.neo.id());
 			assertEquals(15, check.getIntItem());
 			assertArrayEquals(new String[] {"a", "b", "c", "d" }, check.getNames());
 			assertArrayEquals(new int[] {1,2,3,4,10}, check.getAges());		
@@ -78,7 +70,6 @@ public class TestTypes extends BaseTest {
 		
 		} finally {
 			t.finish();
-			pm.close();
 		}
 	}
 

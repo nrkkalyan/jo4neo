@@ -14,7 +14,7 @@ public class TestRoles extends BaseTest {
 
 	@Test
 	public void inverse() {
-		ObjectGraph p = new ObjectGraph(neo);
+		ObjectGraph p = graph;
 		Transaction t = p.beginTx();
 		long id = 0;
 		try {
@@ -55,7 +55,7 @@ public class TestRoles extends BaseTest {
 	}
 	@Test
 	public void basic() {
-		ObjectGraph p = new ObjectGraph(neo);
+		ObjectGraph p = graph;
 		Transaction t = p.beginTx();
 		try {
 			
@@ -80,11 +80,8 @@ public class TestRoles extends BaseTest {
 			t.success();
 		} finally {
 			t.finish();
-			p.close();
-
 		}
 		
-		p = new ObjectGraph(neo);
 		t = p.beginTx();
 		try {
 			User user = new User();
@@ -128,7 +125,6 @@ public class TestRoles extends BaseTest {
 			t.success();
 		} finally {
 			t.finish();
-			p.close();
 		}		
 		
 	}

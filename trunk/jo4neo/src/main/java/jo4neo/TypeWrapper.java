@@ -18,6 +18,10 @@ public abstract class TypeWrapper {
 		return null;
 	}
 	
+	public boolean assignableTo(Class<?> c) {
+		return c.isAssignableFrom(getWrappedType());
+	}
+
 	public abstract Object newInstance(Object o);	
 	public abstract FieldContext[] getFields(Object o);
 	public abstract Nodeid id(Object o);
@@ -25,6 +29,7 @@ public abstract class TypeWrapper {
 	public abstract void setId(Object bean, Nodeid n);
 	public abstract Class<?> getWrappedType();
 	public abstract String name();
+
 }
 
 /**

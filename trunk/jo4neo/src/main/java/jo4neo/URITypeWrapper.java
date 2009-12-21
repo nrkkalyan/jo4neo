@@ -38,4 +38,5 @@ class URITypeWrapper extends TypeWrapper {
 		//noop
 	}
 
+
 }

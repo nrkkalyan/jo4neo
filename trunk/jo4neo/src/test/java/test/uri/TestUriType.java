@@ -1,5 +1,7 @@
 package test.uri;
 
+import static org.junit.Assert.assertEquals;
+
 import java.net.URI;
 import java.util.Collection;
 
@@ -9,8 +11,6 @@ import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.Transaction;
 
-import static org.junit.Assert.*;
-import jo4neo.ObjectGraph;
 import test.BaseTest;
 
 public class TestUriType extends BaseTest{
@@ -23,7 +23,6 @@ public class TestUriType extends BaseTest{
 		r.content = "slick";
 		r.stars = 5;
 		
-		ObjectGraph graph = new ObjectGraph(neo);
 		
 		graph.persist(r);
 		

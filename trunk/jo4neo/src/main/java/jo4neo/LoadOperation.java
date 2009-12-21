@@ -12,6 +12,7 @@ import java.util.TreeSet;
 
 import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
+import org.neo4j.api.core.NotFoundException;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.ReturnableEvaluator;
 import org.neo4j.api.core.StopEvaluator;
@@ -36,6 +37,9 @@ class LoadOperation<T> {
 		Transaction t = neo.beginTx();
 		try {
 			Node n = neo.getNodeById(key);
+			TypeWrapper type = nodesJavaType(n);
+			if (!type.assignableTo(cls))
+				throw new NotFoundException("Node " + key + " cannot be seen as a " + cls);
 			if (n == null)
 				return null;
 			Object o = loadDirect(n);

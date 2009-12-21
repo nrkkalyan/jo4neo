@@ -2,6 +2,8 @@ package test;
 
 import java.io.File;
 
+import jo4neo.ObjectGraph;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,16 +13,20 @@ import org.neo4j.api.core.NeoService;
 public class BaseTest {
 
 	public static NeoService neo;
+	public static ObjectGraph graph;
 	
 	@BeforeClass
 	public static void setup() {
 		deleteDirectory(new File("neo_store"));
 		neo = new EmbeddedNeo("neo_store");
+		graph = new ObjectGraph(neo);
 	}
 	
 	@AfterClass
 	public static void teardown() {
+		graph.close();
 		neo.shutdown();
+		deleteDirectory(new File("neo_store"));
 	}
 	
 	@Test
