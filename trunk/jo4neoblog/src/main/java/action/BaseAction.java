@@ -18,6 +18,10 @@ public class BaseAction implements ActionBean {
 		return selected;
 	}
 	
+	public void setSelected(long l) {
+		selected = l;
+	}
+	
 	public StripesContext getContext() {
 		return context;
 	}

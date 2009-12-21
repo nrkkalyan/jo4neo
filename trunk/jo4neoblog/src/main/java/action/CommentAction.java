@@ -16,7 +16,6 @@ import example.model.Post;
 @UrlBinding("/blog/comment")
 public class CommentAction extends BaseAction {
 	private Comment comment;
-	private long postid;
 
 	@Before(stages = LifecycleStage.EventHandling)
 	public Resolution secure() throws Exception {
@@ -31,7 +30,7 @@ public class CommentAction extends BaseAction {
 
 	@HandlesEvent("comment")
 	public Resolution post() {
-		Post p = load(Post.class, postid).add(comment).save();
+		Post p = load(Post.class, selected).add(comment).save();
 		return new RedirectResolution("/blog/home/" + p.getId());
 	}
 
@@ -47,9 +46,4 @@ public class CommentAction extends BaseAction {
 		this.comment = post;
 	}
 
-	public void setP(long id) {
-		postid = id;
-	}
-
-	public void getP() {}
 }

@@ -1,9 +1,7 @@
-package action;
+package example.model;
 
 import java.util.Collection;
 
-import example.model.Post;
-import example.model.Tag;
 
 public interface HubView {
 	Collection<Post> getPosts();
