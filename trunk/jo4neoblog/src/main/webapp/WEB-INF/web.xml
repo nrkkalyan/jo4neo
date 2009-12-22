@@ -28,6 +28,11 @@
 			<param-name>ExceptionHandler.Class</param-name>
 			<param-value>example.BlogExceptionHandler</param-value>
 		</init-param>
+		
+		<init-param>
+			<param-name>Extension.Packages</param-name>
+			<param-value>example</param-value>
+		</init-param>
 
 	</filter>
 

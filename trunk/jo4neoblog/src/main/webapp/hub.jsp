@@ -10,6 +10,7 @@ Tags:
 </c:forEach>
 
 <c:forEach items="${actionBean.posts}" var="row" varStatus="loop">
+<c:set var="editable" scope="request" value="${actionBean.editable}"/> 
 <c:set var="post" scope="request" value="${row}"/> 
 <c:set var="singlePost" scope="request" value="${actionBean.singlePost}"/> 
 <c:import url="/views/single_post.jsp"/>

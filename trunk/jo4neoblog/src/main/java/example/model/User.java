@@ -49,4 +49,10 @@ public class User extends NeoBean<User>{
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public boolean equals(Object o) {
+		if (! (o instanceof User)) return false;
+		if (this == o) return true;
+		return (screenName.equals(((User)o).screenName));
+	}
 }

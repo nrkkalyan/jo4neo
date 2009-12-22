@@ -9,6 +9,7 @@ import net.sourceforge.stripes.action.ActionBean;
 import net.sourceforge.stripes.action.ActionBeanContext;
 import example.ContextListener;
 import example.StripesContext;
+import example.model.Post;
 
 public class BaseAction implements ActionBean {
 	protected StripesContext context;
@@ -48,6 +49,10 @@ public class BaseAction implements ActionBean {
 	
 	protected ObjectGraph pm() {
 		return ContextListener.pm;
+	}
+	
+	protected boolean myPost(Post post) {
+		return post.getAuthor().equals(context.getLogin());
 	}
 	
 

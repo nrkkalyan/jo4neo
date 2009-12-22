@@ -43,5 +43,10 @@ public class TaggedAction extends BaseAction implements HubView, Comparator<Post
 	public int compare(Post o1, Post o2) {
 		// TODO Auto-generated method stub
 		return 0;
-	}	
+	}
+
+	public boolean isEditable() {
+		return false;
+	}
+
 }

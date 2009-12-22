@@ -14,9 +14,9 @@ Content:<br/>
 Tags (comma separated):<br/>
 <stripes:text name="tag" class="text" size="30"/><br/>
 
-<stripes:submit name="post" value="post" />
+<stripes:submit name="save" value="Post" />
 
-<stripes:hidden name="post.id"/>
+<stripes:hidden name="post" value="${post.id}"/>
 </stripes:form>
 
 </stripes:layout-component>

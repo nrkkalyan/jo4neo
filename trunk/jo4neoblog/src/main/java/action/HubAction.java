@@ -16,24 +16,34 @@ public class HubAction extends BaseAction implements HubView {
 	
 	private Collection<Post> posts;
 	private boolean singlePost = false;
+	private boolean editable = false;
 	
 	@DefaultHandler
 	public Resolution show() {
 		String pathInfo = context.getRequest().getPathInfo();
 		if ( pathInfo.length() > 6) {
-			selected = Long.valueOf(pathInfo.substring(6));		
+			selected = Long.valueOf(pathInfo.substring(6));	
+			Post post = load(Post.class, selected);
 			posts = new LinkedList<Post>();
-			posts.add(load(Post.class, selected));
+			posts.add(post);
 			singlePost = true;
+			if (myPost(post))
+				editable = true;
 		} else
 			posts = pm().getMostRecent(Post.class, 5);
 		return new ForwardResolution("/hub.jsp");
 	}
+
 	public Collection<Post> getPosts() {return posts;}
 	public Collection<Tag> getTags() {return pm().get(Tag.class);}
 
 	public boolean isSinglePost() {
 		return singlePost;
 	}
+
+	public boolean isEditable() {
+		return editable;
+	}
+	
 	
 }
