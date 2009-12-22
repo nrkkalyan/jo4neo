@@ -30,8 +30,8 @@ public class CommentAction extends BaseAction {
 
 	@HandlesEvent("comment")
 	public Resolution post() {
-		Post p = load(Post.class, selected).add(comment).save();
-		return new RedirectResolution("/blog/home/" + p.getId());
+		return new RedirectResolution("/blog/home/" + 
+				load(Post.class, selected).add(comment).save().getId());
 	}
 
 	@ValidateNestedProperties({

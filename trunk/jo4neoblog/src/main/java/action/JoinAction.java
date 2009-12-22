@@ -10,6 +10,7 @@ import net.sourceforge.stripes.action.Resolution;
 import net.sourceforge.stripes.action.UrlBinding;
 import net.sourceforge.stripes.validation.LocalizableError;
 import net.sourceforge.stripes.validation.Validate;
+import net.sourceforge.stripes.validation.ValidateNestedProperties;
 import net.sourceforge.stripes.validation.ValidationErrors;
 import net.sourceforge.stripes.validation.ValidationMethod;
 import example.model.User;
@@ -17,76 +18,48 @@ import example.model.User;
 @UrlBinding("/blog/join")
 public class JoinAction extends BaseAction {
 
-	@Validate(required = true, minlength = 1, maxlength = 255, on = "join")
-	private String email;
-
-	@Validate(required = true, minlength = 1, maxlength = 255, on = "join")
-	private String password;
-
-	@Validate(required = true, minlength = 1, maxlength = 255, on = "join")
-	private String screenName;
-	
-	@Validate(required = true, minlength = 1, maxlength = 255, on = "join")
-	private String verify;
-
 	@ValidationMethod(on = "join")
 	public void validateRegistration(ValidationErrors errors) {
-		if ( !password.equals(verify) )
+		if ( !info.password.equals(info.verify) )
 			errors.add("password", new LocalizableError("verifymatch"));
-		if (exists(User.class, screenName))
+		if (exists())
 			errors.addGlobalError(new LocalizableError("userexists"));
 	}
-	
-	private boolean exists(Class<User> c, String screenName) {
+
+	private boolean exists() {
 		User user = new User();
-		return pm().find(user).where(user.screenName).is(screenName).result() != null;
+		return pm().find(user).where(user.screenName).is(info.screenName).result() != null;
 	}
 
 	@DefaultHandler
 	public Resolution start() {
 		return new ForwardResolution("/join.jsp");
 	}
-	
+
 	@HandlesEvent("join")
 	public Resolution join() throws NoSuchAlgorithmException {
 		User u = new User();
-		u.setScreenName(screenName);
-		u.setEmail(email);
-		u.setEncryptedPassword(hashPassword(password));
+		u.setScreenName(info.screenName);
+		u.setEmail(info.email);
+		u.setEncryptedPassword(hashPassword(info.password));
 		u.save();
 		context.setLogin(u);
 		return new RedirectResolution(HubAction.class);
 	}
+
+	@ValidateNestedProperties({
+		@Validate(field="email", required = true, minlength = 1, maxlength = 255, on = "join"),
+		@Validate(field="screenName", required = true, minlength = 1, maxlength = 255, on = "join"),
+		@Validate(field="password",required = true, minlength = 1, maxlength = 255, on = "join"),
+		@Validate(field="verify",required = true, minlength = 1, maxlength = 255, on = "join")		 
+	})
+	private RegistrationInfo info;
 	
-	public String getEmail() {
-		return email;
+	public RegistrationInfo getInfo() {
+		return info;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getScreenName() {
-		return screenName;
-	}
-
-	public void setScreenName(String screenName) {
-		this.screenName = screenName;
-	}
-
-	public String getVerify() {
-		return verify;
-	}
-
-	public void setVerify(String verify) {
-		this.verify = verify;
+	public void setInfo(RegistrationInfo info) {
+		this.info = info;
 	}
 }

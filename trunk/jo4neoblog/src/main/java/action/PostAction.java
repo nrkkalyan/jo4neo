@@ -82,9 +82,8 @@ public class PostAction extends BaseAction {
 	private Tag forName(String str) {
 		Tag tag = new Tag();
 		tag = pm().find(tag).where(tag.name).is(str).result();
-		if (tag==null) {
+		if (tag==null)
 			tag = new Tag(str);
-		}
 		return tag;
 	}
 
