@@ -55,7 +55,6 @@ public class Main {
 		ObjectGraph graph = new ObjectGraph(neo);
 		try {
 			setup(graph);
-
 			Role role = new Role();
 			role = graph.find(role).where(role.name).is("premierhotelagent")
 					.result();
