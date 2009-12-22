@@ -35,8 +35,9 @@ public class PostAction extends BaseAction {
 	
 	private Collection<String> splitTags() {
 		Set<String> results = new HashSet<String>();
-		for (String	str : tag.split(","))
-			results.add(str.trim());
+		if (tag!=null)
+			for (String	str : tag.split(","))
+				results.add(str.trim());
 		return results;
 	}
 

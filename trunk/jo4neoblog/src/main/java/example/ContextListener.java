@@ -23,6 +23,8 @@ public class ContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent ev) {
 		neo = new EmbeddedNeo("neo_base"); 
 		pm = new ObjectGraph(neo);
+		
+		new InitialPosts(pm);
 	}
 
 
