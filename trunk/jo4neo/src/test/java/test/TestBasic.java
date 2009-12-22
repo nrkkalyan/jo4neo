@@ -18,22 +18,9 @@ import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
 
-public class TestBasic {
+public class TestBasic extends BaseTest {
 
-	static NeoService neo;
-	static ObjectGraph pm;
 
-	@BeforeClass
-	public static void setup() {
-		neo = new EmbeddedNeo("neo_store");
-		pm = new ObjectGraph(neo);
-	}
-
-	@AfterClass
-	public static void teardown() {
-		pm.close();
-		neo.shutdown();
-	}
 
 	@Test
 	public void testIndex() {
@@ -43,13 +30,13 @@ public class TestBasic {
 		try {
 			Hotel h = new Hotel();
 			h.setName("Hyatt Boston");
-			pm.persist(h);
+			graph.persist(h);
 			Hotel hotel = new Hotel();
-			Collection<Hotel> hotels = pm.find(hotel).where(hotel.name).is("Hyatt Boston").results();
+			Collection<Hotel> hotels = graph.find(hotel).where(hotel.name).is("Hyatt Boston").results();
 			
 			assertEquals(hotels.size(), 1);
-			pm.delete(h);
-			hotels = pm.find(hotel).where(hotel.name).is("Hyatt Boston").results();
+			graph.delete(h);
+			hotels = graph.find(hotel).where(hotel.name).is("Hyatt Boston").results();
 			assertEquals(hotels.size(), 0);
 			t.success();
 		} finally {
@@ -76,9 +63,9 @@ public class TestBasic {
 			s1.getCourses().add(c2);
 			s1.getCourses().add(c3);
 
-			pm.persist(s1);
+			graph.persist(s1);
 
-			Student s1ref = pm.get(Student.class, s1.neo.id());
+			Student s1ref = graph.get(Student.class, s1.neo.id());
 			assertEquals(s1ref.getCourses().size(), 3);
 			t.success();
 		} finally {
@@ -103,11 +90,11 @@ public class TestBasic {
 			s1.getCourses().add(c1);
 			s1.getCourses().add(c2);
 			s1.getCourses().add(c3);
-			pm.persist(s1);
+			graph.persist(s1);
 			t.success();
 			t.finish();
 
-			Student s1ref = pm.get(Student.class, s1.neo.id());
+			Student s1ref = graph.get(Student.class, s1.neo.id());
 			assertEquals(s1ref.getCourses().size(), 3);
 		} finally {
 			
@@ -131,17 +118,17 @@ public class TestBasic {
 
 			s1.setCourses(Arrays.asList(c1, c2, c3));
 
-			pm.persist(s1);
+			graph.persist(s1);
 
 			assertNotNull(c3.neo);
 			c1.setName("modified");
 			c2.setName("modified");
 			c3.setName("modified");
-			pm.persist(c1);
-			pm.persist(c2);
-			pm.persist(c3);
+			graph.persist(c1);
+			graph.persist(c2);
+			graph.persist(c3);
 
-			s1 = pm.get(Student.class, s1.neo.id());
+			s1 = graph.get(Student.class, s1.neo.id());
 			assertEquals(3, s1.getCourses().size());
 			for (Course c : s1.getCourses()) {
 				assertEquals("modified", c.getName());
@@ -159,7 +146,7 @@ public class TestBasic {
 		try {
 			Student s1 = new Student();
 			s1.setCourses(null);
-			pm.persist(s1);
+			graph.persist(s1);
 			t.success();
 		} finally {
 			t.finish();
@@ -184,10 +171,10 @@ public class TestBasic {
 			s1.getCourses().add(c1);
 			s1.getCourses().add(c2);
 			s1.getCourses().add(c3);
-			pm.persist(s1);
+			graph.persist(s1);
 			long id = s1.neo.id();
 
-			Student s1ref = pm.get(Student.class, id);
+			Student s1ref = graph.get(Student.class, id);
 			assertEquals(s1ref.getCourses().size(), 3);
 			Course remove = null;
 			for (Course course : s1ref.getCourses()) {
@@ -195,9 +182,9 @@ public class TestBasic {
 					remove = course;
 			}
 			s1ref.getCourses().remove(remove);
-			pm.persist(s1ref);
+			graph.persist(s1ref);
 
-			s1 = pm.get(Student.class, id);
+			s1 = graph.get(Student.class, id);
 			assertEquals(2, s1.getCourses().size());
 			assertEquals(s1.getName(), "student");
 		} finally {
@@ -207,7 +194,7 @@ public class TestBasic {
 
 	@Test
 	public void nullrelation() {
-		Transaction t = pm.beginTx();
+		Transaction t = graph.beginTx();
 		long id = 0;
 		try {
 			Person friend = new Person();
@@ -219,31 +206,31 @@ public class TestBasic {
 			p1.setLastName("cowan");
 			p1.setFriend(friend);
 
-			pm.persist(p1);
+			graph.persist(p1);
 
-			id = pm.get(p1).getId();
+			id = graph.get(p1).getId();
 			t.success();
 		} finally {
 			t.finish();
 			
 		}
 
-		t = pm.beginTx();
+		t = graph.beginTx();
 		try {
-			Person p = pm.get(Person.class, id);
+			Person p = graph.get(Person.class, id);
 			Person friend = p.getFriend();
 			assertEquals("friend", friend.getFirstName());
 			p.setFriend(null);
-			pm.persist(p);
+			graph.persist(p);
 			t.success();
 		} finally {
 			t.finish();
 			
 		}
 
-		t = pm.beginTx();
+		t = graph.beginTx();
 		try {
-			Person p = pm.get(Person.class, id);
+			Person p = graph.get(Person.class, id);
 			assertTrue(p.getFriend() == null);
 			t.success();
 		} finally {
@@ -272,9 +259,9 @@ public class TestBasic {
 			p1.setAddress(a);
 			p1.setFriend(friend);
 			friend.setFriend(p1);
-			pm.persist(p1);
+			graph.persist(p1);
 
-			Person p2 = pm.get(Person.class, p1.neo.id());
+			Person p2 = graph.get(Person.class, p1.neo.id());
 			assertEquals(32, p2.getAge());
 			assertNotNull(p2.getFriend());
 			assertEquals(p2.getFriend().getFirstName(), "friend");
@@ -307,9 +294,9 @@ public class TestBasic {
 			p1.setAddress(a);
 			p1.setFriend(friend);
 			friend.setFriend(p1);
-			pm.persist(p1);
+			graph.persist(p1);
 
-			Person p2 = pm.get(Person.class, p1.neo.id());
+			Person p2 = graph.get(Person.class, p1.neo.id());
 			assertEquals(32, p2.getAge());
 			assertNotNull(p2.getFriend());
 			assertEquals(p2.getFriend().getFirstName(), "friend");
@@ -332,7 +319,7 @@ public class TestBasic {
 
 			ammenities.add(pool);
 			h.setAmmenities(ammenities);
-			pm.persist(h);
+			graph.persist(h);
 
 		} finally {
 			

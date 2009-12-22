@@ -14,13 +14,14 @@ import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.RelationshipType;
 import org.neo4j.api.core.Transaction;
 import org.neo4j.util.index.IndexService;
+import org.neo4j.util.index.Isolation;
 import org.neo4j.util.index.LuceneIndexService;
 import org.neo4j.util.timeline.Timeline;
 
 public class IndexedNeo implements NeoService {
 
 	private NeoService neo;
-	private IndexService index;
+	private LuceneIndexService index;
 	private RelationFactory relFactory;
 	private boolean isClosed = false;
 	private Map<Class<?>, Timeline> timelines;
@@ -33,7 +34,7 @@ public class IndexedNeo implements NeoService {
 	}
 
 	public synchronized void close() {
-		index.shutdown();
+		index.shutdown(); 
 		isClosed = true;
 	}
 

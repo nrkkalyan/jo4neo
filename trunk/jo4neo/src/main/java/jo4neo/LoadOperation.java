@@ -292,13 +292,14 @@ class LoadOperation<T> {
 	}
 
 	public T load(String indexname, Object value) {
+
 		Transaction t = neo.beginTx();
 		try {
 			Node n = neo.getIndexService().getSingleNode(indexname, value);
 			if (n==null)
 				return null;
 			Object o = loadDirect(n);
-			t.finish();
+			t.success();
 			return (T)o;
 		} finally {
 			t.finish();

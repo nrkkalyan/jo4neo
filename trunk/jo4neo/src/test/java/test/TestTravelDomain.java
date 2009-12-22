@@ -41,11 +41,17 @@ public class TestTravelDomain {
 	
 	@BeforeClass
 	public static void setup() {
-		deleteDirectory(new File("neo_store"));
-		neo = new EmbeddedNeo("neo_store");
+		deleteDirectory(new File("neo_store2"));
+		neo = new EmbeddedNeo("neo_store2");
 		pm = new ObjectGraph(neo);
 		createStates();
 		createCities();
+	}
+	
+	@AfterClass
+	public static void teardown() {
+		pm.close();
+		neo.shutdown();
 	}
 	
 	private static void createCities() {
@@ -72,11 +78,7 @@ public class TestTravelDomain {
 	
 	}
 
-	@AfterClass
-	public static void teardown() {
-		pm.close();
-		neo.shutdown();
-	}
+
 	
 	@Test
 	public void basic() {

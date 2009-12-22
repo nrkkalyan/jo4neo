@@ -21,23 +21,9 @@ import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
 
-public class TestLazyCollection {
+public class TestLazyCollection extends BaseTest {
 
-	static NeoService neo;
-	static ObjectGraph pm;
-	
-	@BeforeClass
-	public static void setup() {
-		deleteDirectory(new File("neo_store"));
-		neo = new EmbeddedNeo("neo_store");
-		pm = new ObjectGraph(neo);
-	}
-	
-	@AfterClass
-	public static void teardown() {		
-		pm.close();
-		neo.shutdown();
-	}
+
 	
 	@Test
 	public void basic() {
@@ -61,30 +47,33 @@ public class TestLazyCollection {
 
 	@Test
 	public void threaded() throws InterruptedException {
-		State ny = new State();
-		ny.setCode("NY");
-		ny.setName("New York");
-		pm.persist(ny);
+		Transaction t = graph.beginTx();
+		try {
+			State ny = new State();
+			ny.setCode("NY");
+			ny.setName("New York");
+			graph.persist(ny);
 		
-		final City nyc = new City();
-		nyc.setName("new york city");
-		nyc.setState(ny);
-		pm.persist(nyc);
+			final City nyc = new City();
+			nyc.setName("new york city");
+			nyc.setState(ny);
+			graph.persist(nyc);
+			t.success();
+		} finally {
+			t.finish();
+		}
+
 		Runnable doit = new Runnable() {
 			public void run() {
-				Transaction t = pm.beginTx();
+				Transaction t = graph.beginTx();
 				try {
 					State state = new State();
-					State s = pm.find(state).where(state.code).is("NY").result();
-					
+					State s = graph.find(state).where(state.code).is("NY").result();				
 					City c = new City();
 					c.setName("unknown");
-					s.getCities().add(nyc);
-					s.getCities().add(c);
-				
-					pm.persist(s);
-					t.success();
-					//System.out.println("finished");
+					s.getCities().add(c);			
+					graph.persist(s);
+					t.success();				
 				} catch (Exception e) {
 					e.printStackTrace();
 				} finally {
@@ -94,31 +83,22 @@ public class TestLazyCollection {
 		};
 		
 		for (int i=0; i<10; i++) {
-			Thread t = new Thread(doit);
-			t.start();
-			t.join();
+			Thread thread = new Thread(doit);
+			thread.start();
+			thread.join();
 		}
-		
-		
-		State state = new State();
-		ny = pm.find(state).where(state.code).is("NY").result();
-		assertEquals(11, ny.getCities().size());
-		pm.close();
+
+		t = graph.beginTx();
+		try {
+			State state = new State();
+			State ny = new State();
+			ny = graph.find(state).where(state.code).is("NY").result();
+			assertEquals(10, ny.getCities().size());
+			t.success();
+		} finally {
+			t.finish();
+		}
 
 	}
 
-	static public boolean deleteDirectory(File path) {
-	    if( path.exists() ) {
-	      File[] files = path.listFiles();
-	      for(int i=0; i<files.length; i++) {
-	         if(files[i].isDirectory()) {
-	           deleteDirectory(files[i]);
-	         }
-	         else {
-	           files[i].delete();
-	         }
-	      }
-	    }
-	    return( path.delete() );
-	  }
 }

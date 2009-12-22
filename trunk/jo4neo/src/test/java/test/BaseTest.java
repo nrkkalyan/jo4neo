@@ -1,5 +1,7 @@
 package test;
 
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 
 import jo4neo.ObjectGraph;
@@ -17,7 +19,6 @@ public class BaseTest {
 	
 	@BeforeClass
 	public static void setup() {
-		deleteDirectory(new File("neo_store"));
 		neo = new EmbeddedNeo("neo_store");
 		graph = new ObjectGraph(neo);
 	}
@@ -27,6 +28,7 @@ public class BaseTest {
 		graph.close();
 		neo.shutdown();
 		deleteDirectory(new File("neo_store"));
+
 	}
 	
 	@Test
@@ -41,7 +43,7 @@ public class BaseTest {
 	           deleteDirectory(files[i]);
 	         }
 	         else {
-	           files[i].delete();
+	         	files[i].delete();
 	         }
 	      }
 	    }
