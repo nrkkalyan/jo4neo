@@ -51,7 +51,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		NeoService neo = new EmbeddedNeo("neo_store");
+		NeoService neo = new EmbeddedNeo("neo_store2");
 		ObjectGraph graph = new ObjectGraph(neo);
 		try {
 			setup(graph);
@@ -59,7 +59,7 @@ public class Main {
 			Role role = new Role();
 			role = graph.find(role).where(role.name).is("premierhotelagent")
 					.result();
-
+			
 			Role inspect = role;
 			while (inspect != null) {
 				System.out.println("." + inspect.name);
