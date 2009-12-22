@@ -11,6 +11,9 @@ Post Title:<br/>
 <stripes:text name="post.title" class="text" size="80"/><br/>
 Content:<br/>
 <stripes:textarea name="post.content" class="text" rows="15" cols="60" /><br/>
+Tags (comma separated):<br/>
+<stripes:text name="tag" class="text" size="30"/><br/>
+
 <stripes:submit name="post" value="post" />
 
 

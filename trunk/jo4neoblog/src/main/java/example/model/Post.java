@@ -18,7 +18,6 @@ public class Post extends NeoBean<Post> {
 
 	public Post(String s) {
 		this();
-		System.out.println(s);
 	}
 	public Post() {
 		createdAt = new Date();
