@@ -109,7 +109,7 @@ class LoadOperation<T> {
 	private Collection<T> loadAll(Iterable<Relationship> relations) {
 			ArrayList<T> results = new ArrayList<T>();
 			for (Relationship r : relations)
-				results.add((T) loadDirect(r.getEndNode()));
+				results.add((T) loadDirect(r.getStartNode()));
 			return results;
 		
 	}
