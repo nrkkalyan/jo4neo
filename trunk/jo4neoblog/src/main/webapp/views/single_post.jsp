@@ -17,7 +17,7 @@ ${post.content}<br/>
 <stripes:form beanclass="action.CommentAction" method="post">
 Comments:<br/>
 <stripes:textarea name="comment.content" rows="5" cols="60"/><br/>
-<stripes:hidden name="p" value="${row.id}"/>
+<stripes:hidden name="selected" value="${post.id}"/>
 <stripes:submit name="comment" value="comment"/>
 </stripes:form>
 </c:if>
