@@ -16,9 +16,6 @@ Tags (comma separated):<br/>
 
 <stripes:submit name="post" value="post" />
 
-
-<stripes:text name="tag" class="text" size="30"/>
-
 <stripes:hidden name="post.id"/>
 </stripes:form>
 
