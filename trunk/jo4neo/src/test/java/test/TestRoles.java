@@ -35,8 +35,8 @@ public class TestRoles extends BaseTest {
 		}
 		Role role = new Role();
 		role = p.find(role).where(role.name).is("d").result();
-		System.out.println(role.parent.name);
-		//System.out.println(role.child.name);
+		for(Role r : p.get(Role.class))
+			System.out.println(r.name + "...");
 		
 	}
 	@Test
@@ -59,8 +59,10 @@ public class TestRoles extends BaseTest {
 		Transaction t = p.beginTx();
 		try {
 			
-			for(Role r : p.get(Role.class))
+			for(Role r : p.get(Role.class)) {
+				System.out.println(r.name + "...");
 				p.delete(r);
+			}
 			Role roleuser = new Role("roleuser");
 			Role roleadmin = new Role("roleadmin", roleuser);
 			Role roledeveloper = new Role("roledeveloper", roleuser);
