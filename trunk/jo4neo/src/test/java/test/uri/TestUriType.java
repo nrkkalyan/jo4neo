@@ -47,5 +47,17 @@ public class TestUriType extends BaseTest{
 		assertEquals(1, reviews.size());
 		
 	}
+	
+	@Test
+	public void simple() {
+		Transaction t = graph.beginTx();
+		try {
+			URI u = URI.create("http://foo.com");
+			graph.persist(u);
+			t.success();
+		} finally {
+			t.finish();
+		}
+	}
 
 }
