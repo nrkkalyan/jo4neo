@@ -9,7 +9,6 @@ import jo4neo.fluent.Where;
 
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
-import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.Transaction;
 
 /**
@@ -37,25 +36,8 @@ public class ObjectGraph {
 		return ineo.asNode(o);
 	}
 
-	public void delete(Object o) {
-		TypeWrapper type = TypeWrapperFactory.$(o);
-		Transaction t = ineo.beginTx();
-		try {
-			Nodeid neo = type.id(o);
-			Node delNode = ineo.getNodeById(neo.id());
-			if (neo == null)
-				return;
-			for (FieldContext field : type.getFields(o))
-				if (field.isIndexed())
-					indexRemove(delNode, field);
-
-			for (Relationship r : delNode.getRelationships())
-				r.delete();
-			delNode.delete();
-			t.success();
-		} finally {
-			t.finish();
-		}
+	public void delete(Object... o) {
+		new DeleteOpertation(ineo).delete(o);
 	}
 
 	private Node asNode(Object o) {
@@ -69,11 +51,6 @@ public class ObjectGraph {
 		} finally {
 			t.finish();
 		}
-	}
-
-	private void indexRemove(Node delNode, FieldContext field) {
-		ineo.getIndexService().removeIndex(delNode, field.getIndexName(),
-				field.value());
 	}
 
 	public <T> T get(Class<T> t, long key) {
@@ -114,7 +91,8 @@ public class ObjectGraph {
 	}
 
 	public <T> Collection<T> getAddedBetween(Class<T> t, Date from, Date to) {
-		return new LoadOperation<T>(t, ineo).within(from.getTime(), to.getTime());
+		return new LoadOperation<T>(t, ineo).within(from.getTime(), to
+				.getTime());
 	}
 
 	public <T> Collection<T> getMostRecent(Class<T> t, int max) {
@@ -124,7 +102,7 @@ public class ObjectGraph {
 	public Node get(URI uri) {
 		return ineo.getURINode(uri);
 	}
-	
+
 	public <T> Collection<T> get(Class<T> type, Iterable<Node> nodes) {
 		return new LoadOperation<T>(type, ineo).loadAndFilter(nodes);
 	}

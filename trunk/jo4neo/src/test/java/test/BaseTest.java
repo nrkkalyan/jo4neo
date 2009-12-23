@@ -1,7 +1,5 @@
 package test;
 
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 
 import jo4neo.ObjectGraph;
@@ -32,7 +30,7 @@ public class BaseTest {
 	}
 	
 	@Test
-	public void donothing() {
+	public void simple() {
 	}
 	
 	static public boolean deleteDirectory(File path) {
