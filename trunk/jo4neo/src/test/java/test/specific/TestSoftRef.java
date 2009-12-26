@@ -5,6 +5,7 @@ import java.util.Arrays;
 import jo4neo.ObjectGraph;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
@@ -46,8 +47,14 @@ public class TestSoftRef {
 		Apple a = new Apple();
 		a.state = "CA";
 		a.type = "Jonah Gold";
-		o.grows.add(a);
 		
+		boolean caught = false;
+		try {
+			o.grows.add(a);
+		} catch (UnsupportedOperationException e) {
+			caught = true;
+		}
+		assertTrue(caught);
 		
 	}
 
