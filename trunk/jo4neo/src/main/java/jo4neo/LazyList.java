@@ -1,5 +1,6 @@
 package jo4neo;
 
+import java.lang.ref.SoftReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -12,20 +13,34 @@ import jo4neo.util.Lazy;
 class LazyList implements Lazy {
 
 	private transient FieldContext field;
-	private transient LoadOperation loader;
+	private transient SoftReference<LoadOperation> loader;
 	private transient Collection newdata;
 
 	private Collection data;
 	private boolean modified = false;
 	
-	public LazyList(FieldContext f, LoadOperation neo) {
+	public LazyList(FieldContext f, LoadOperation loader) {
 		field = f;
-		this.loader = neo;
+		this.loader = new SoftReference<LoadOperation>(loader);
+	}
+	
+	private LoadCollectionOps graph() {
+		LoadCollectionOps graph = loader.get();
+		if (graph == null) {
+			return new LoadCollectionOps() {
+				public void removeRelationship(FieldContext field, Object o) {
+				}				
+				public Collection<Object> load(FieldContext field) {
+					return null;
+				}
+			};
+		}
+		return graph;
 	}
 
 	private Collection data() {
-		if ( data == null)
-			data = loader.load(field);
+		if (data == null)
+			data = loader.get().load(field);
 		return data;
 	}
 	
@@ -87,7 +102,7 @@ class LazyList implements Lazy {
 
 	public boolean remove(Object o) {
 		modified = true;
-		loader.removeRelationship(field, o);
+		graph().removeRelationship(field, o);
 		return data().remove(o);
 	}
 
