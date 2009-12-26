@@ -38,4 +38,16 @@ public class TestDelete extends BaseTest {
 		
 		assertEquals(0, graph.get(Apple.class).size());
 	}
+	
+	public void inverse() {
+		Transaction t = graph.beginTx();
+		try {
+			Product p = new Product();
+			t.success();
+		} finally {
+			t.finish();
+		}
+		
+
+	}
 }
