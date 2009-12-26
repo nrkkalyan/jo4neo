@@ -6,8 +6,7 @@ import jo4neo.neo;
 
 public class Person {
 	
-	transient Nodeid neo;
-	
+	transient Nodeid neo;	
 	@neo int age;
 	@neo String firstName;
 	@neo String lastName;
