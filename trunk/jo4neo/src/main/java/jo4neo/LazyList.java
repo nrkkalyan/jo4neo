@@ -26,21 +26,14 @@ class LazyList implements Lazy {
 	
 	private LoadCollectionOps graph() {
 		LoadCollectionOps graph = loader.get();
-		if (graph == null) {
-			return new LoadCollectionOps() {
-				public void removeRelationship(FieldContext field, Object o) {
-				}				
-				public Collection<Object> load(FieldContext field) {
-					return null;
-				}
-			};
-		}
+		if (graph == null || graph.isClosed())
+			throw new UnsupportedOperationException("Neo graph is closed");
 		return graph;
 	}
 
 	private Collection data() {
 		if (data == null)
-			data = loader.get().load(field);
+			data = graph().load(field);
 		return data;
 	}
 	
