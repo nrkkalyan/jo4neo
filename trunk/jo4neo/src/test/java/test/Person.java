@@ -13,8 +13,7 @@ public class Person {
 	@neo String lastName;
 	@embed Address address;
 	@neo("FRIEND") 
-	Person friend;
-	
+	Person friend;	
 	
 	public Person getFriend() {
 		return friend;
