@@ -21,6 +21,7 @@ import org.neo4j.api.core.Traverser;
 import org.neo4j.api.core.Traverser.Order;
 
 
+
 class LoadOperation<T> implements LoadCollectionOps {
 
 	IndexedNeo neo;

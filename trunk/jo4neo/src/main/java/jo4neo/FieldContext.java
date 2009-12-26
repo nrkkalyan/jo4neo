@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.Date;
 
 
+import jo4neo.util.NullType;
+import jo4neo.util.RelationFactory;
 import jo4neo.util.Utils;
 
 import org.neo4j.api.core.Direction;

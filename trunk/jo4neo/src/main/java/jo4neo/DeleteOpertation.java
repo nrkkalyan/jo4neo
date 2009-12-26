@@ -4,6 +4,7 @@ import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.Transaction;
 
+
 public class DeleteOpertation {
 
 	IndexedNeo ineo;

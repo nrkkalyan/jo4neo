@@ -2,6 +2,8 @@ package jo4neo;
 
 import java.lang.reflect.Field;
 
+import jo4neo.util.RelationFactory;
+
 import org.neo4j.api.core.DynamicRelationshipType;
 import org.neo4j.api.core.RelationshipType;
 

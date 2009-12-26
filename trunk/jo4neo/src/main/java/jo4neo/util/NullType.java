@@ -1,9 +1,7 @@
-package jo4neo;
+package jo4neo.util;
 
-import org.neo4j.api.core.RelationshipType;
+public class NullType {
 
-public interface RelationFactory {
-	public RelationshipType relationshipType(String f);
 }
 
 /**

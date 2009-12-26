@@ -14,6 +14,7 @@ import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.RelationshipType;
 import org.neo4j.api.core.Transaction;
 
+
 class PersistOperation {
 
 	IndexedNeo neo;

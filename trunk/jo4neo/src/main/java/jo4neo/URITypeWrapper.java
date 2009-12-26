@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.neo4j.api.core.Node;
 
+
 class URITypeWrapper extends TypeWrapper {
 
 	@Override

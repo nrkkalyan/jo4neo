@@ -7,6 +7,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import jo4neo.util.RelationFactory;
+
 import org.neo4j.api.core.DynamicRelationshipType;
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
