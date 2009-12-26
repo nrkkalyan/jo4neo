@@ -96,7 +96,8 @@ class LazyList implements Lazy {
 
 	public boolean remove(Object o) {
 		modified = true;
-		graph().removeRelationship(field, o);
+		if (data().remove(o))
+			graph().removeRelationship(field, o);
 		return data().remove(o);
 	}
 
