@@ -14,12 +14,12 @@
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>index-util</artifactId>
-			<version>0.9-SNAPSHOT</version>
+			<version>0.9</version>
 		</dependency>
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo</artifactId>
-			<version>1.0-b11-SNAPSHOT</version>
+			<version>1.0-b11</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
