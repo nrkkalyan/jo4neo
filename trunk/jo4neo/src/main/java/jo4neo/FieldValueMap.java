@@ -2,7 +2,7 @@ package jo4neo;
 
 import java.util.HashMap;
 import java.util.Map;
-
+import static jo4neo.TypeWrapperFactory.$;
 
 import jo4neo.fluent.Is;
 import jo4neo.fluent.Where;
@@ -18,11 +18,8 @@ public class FieldValueMap<A> implements Where<A> {
 		c = (Class<A>) a.getClass();
 		this.pm = pm;
 		map = new HashMap<Object, FieldContext>();
-		TypeWrapper type = TypeWrapperFactory.$(a);	
-		for (FieldContext f : type.getFields(a)) {
-			Object val = f.initWithNewObject();
-			map.put(val, f);
-		} 
+		for (FieldContext f : $(a).getFields(a))
+			map.put(f.initWithNewObject(), f);
 	}
 
 	public FieldContext getField(Object value) {
