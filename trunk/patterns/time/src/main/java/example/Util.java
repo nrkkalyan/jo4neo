@@ -24,10 +24,7 @@ public class Util {
 		}
 		
 	
-		Month month = null;
-		for (Month m : y.months)
-			if (m.value == monthNum)
-				month = m;
+		Month month = y.getMonth(monthNum);
 				
 				
 		for (Day d : month.days)

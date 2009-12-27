@@ -16,6 +16,13 @@ public class Year extends Base {
 	public Year(Calendar cal) {
 		value = cal.get(Calendar.YEAR);
 	}
+	
+	public Month getMonth(int i) {
+		for (Month m : months)
+			if (m.value == i)
+				return m;
+		return null;
+	}
 
 
 }
