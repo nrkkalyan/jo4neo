@@ -1,0 +1,21 @@
+package example;
+
+import java.util.Calendar;
+import java.util.Collection;
+
+import jo4neo.neo;
+
+public class Year extends Base {
+	@neo(inverse="parent") public Collection<Month> months;
+	@neo(index=true) public int value;
+	
+	public Year() {
+		
+	}
+	
+	public Year(Calendar cal) {
+		value = cal.get(Calendar.YEAR);
+	}
+
+
+}
