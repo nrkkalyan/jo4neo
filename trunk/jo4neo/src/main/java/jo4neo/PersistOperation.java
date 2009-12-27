@@ -13,6 +13,7 @@ import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.RelationshipType;
 import org.neo4j.api.core.Transaction;
+import org.neo4j.util.index.IndexService;
 
 
 class PersistOperation {
@@ -65,8 +66,12 @@ class PersistOperation {
 	private void saveAndIndex(Node node, FieldContext field) {
 		field.applyTo(node);
 		if (field.value() != null && field.isIndexed())
-			neo.getIndexService().index(node, field.getIndexName(),
+			index().index(node, field.getIndexName(),
 					field.value());
+	}
+
+	private IndexService index() {
+		return neo.getIndexService();
 	}
 
 	private void relations(Node node, FieldContext field) {
