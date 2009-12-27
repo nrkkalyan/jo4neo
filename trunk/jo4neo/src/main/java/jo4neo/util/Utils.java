@@ -9,7 +9,6 @@ public class Utils {
 
     private static volatile long counter;
 
-    
     @SuppressWarnings("unchecked")
     public static <T> T newObject(Class<T> c) {
     	if (Number.class.isAssignableFrom(c)) {
