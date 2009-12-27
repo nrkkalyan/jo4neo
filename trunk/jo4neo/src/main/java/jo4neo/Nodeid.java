@@ -54,6 +54,14 @@ public class Nodeid {
 	public Node mirror(IndexedNeo ns) {
 		return (valid()) ? ns.getNodeById(id):newNode(ns);
 	}
+	
+	public boolean equals(Object o) {
+		if (o instanceof Nodeid)
+			return id == ((Nodeid)o).id;
+		return false;
+	}
+
+
 
 	/**
 	 * Creates a new node within the context of a given javaclass.  First the node
