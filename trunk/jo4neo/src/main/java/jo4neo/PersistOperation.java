@@ -16,7 +16,7 @@ import org.neo4j.api.core.Transaction;
 import org.neo4j.util.index.IndexService;
 
 
-class PersistOperation {
+class PersistOperation<T> {
 
 	IndexedNeo neo;
 	Map<Long, Object> visited;
@@ -77,8 +77,12 @@ class PersistOperation {
 	private void relations(Node node, FieldContext field) {
 		Collection<Object> values = field.values();
 		RelationshipType reltype = field.toRelationship(neo.getRelationFactory());
-		if (values == null)
-			return;	
+		
+		//initialize null collections to a lazy loader
+		if (values == null) {
+			field.setProperty(ListFactory.get(field, new LoadOperation<T>(neo)));
+			return;
+		}
 		
 		/*
 		 *  Ignore unmodified collections.
@@ -95,6 +99,11 @@ class PersistOperation {
 				node.createRelationshipTo(n2, reltype);
 			save(n2, value);
 		}
+		
+		//initialize collections to a lazy loader
+		if (! (values instanceof Lazy))
+			field.setProperty(ListFactory.get(field, new LoadOperation<T>(neo)));
+
 		
 	}
 

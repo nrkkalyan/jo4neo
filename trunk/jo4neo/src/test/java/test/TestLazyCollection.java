@@ -2,22 +2,17 @@ package test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.util.TreeSet;
 
 import jo4neo.NeoComparator;
 import jo4neo.Nodeid;
-import jo4neo.ObjectGraph;
 import jo4neo.TypeWrapper;
 import jo4neo.TypeWrapperFactory;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Transaction;
 
 
@@ -43,6 +38,22 @@ public class TestLazyCollection extends BaseTest {
 
 		assertTrue(set.add(p3));
 		assertEquals(set.size(), 2);
+	}
+	
+	@Test
+	public void initOnSave() {
+		Transaction t = graph.beginTx();
+		try {
+			State ca = new State();
+			ca.setCode("CA");
+			ca.setName("California");
+			graph.persist(ca);
+			assertNotNull(ca.cities);
+			assertEquals(0, ca.cities.size());	
+			t.success();
+		} finally {
+			t.finish();
+		}
 	}
 
 	@Test

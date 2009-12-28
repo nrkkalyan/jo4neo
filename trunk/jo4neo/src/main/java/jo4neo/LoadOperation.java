@@ -28,10 +28,14 @@ class LoadOperation<T> implements LoadCollectionOps {
 	Class<?> cls;
 	Map<Long, Object> cache;
 
-	public LoadOperation(Class<?> type, IndexedNeo ineo) {
-		this.cls = type;
+	public LoadOperation(IndexedNeo ineo) {
 		this.neo = ineo;
-		cache = new HashMap<Long, Object>();
+		cache = new HashMap<Long, Object>();		
+	}
+	
+	public LoadOperation(Class<?> type, IndexedNeo ineo) {
+		this(ineo);
+		this.cls = type;
 	}
 
 	public T load(long key) {
@@ -144,7 +148,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 			t.finish();
 		}
 	}
-	
+
 	public Collection<Object> loadInverse(FieldContext field) {
 		Transaction t = neo.beginTx();
 		try { 
@@ -160,7 +164,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 			t.finish();
 		}
 	}
-	
+
 	public Collection<Object> loadTraverser(FieldContext field) {
 		Transaction t = neo.beginTx();
 		try { 
@@ -172,7 +176,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 			t.finish();
 		}
 	}
-	
+
 	public void removeRelationship(FieldContext field, Object o) {
 		Transaction t = neo.beginTx();
 		try {

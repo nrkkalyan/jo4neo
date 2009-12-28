@@ -14,15 +14,15 @@ import jo4neo.util.Lazy;
 class LazyList implements Lazy {
 
 	private transient FieldContext field;
-	private transient SoftReference<LoadOperation> loader;
+	private transient SoftReference<LoadCollectionOps> loader;
 	private transient Collection newdata;
 
 	private Collection data;
 	private boolean modified = false;
 	
-	public LazyList(FieldContext f, LoadOperation loader) {
+	public LazyList(FieldContext f, LoadCollectionOps loader) {
 		field = f;
-		this.loader = new SoftReference<LoadOperation>(loader);
+		this.loader = new SoftReference(loader);
 	}
 	
 	private LoadCollectionOps graph() {

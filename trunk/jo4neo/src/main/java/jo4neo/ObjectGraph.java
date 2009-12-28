@@ -28,8 +28,8 @@ public class ObjectGraph {
 		return ineo.beginTx();
 	}
 
-	public void persist(Object... o) {
-		new PersistOperation(ineo).save(o);
+	public <A> void persist(A... o) {
+		new PersistOperation<A>(ineo).save(o);
 	}
 
 	public Node get(Object o) {

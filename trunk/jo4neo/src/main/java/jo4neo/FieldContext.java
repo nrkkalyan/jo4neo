@@ -169,6 +169,10 @@ public class FieldContext {
 	public boolean isPluralPrimitive() {
 		return isPlural() && isPrimitive(type2());
 	}
+	
+	public boolean isPluralComplex() {
+		return isPlural() && !isPrimitive(type2());
+	}
 
 	public Class<?> type2() {
 		return getGenericType((ParameterizedType) field.getGenericType());
