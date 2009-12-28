@@ -14,8 +14,11 @@ public class Main {
 		ObjectGraph graph = new ObjectGraph(neo);
 		try {
 			
-			Day d = Util.findDay(graph, Calendar.getInstance());
+			Day d = new Util(graph).findDay(Calendar.getInstance());
 			System.out.println(d.value);
+			for (Hour h : d.hours) {
+				System.out.println(h.value);
+			}
 			
 		} finally {
 			graph.close();

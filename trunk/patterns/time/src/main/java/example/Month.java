@@ -11,8 +11,15 @@ public class Month extends Base {
 	
 	public Month() {}
 	
-	public Month(int month, int days) {
+	public Month(int month) {
 		value = month;
+	}
+	
+	public Day getDay(int i) {
+		for (Day d : days)
+			if (d.value == i)
+				return d;
+		return null;
 	}
 
 
