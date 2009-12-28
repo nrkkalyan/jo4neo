@@ -52,8 +52,8 @@ class PersistOperation<T> {
 
 	private void save(Node node, FieldContext field) {
 		if (field.isInverse())
-			return;
-		if (field.isSimpleType())
+			initializeIfNull(field);
+		else if (field.isSimpleType())
 			saveAndIndex(node, field);
 		else if (field.isPluralPrimitive())
 			saveAndIndex(node, field);
@@ -61,6 +61,11 @@ class PersistOperation<T> {
 			relate(node, field);
 		else if (field.isPlural())
 			relations(node, field);
+	}
+
+	private void initializeIfNull(FieldContext field) {
+		if (field.isPluralComplex())
+			field.setProperty(ListFactory.get(field, new LoadOperation<T>(neo)));
 	}
 
 	private void saveAndIndex(Node node, FieldContext field) {
