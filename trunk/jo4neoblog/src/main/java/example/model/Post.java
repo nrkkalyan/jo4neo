@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import jo4neo.*;
 
+@neo(recency=true)
 public class Post extends NeoBean<Post> {
 	
 	@neo private Collection<Comment> comments = new LinkedList<Comment>();
