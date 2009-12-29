@@ -85,6 +85,13 @@ public class Nodeid {
 			neo.getTimeLine(type).addNode(newNode, System.currentTimeMillis());
 		
 		//delete "latest" relation
+		if (type.isAnnotationPresent(neo.class) && type.getAnnotation(neo.class).recency())
+			recencyStack(newNode, metanode);
+
+		return newNode;	
+	}
+
+	private void recencyStack(Node newNode, Node metanode) {
 		Node latest=null;
 		for(Relationship r : metanode.getRelationships(JO4NEO_NEXT_MOST_RECENT, Direction.OUTGOING)) {
 			latest = r.getEndNode();
@@ -92,8 +99,7 @@ public class Nodeid {
 		}
 		if (latest!=null)
 			newNode.createRelationshipTo(latest, JO4NEO_NEXT_MOST_RECENT);
-		metanode.createRelationshipTo(newNode, JO4NEO_NEXT_MOST_RECENT);		
-		return newNode;	
+		metanode.createRelationshipTo(newNode, JO4NEO_NEXT_MOST_RECENT);
 	}
 
 }

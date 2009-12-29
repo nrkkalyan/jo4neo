@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import jo4neo.Nodeid;
 import jo4neo.neo;
 
-
+@neo(recency=true)
 public class Role {
 	transient Nodeid id;
 	@neo public Role parent;

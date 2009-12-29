@@ -5,7 +5,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface neo {
 	public static final String DEFAULT = "default";	
@@ -13,6 +13,7 @@ public @interface neo {
 	boolean index() default false;
 	String inverse() default DEFAULT;
 	Class<? extends TraverserProvider> traverser() default DefaultTraverserProvider.class;
+	boolean recency() default false;
 }
 
 /**

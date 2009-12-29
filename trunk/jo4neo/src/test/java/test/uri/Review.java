@@ -5,6 +5,7 @@ import java.net.URI;
 import jo4neo.Nodeid;
 import jo4neo.neo;
 
+@neo(recency=true)
 public class Review {
 
 	transient Nodeid node;

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import jo4neo.fluent.Where;
+import jo4neo.util.Utils;
 
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
@@ -96,7 +97,10 @@ public class ObjectGraph {
 	}
 
 	public <T> Collection<T> getMostRecent(Class<T> t, int max) {
-		return new LoadOperation<T>(t, ineo).latest(max);
+		if ( supportsRecency(t))
+			return new LoadOperation<T>(t, ineo).latest(max);
+		else 
+			throw new RuntimeException("Recency unsupported for " + t + ": must be annotated as @neo(recency=true)");
 	}
 
 	public Node get(URI uri) {
@@ -105,6 +109,10 @@ public class ObjectGraph {
 
 	public <T> Collection<T> get(Class<T> type, Iterable<Node> nodes) {
 		return new LoadOperation<T>(type, ineo).loadAndFilter(nodes);
+	}
+	
+	private boolean supportsRecency(Class<?> c) {
+		return c.isAnnotationPresent(neo.class) && c.getAnnotation(neo.class).recency();
 	}
 
 }
