@@ -5,8 +5,6 @@ import java.util.LinkedList;
 import jo4neo.*;
 
 public class User extends NeoBean<User>{
-
-	public static final String index = "user.screenname";
 	
 	@neo(index=true) 
 	public String screenName;	

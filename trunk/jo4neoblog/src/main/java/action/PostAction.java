@@ -48,13 +48,6 @@ public class PostAction extends BaseAction {
 			new RedirectResolution(LoginAction.class) : null;
 	}
 
-	//@Before(stages=LifecycleStage.BindingAndValidation)
-	public void rehydrate() {
-		//String id = context.getRequest().getParameter("p");
-		//if (id != null)
-		//	this.post = load(Post.class, Long.valueOf(id));
-	}
-
 	@DefaultHandler
 	public Resolution start() {
 		return new ForwardResolution("/post.jsp");
