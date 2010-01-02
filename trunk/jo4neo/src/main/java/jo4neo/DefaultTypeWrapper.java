@@ -7,6 +7,7 @@ import java.util.logging.Level;
 
 
 
+import jo4neo.util.AnnotationHelper;
 import jo4neo.util.FieldContext;
 import jo4neo.util.Utils;
 
@@ -17,9 +18,11 @@ class DefaultTypeWrapper extends TypeWrapper {
 	Field[] fields;
 	Field idfield;
 	Class<?> me;
+	AnnotationHelper helper;
 
-	public DefaultTypeWrapper(Class<?> c) {
+	public DefaultTypeWrapper(Class<?> c, AnnotationHelper helper) {
 		me = c;
+		this.helper = helper;
 		fields = getDeclaredFields(c);
 		for (Field f : fields)
 			if (f.getType().equals(Nodeid.class))
@@ -44,17 +47,10 @@ class DefaultTypeWrapper extends TypeWrapper {
 
 	}
 
-	static Jo4neoAnnotations helper = new Jo4neoAnnotations();
+	
 	
 	public FieldContext[] getFields(Object o) {
-		ArrayList<FieldContext> values = new ArrayList<FieldContext>();
-		for (Field field : fields) {
-			if (field.isAnnotationPresent(neo.class))
-				values.add(new FieldContext(o, field, helper));
-			else if ( field.isAnnotationPresent(embed.class))
-				values.add(new EmbeddedContext(o,field, helper));
-		}
-		return values.toArray(new FieldContext[0]);
+		return helper.getFields(fields, o);
 	}
 	
 	

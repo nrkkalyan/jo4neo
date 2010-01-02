@@ -1,8 +1,10 @@
 package jo4neo;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 import jo4neo.util.AnnotationHelper;
+import jo4neo.util.FieldContext;
 import jo4neo.util.RelationFactory;
 import jo4neo.util.TraverserProvider;
 
@@ -57,5 +59,16 @@ public class Jo4neoAnnotations implements AnnotationHelper {
 	
 	public boolean isEmbedded(Field field) {
 		return field.isAnnotationPresent(embed.class);
+	}
+	
+	public FieldContext[] getFields(Field[] fields, Object o) {
+		ArrayList<FieldContext> values = new ArrayList<FieldContext>();
+		for (Field field : fields) {
+			if (field.isAnnotationPresent(neo.class))
+				values.add(new FieldContext(o, field, this));
+			else if (field.isAnnotationPresent(embed.class))
+				values.add(new EmbeddedContext(o, field, this));
+		}
+		return values.toArray(new FieldContext[0]);
 	}
 }

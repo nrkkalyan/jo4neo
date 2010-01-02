@@ -12,4 +12,5 @@ public interface AnnotationHelper {
 	boolean isTraverser(Field field);
 	boolean isEmbedded(Field field);
 	RelationshipType toRelationship(RelationFactory f, Field field);
+	FieldContext[] getFields(Field[] fields, Object o);
 }
