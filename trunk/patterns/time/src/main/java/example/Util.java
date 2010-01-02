@@ -31,7 +31,6 @@ public class Util {
 				day = newDay(dayNum, month);
 			t.success();
 			return day;
-
 		} finally {
 			t.finish();
 		}
