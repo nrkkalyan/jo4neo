@@ -2,6 +2,7 @@ package jo4neo;
 
 import jo4neo.fluent.Is;
 import jo4neo.fluent.Result;
+import jo4neo.util.FieldContext;
 
 
 class IndexQuery<T> implements Is<T> {

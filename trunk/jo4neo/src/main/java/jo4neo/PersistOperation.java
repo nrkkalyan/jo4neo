@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import jo4neo.util.FieldContext;
 import jo4neo.util.Lazy;
 
 import static jo4neo.TypeWrapperFactory.*;
@@ -14,6 +15,7 @@ import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.RelationshipType;
 import org.neo4j.api.core.Transaction;
 import org.neo4j.util.index.IndexService;
+
 
 
 class PersistOperation<T> {

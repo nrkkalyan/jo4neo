@@ -7,13 +7,16 @@ import java.io.ObjectOutputStream;
 import java.lang.reflect.Field;
 
 
+
+import jo4neo.util.AnnotationHelper;
+import jo4neo.util.FieldContext;
 import jo4neo.util.Utils;
 
 
 class EmbeddedContext extends FieldContext {
 
-	public EmbeddedContext(Object o, Field field) {
-		super(o, field);
+	public EmbeddedContext(Object o, Field field, AnnotationHelper helper) {
+		super(o, field, helper);
 	}
 	
 	public Object value() {

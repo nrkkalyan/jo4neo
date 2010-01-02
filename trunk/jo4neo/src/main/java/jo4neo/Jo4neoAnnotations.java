@@ -1,0 +1,61 @@
+package jo4neo;
+
+import java.lang.reflect.Field;
+
+import jo4neo.util.AnnotationHelper;
+import jo4neo.util.RelationFactory;
+import jo4neo.util.TraverserProvider;
+
+import org.neo4j.api.core.RelationshipType;
+
+
+
+public class Jo4neoAnnotations implements AnnotationHelper {
+
+	public TraverserProvider getTraverserProvider(Field field) {
+		Class<? extends TraverserProvider> c = field.getAnnotation(neo.class).traverser();
+		try {
+			return c.newInstance();
+		} catch (Exception e) {
+			throw new RuntimeException("Type lacks default constructor:" +  c.getName(), e);
+		}
+	}
+
+	public boolean isIndexed(Field field) {
+		return (field.isAnnotationPresent(neo.class) && field.getAnnotation(
+				neo.class).index());
+	}
+
+	public boolean isInverse(Field field) {
+		if (field.isAnnotationPresent(neo.class)) {
+			neo n = field.getAnnotation(neo.class);
+			return !n.inverse().equals(neo.DEFAULT);
+		}
+		return false;		
+	}
+
+	
+	public RelationshipType toRelationship(RelationFactory f, Field field) {
+		String n = field.getName();
+		if (field.isAnnotationPresent(neo.class)) {
+			neo annot = field.getAnnotation(neo.class);
+			if (!neo.DEFAULT.equals(annot.value()))
+				n = annot.value();
+			else if (!neo.DEFAULT.equals(annot.inverse()))
+				n = annot.inverse();
+		}
+		return f.relationshipType(n);
+	}
+	
+	public boolean isTraverser(Field field) {
+		if (field.isAnnotationPresent(neo.class)) {
+			neo n = field.getAnnotation(neo.class);
+			return !n.traverser().equals(DefaultTraverserProvider.class);
+		}
+		return false;		
+	}
+	
+	public boolean isEmbedded(Field field) {
+		return field.isAnnotationPresent(embed.class);
+	}
+}

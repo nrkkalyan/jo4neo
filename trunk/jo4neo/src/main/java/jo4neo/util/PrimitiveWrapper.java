@@ -1,4 +1,4 @@
-package jo4neo;
+package jo4neo.util;
 
 import java.util.Date;
 import java.util.HashSet;

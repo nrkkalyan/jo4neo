@@ -2,10 +2,12 @@ package jo4neo;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import static jo4neo.TypeWrapperFactory.$;
 
 import jo4neo.fluent.Is;
 import jo4neo.fluent.Where;
+import jo4neo.util.FieldContext;
 
 
 public class FieldValueMap<A> implements Where<A> {

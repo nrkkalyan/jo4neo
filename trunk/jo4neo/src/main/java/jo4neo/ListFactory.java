@@ -1,5 +1,6 @@
 package jo4neo;
 
+import jo4neo.util.FieldContext;
 import jo4neo.util.Lazy;
 
 class ListFactory {

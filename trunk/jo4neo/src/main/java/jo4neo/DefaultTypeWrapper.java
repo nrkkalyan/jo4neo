@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.logging.Level;
 
 
+
+import jo4neo.util.FieldContext;
 import jo4neo.util.Utils;
 
 import static jo4neo.util.Resources.*;
@@ -42,13 +44,15 @@ class DefaultTypeWrapper extends TypeWrapper {
 
 	}
 
+	static Jo4neoAnnotations helper = new Jo4neoAnnotations();
+	
 	public FieldContext[] getFields(Object o) {
 		ArrayList<FieldContext> values = new ArrayList<FieldContext>();
 		for (Field field : fields) {
 			if (field.isAnnotationPresent(neo.class))
-				values.add(new FieldContext(o, field));
+				values.add(new FieldContext(o, field, helper));
 			else if ( field.isAnnotationPresent(embed.class))
-				values.add(new EmbeddedContext(o,field));
+				values.add(new EmbeddedContext(o,field, helper));
 		}
 		return values.toArray(new FieldContext[0]);
 	}

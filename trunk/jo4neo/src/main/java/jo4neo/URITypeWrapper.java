@@ -2,7 +2,10 @@ package jo4neo;
 
 import java.net.URI;
 
+import jo4neo.util.FieldContext;
+
 import org.neo4j.api.core.Node;
+
 
 
 class URITypeWrapper extends TypeWrapper {

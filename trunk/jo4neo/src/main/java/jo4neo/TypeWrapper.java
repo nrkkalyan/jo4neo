@@ -5,6 +5,9 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.util.logging.Logger;
 
+import jo4neo.util.FieldContext;
+
+
 
 
 public abstract class TypeWrapper {

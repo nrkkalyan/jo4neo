@@ -1,5 +1,6 @@
 package jo4neo;
 
+import static jo4neo.TypeWrapperFactory.$;
 import static jo4neo.util.Resources.MISSING_TIMELINE_ANNOTATION;
 import static jo4neo.util.Resources.msg;
 
@@ -10,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import jo4neo.util.FieldContext;
+
 import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.NotFoundException;
@@ -19,6 +22,7 @@ import org.neo4j.api.core.StopEvaluator;
 import org.neo4j.api.core.Transaction;
 import org.neo4j.api.core.Traverser;
 import org.neo4j.api.core.Traverser.Order;
+
 
 
 
@@ -137,7 +141,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 		Transaction t = neo.beginTx();
 		try { 
 			Set<Object> values = new TreeSet<Object>(new NeoComparator());
-			Node n = field.subjectNode(neo);
+			Node n = getNode(field);
 			for (Relationship r : outgoingRelationships(field, n)) {
 				if (!values.add(loadDirect(r.getEndNode())))
 					System.err.println("duplicate relations in graph.");
@@ -148,12 +152,16 @@ class LoadOperation<T> implements LoadCollectionOps {
 			t.finish();
 		}
 	}
+	
+	private Node getNode(FieldContext field) {
+		return neo.asNode(field.subject);
+	}
 
 	public Collection<Object> loadInverse(FieldContext field) {
 		Transaction t = neo.beginTx();
 		try { 
 			Set<Object> values = new TreeSet<Object>(new NeoComparator());
-			Node n = field.subjectNode(neo);
+			Node n = getNode(field);
 			for (Relationship r : incommingRelationships(field, n)) {
 				if (!values.add(loadDirect(r.getStartNode())))
 					System.err.println("duplicate relations in graph.");
@@ -168,7 +176,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 	public Collection<Object> loadTraverser(FieldContext field) {
 		Transaction t = neo.beginTx();
 		try { 
-			Node n = field.subjectNode(neo);
+			Node n = getNode(field);
 			Traverser tvsr = field.getTraverserProvider().get(n);
 			t.success();
 			return loadAndFilter(tvsr,  field.type2());
@@ -180,7 +188,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 	public void removeRelationship(FieldContext field, Object o) {
 		Transaction t = neo.beginTx();
 		try {
-			Node source = field.subjectNode(neo);
+			Node source = getNode(field);
 			Node target = neo.asNode(o);
 			for (Relationship r : outgoingRelationships(field, source)) {
 				if (r.getEndNode().equals(target))
