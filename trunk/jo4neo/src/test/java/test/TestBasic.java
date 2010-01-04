@@ -31,6 +31,7 @@ public class TestBasic extends BaseTest {
 			Hotel h = new Hotel();
 			h.setName("Hyatt Boston");
 			graph.persist(h);
+			graph.persist(h);
 			Hotel hotel = new Hotel();
 			Collection<Hotel> hotels = graph.find(hotel).where(hotel.name).is("Hyatt Boston").results();
 			

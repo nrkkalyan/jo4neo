@@ -62,7 +62,7 @@ public class TestTravelDomain {
 			s = pm.find(s).where(s.code).is(row[1]).result();
 			c.setState(s);
 			s.getCities().add(c);
-			pm.persist(c);
+			pm.persist(s);
 		}
 		
 		
