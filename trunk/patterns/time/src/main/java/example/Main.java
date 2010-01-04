@@ -19,6 +19,7 @@ import net.sf.json.JSONObject;
 
 import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
+import org.neo4j.api.core.Transaction;
 
 public class Main {
 	
@@ -52,14 +53,18 @@ public class Main {
 			tweet.from = URI.create("http://twitter.com/" + from);
 			tweets.add(tweet);
 		}
-		
+		System.out.println("finished reading twitter feed...");
 		
 		NeoService neo = new EmbeddedNeo("neo_store");
 		ObjectGraph graph = new ObjectGraph(neo);
 		Util util = new Util(graph);
 		Calendar cal = Calendar.getInstance();
+		Transaction t = graph.beginTx();
+		Year year = new Year();
+		graph.find(year).where(year.value).is(2010).results();
 		try {
 			for (Tweet tweet : tweets) {
+				System.out.println("persisting " + tweet.title);
 				cal.setTime(tweet.time);
 				int hour = cal.get(Calendar.HOUR_OF_DAY);
 				Day day = util.findDay(cal);
@@ -69,8 +74,10 @@ public class Main {
 				}
 				graph.persist(tweet);
 			}
+			t.success();
 			
 		} finally {
+			t.finish();
 			graph.close();
 			neo.shutdown();
 		}
