@@ -72,9 +72,12 @@ class PersistOperation<T> {
 
 	private void saveAndIndex(Node node, FieldContext field) {
 		field.applyTo(node);
-		if (field.value() != null && field.isIndexed())
+		if (field.value() != null && field.isIndexed()) {
+			index().removeIndex(node, field.getIndexName(),
+					field.value());
 			index().index(node, field.getIndexName(),
 					field.value());
+		}
 	}
 
 	private IndexService index() {
@@ -132,9 +135,11 @@ class PersistOperation<T> {
 		if (field.value() == null)
 			return;
 		Object value = field.value();
+		boolean isNew = ! $(value).id(value).valid();
 		Node n2 = asNode(value);
 		node.createRelationshipTo(n2, reltype);
-		save(n2, field.value());
+		if (isNew)
+			save(n2, field.value());
 	}
 
 	private void deleteAll(Node node, RelationshipType reltype) {
