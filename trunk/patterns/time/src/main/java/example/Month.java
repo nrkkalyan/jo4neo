@@ -5,7 +5,7 @@ import java.util.Collection;
 import jo4neo.neo;
 
 public class Month extends Base {
-	@neo(inverse="parent") public Collection<Day> days;
+	@neo(inverse="hasMonth") public Collection<Day> days;
 	@neo("hasYear") public Year parent;
 	@neo public int value;
 	
