@@ -10,5 +10,6 @@ interface LoadCollectionOps {
 
 	Collection<Object> load(FieldContext field);
 	void removeRelationship(FieldContext field, Object o);
+	long count(FieldContext field);
 	boolean isClosed();
 }

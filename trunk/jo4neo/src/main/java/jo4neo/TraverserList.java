@@ -17,11 +17,14 @@ class TraverserList implements Lazy {
 	private transient FieldContext field;
 	private transient LoadOperation loader;
 	private Collection data;
-
 	
 	public TraverserList(FieldContext f, LoadOperation neo) {
 		field = f;
 		this.loader = neo;
+	}
+	
+	public long count() {
+		throw new UnsupportedOperationException();
 	}
 
 	private Collection data() {

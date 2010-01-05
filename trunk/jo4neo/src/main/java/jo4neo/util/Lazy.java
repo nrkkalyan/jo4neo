@@ -6,6 +6,7 @@ public interface Lazy extends Set<Object> {
 
 	boolean isConnected();
 	boolean modified();
+	long count();
 
 }
 

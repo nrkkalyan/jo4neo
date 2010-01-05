@@ -27,6 +27,10 @@ class LazyList implements Lazy {
 		this.loader = new SoftReference(loader);
 	}
 	
+	public long count() {
+		return graph().count(field);
+	}
+	
 	private LoadCollectionOps graph() {
 		LoadCollectionOps graph = loader.get();
 		if (graph == null || graph.isClosed())

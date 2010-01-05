@@ -67,6 +67,8 @@ public class TestBasic extends BaseTest {
 			graph.persist(s1);
 
 			Student s1ref = graph.get(Student.class, s1.neo.id());
+			
+			assertEquals(3, graph.count(s1ref.courses));
 			assertEquals(s1ref.getCourses().size(), 3);
 			t.success();
 		} finally {

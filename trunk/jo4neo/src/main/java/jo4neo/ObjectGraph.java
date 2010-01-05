@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Date;
 
 import jo4neo.fluent.Where;
-import jo4neo.util.Utils;
 
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
@@ -78,7 +77,13 @@ public class ObjectGraph {
 	public <A> Where<A> find(A a) {
 		return new FieldValueMap<A>(a, this);
 	}
-
+	
+	public long count(Collection<? extends Object> values) {
+		if (values instanceof LazyList)
+			return ((LazyList) values).count();
+		return 0;
+	}
+	
 	<T> T getSingle(Class<T> t, String indexname, Object value) {
 		return new LoadOperation<T>(t, ineo).load(indexname, value);
 	}

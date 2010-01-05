@@ -21,13 +21,16 @@ class InverseList implements Lazy {
 	private transient FieldContext field;
 	private transient LoadOperation loader;
 	private Collection data;
-
 	
 	public InverseList(FieldContext f, LoadOperation neo) {
 		field = f;
 		this.loader = neo;
 	}
 
+	public long count() {
+		return loader.count(field);
+	}
+	
 	private Collection data() {
 		if ( data == null)
 			data = loader.loadInverse(field);

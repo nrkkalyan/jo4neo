@@ -318,6 +318,14 @@ class LoadOperation<T> implements LoadCollectionOps {
 			t.finish();
 		}
 	}
+
+	public long count(FieldContext field) {
+		long count=0;
+		Node n = getNode(field);
+		for (Relationship r : field.relationships(n, neo.getRelationFactory()))
+			count++;
+		return count;
+	}
 }
 
 /**
