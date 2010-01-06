@@ -80,7 +80,7 @@ public class ObjectGraph {
 	
 	public long count(Collection<? extends Object> values) {
 		if (values instanceof LazyList)
-			return ((LazyList) values).count();
+			return ((LazyList) values).getCount();
 		return 0;
 	}
 	

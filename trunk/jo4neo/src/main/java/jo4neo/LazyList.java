@@ -27,7 +27,7 @@ class LazyList implements Lazy {
 		this.loader = new SoftReference(loader);
 	}
 	
-	public long count() {
+	public long getCount() {
 		return graph().count(field);
 	}
 	

@@ -23,7 +23,7 @@ class TraverserList implements Lazy {
 		this.loader = neo;
 	}
 	
-	public long count() {
+	public long getCount() {
 		throw new UnsupportedOperationException();
 	}
 
