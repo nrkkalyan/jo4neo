@@ -23,9 +23,6 @@ import org.neo4j.api.core.Transaction;
 import org.neo4j.api.core.Traverser;
 import org.neo4j.api.core.Traverser.Order;
 
-
-
-
 class LoadOperation<T> implements LoadCollectionOps {
 
 	IndexedNeo neo;
@@ -34,9 +31,9 @@ class LoadOperation<T> implements LoadCollectionOps {
 
 	public LoadOperation(IndexedNeo ineo) {
 		this.neo = ineo;
-		cache = new HashMap<Long, Object>();		
+		cache = new HashMap<Long, Object>();
 	}
-	
+
 	public LoadOperation(Class<?> type, IndexedNeo ineo) {
 		this(ineo);
 		this.cls = type;
@@ -48,7 +45,8 @@ class LoadOperation<T> implements LoadCollectionOps {
 			Node n = neo.getNodeById(key);
 			TypeWrapper type = nodesJavaType(n);
 			if (!type.assignableTo(cls))
-				throw new NotFoundException("Node " + key + " cannot be seen as a " + cls);
+				throw new NotFoundException("Node " + key + " cannot be seen as a "
+						+ cls);
 			if (n == null)
 				return null;
 			Object o = loadDirect(n);
@@ -58,11 +56,10 @@ class LoadOperation<T> implements LoadCollectionOps {
 			t.finish();
 		}
 	}
-	
+
 	public boolean isClosed() {
 		return neo.isClosed();
 	}
-
 
 	public Collection<T> loadAll() {
 		Transaction t = neo.beginTx();
@@ -71,16 +68,17 @@ class LoadOperation<T> implements LoadCollectionOps {
 			return loadAll(n.getRelationships(Relationships.JO4NEO_HAS_TYPE));
 		} finally {
 			t.finish();
-		}			
+		}
 	}
-	
+
 	private Collection<T> load(Iterable<Node> nodes, long max) {
 		Transaction t = neo.beginTx();
 		long l = 0;
 		try {
 			ArrayList<T> results = new ArrayList<T>();
 			for (Node node : nodes) {
-				if (l++ >= max) break;
+				if (l++ >= max)
+					break;
 				results.add((T) loadDirect(node));
 			}
 			t.success();
@@ -93,9 +91,9 @@ class LoadOperation<T> implements LoadCollectionOps {
 	private Collection<T> load(Iterable<Node> nodes) {
 		return load(nodes, Long.MAX_VALUE);
 	}
-	
+
 	public Collection<T> loadAndFilter(Iterable<Node> nodes) {
-		return (Collection<T>)loadAndFilter(nodes,cls);
+		return (Collection<T>) loadAndFilter(nodes, cls);
 	}
 
 	public Collection<Object> loadAndFilter(Iterable<Node> nodes, Class<?> clazz) {
@@ -114,13 +112,12 @@ class LoadOperation<T> implements LoadCollectionOps {
 		}
 	}
 
-	
 	private Collection<T> loadAll(Iterable<Relationship> relations) {
-			ArrayList<T> results = new ArrayList<T>();
-			for (Relationship r : relations)
-				results.add((T) loadDirect(r.getStartNode()));
-			return results;
-		
+		ArrayList<T> results = new ArrayList<T>();
+		for (Relationship r : relations)
+			results.add((T) loadDirect(r.getStartNode()));
+		return results;
+
 	}
 
 	private void single(Node n, FieldContext field) {
@@ -129,9 +126,10 @@ class LoadOperation<T> implements LoadCollectionOps {
 			return;
 		}
 	}
-	
+
 	private void inverse(Node n, FieldContext field) {
-		for (Relationship r : field.inverseRelationships(n, neo.getRelationFactory())) {
+		for (Relationship r : field.inverseRelationships(n, neo
+				.getRelationFactory())) {
 			field.setProperty(loadDirect(r.getStartNode()));
 			return;
 		}
@@ -139,7 +137,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 
 	public Collection<Object> load(FieldContext field) {
 		Transaction t = neo.beginTx();
-		try { 
+		try {
 			Set<Object> values = new TreeSet<Object>(new NeoComparator());
 			Node n = getNode(field);
 			for (Relationship r : outgoingRelationships(field, n)) {
@@ -152,14 +150,14 @@ class LoadOperation<T> implements LoadCollectionOps {
 			t.finish();
 		}
 	}
-	
+
 	private Node getNode(FieldContext field) {
 		return neo.asNode(field.subject);
 	}
 
 	public Collection<Object> loadInverse(FieldContext field) {
 		Transaction t = neo.beginTx();
-		try { 
+		try {
 			Set<Object> values = new TreeSet<Object>(new NeoComparator());
 			Node n = getNode(field);
 			for (Relationship r : incommingRelationships(field, n)) {
@@ -175,11 +173,11 @@ class LoadOperation<T> implements LoadCollectionOps {
 
 	public Collection<Object> loadTraverser(FieldContext field) {
 		Transaction t = neo.beginTx();
-		try { 
+		try {
 			Node n = getNode(field);
 			Traverser tvsr = field.getTraverserProvider().get(n);
 			t.success();
-			return loadAndFilter(tvsr,  field.type2());
+			return loadAndFilter(tvsr, field.type2());
 		} finally {
 			t.finish();
 		}
@@ -202,17 +200,15 @@ class LoadOperation<T> implements LoadCollectionOps {
 
 	private Iterable<Relationship> outgoingRelationships(FieldContext field,
 			Node n) {
-		return n.getRelationships(field.toRelationship(neo
-				.getRelationFactory()), Direction.OUTGOING);
-	}
-	
-	private Iterable<Relationship> incommingRelationships(FieldContext field,
-			Node n) {
-		return n.getRelationships(field.toRelationship(neo
-				.getRelationFactory()), Direction.INCOMING);
+		return n.getRelationships(field.toRelationship(neo.getRelationFactory()),
+				Direction.OUTGOING);
 	}
 
-	
+	private Iterable<Relationship> incommingRelationships(FieldContext field,
+			Node n) {
+		return n.getRelationships(field.toRelationship(neo.getRelationFactory()),
+				Direction.INCOMING);
+	}
 
 	public Object loadDirect(Node n) {
 		if (cache.containsKey(n.getId()))
@@ -237,9 +233,10 @@ class LoadOperation<T> implements LoadCollectionOps {
 	}
 
 	/**
-	 * Each node created is annotated with the javatype from
-	 * whence it came.
-	 * @param n neo4j node.
+	 * Each node created is annotated with the javatype from whence it came.
+	 * 
+	 * @param n
+	 *           neo4j node.
 	 * @return
 	 */
 	public static TypeWrapper nodesJavaType(Node n) {
@@ -247,12 +244,11 @@ class LoadOperation<T> implements LoadCollectionOps {
 		TypeWrapper type = TypeWrapperFactory.wrap(typename);
 		return type;
 	}
-	
+
 	/*
 	 * Timeline features
-	 * 
 	 */
-	
+
 	/**
 	 * 
 	 */
@@ -260,7 +256,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 		timelineAnnotationRequired();
 		Transaction t = neo.beginTx();
 		try {
-			org.neo4j.util.timeline.Timeline tl = neo.getTimeLine(cls);		
+			org.neo4j.util.timeline.Timeline tl = neo.getTimeLine(cls);
 			return load(tl.getAllNodesAfter(since));
 		} finally {
 			t.finish();
@@ -272,32 +268,35 @@ class LoadOperation<T> implements LoadCollectionOps {
 	 */
 	private void timelineAnnotationRequired() {
 		if (!cls.isAnnotationPresent(Timeline.class))
-			throw new UnsupportedOperationException(msg(MISSING_TIMELINE_ANNOTATION, cls));
+			throw new UnsupportedOperationException(msg(
+					MISSING_TIMELINE_ANNOTATION, cls));
 	}
-	
+
 	/**
 	 * 
 	 * @param from
 	 * @param to
 	 * @return
 	 */
-	public Collection<T> within(long from, long to) {		
+	public Collection<T> within(long from, long to) {
 		timelineAnnotationRequired();
 		Transaction t = neo.beginTx();
 		try {
-			org.neo4j.util.timeline.Timeline tl = neo.getTimeLine(cls);			
+			org.neo4j.util.timeline.Timeline tl = neo.getTimeLine(cls);
 			return load(tl.getAllNodesBetween(from, to));
 		} finally {
 			t.finish();
 		}
 	}
-	
+
 	public Collection<T> latest(long max) {
 		Transaction t = neo.beginTx();
 		try {
 			Node metanode = neo.getMetaNode(cls);
-			Traverser tvsr = metanode.traverse(Order.BREADTH_FIRST, StopEvaluator.END_OF_GRAPH, 
-					ReturnableEvaluator.ALL_BUT_START_NODE, Relationships.JO4NEO_NEXT_MOST_RECENT, Direction.OUTGOING);
+			Traverser tvsr = metanode.traverse(Order.BREADTH_FIRST,
+					StopEvaluator.END_OF_GRAPH,
+					ReturnableEvaluator.ALL_BUT_START_NODE,
+					Relationships.JO4NEO_NEXT_MOST_RECENT, Direction.OUTGOING);
 			return load(tvsr, max);
 		} finally {
 			t.finish();
@@ -309,39 +308,44 @@ class LoadOperation<T> implements LoadCollectionOps {
 		Transaction t = neo.beginTx();
 		try {
 			Node n = neo.getIndexService().getSingleNode(indexname, value);
-			if (n==null)
+			if (n == null)
 				return null;
 			Object o = loadDirect(n);
 			t.success();
-			return (T)o;
+			return (T) o;
 		} finally {
 			t.finish();
 		}
 	}
 
 	public long count(FieldContext field) {
-		long count=0;
-		Node n = getNode(field);
-		for (Relationship r : field.relationships(n, neo.getRelationFactory()))
-			count++;
+		long count = 0;
+		Transaction t = neo.beginTx();
+		try {
+			Node n = getNode(field);
+			for (Relationship r : field.relationships(n, neo.getRelationFactory()))
+				count++;
+		} finally {
+			t.finish();
+		}
 		return count;
 	}
 }
 
 /**
- * jo4neo is a java object binding library for neo4j
- * Copyright (C) 2009  Taylor Cowan
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
+ * jo4neo is a java object binding library for neo4j Copyright (C) 2009 Taylor
+ * Cowan
+ * 
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, either version 3 of the License, or (at your option) any
+ * later version.
+ * 
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ * 
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
