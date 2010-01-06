@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import jo4neo.util.AnnotationHelper;
 import jo4neo.util.FieldContext;
 import jo4neo.util.RelationFactory;
-import jo4neo.util.TraverserProvider;
 
 import org.neo4j.api.core.RelationshipType;
 

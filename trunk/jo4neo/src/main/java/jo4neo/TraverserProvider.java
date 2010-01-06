@@ -1,4 +1,4 @@
-package jo4neo.util;
+package jo4neo;
 
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Traverser;

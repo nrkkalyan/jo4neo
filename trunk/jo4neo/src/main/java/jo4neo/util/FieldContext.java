@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import jo4neo.TraverserProvider;
+
 
 
 import org.neo4j.api.core.Direction;

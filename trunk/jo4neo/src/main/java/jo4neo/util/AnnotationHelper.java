@@ -2,6 +2,8 @@ package jo4neo.util;
 
 import java.lang.reflect.Field;
 
+import jo4neo.TraverserProvider;
+
 import org.neo4j.api.core.RelationshipType;
 
 

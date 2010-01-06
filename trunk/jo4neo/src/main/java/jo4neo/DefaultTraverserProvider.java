@@ -1,6 +1,5 @@
 package jo4neo;
 
-import jo4neo.util.TraverserProvider;
 
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Traverser;
