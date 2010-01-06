@@ -6,7 +6,7 @@ Tags:
 <c:forEach items="${actionBean.tags}" var="tag" varStatus="loop">
 <c:if test="${!loop.first}">, </c:if>
 <c:if test="${actionBean.selected == tag.id}">&gt;</c:if>
-<a href="${pageContext.request.contextPath}/blog/tags/${tag.id}">${tag.name} (${fn:length(tag.posts)})</a>
+<a href="${pageContext.request.contextPath}/blog/tags/${tag.id}">${tag.name} (${tag.posts.count})</a>
 </c:forEach>
 
 <c:forEach items="${actionBean.posts}" var="row" varStatus="loop">

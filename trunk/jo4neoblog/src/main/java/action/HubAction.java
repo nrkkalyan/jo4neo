@@ -45,5 +45,4 @@ public class HubAction extends BaseAction implements HubView {
 		return editable;
 	}
 	
-	
 }
