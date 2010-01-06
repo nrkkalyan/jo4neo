@@ -53,7 +53,7 @@ class PersistOperation<T> {
 	}
 
 	private void save(Node node, FieldContext field) {
-		if (field.isInverse())
+		if (field.isInverse() || field.isTraverser())
 			initializeIfNull(field);
 		else if (field.isSimpleType())
 			saveAndIndex(node, field);
