@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import jo4neo.fluent.Where;
+import jo4neo.util.Lazy;
 
 import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
@@ -79,8 +80,8 @@ public class ObjectGraph {
 	}
 	
 	public long count(Collection<? extends Object> values) {
-		if (values instanceof LazyList)
-			return ((LazyList) values).getCount();
+		if (values instanceof Lazy)
+			return ((Lazy) values).getCount();
 		return 0;
 	}
 	
