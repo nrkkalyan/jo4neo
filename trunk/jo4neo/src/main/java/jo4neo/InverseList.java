@@ -3,6 +3,8 @@ package jo4neo;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.neo4j.api.core.Direction;
+
 
 
 import jo4neo.util.FieldContext;
@@ -28,7 +30,7 @@ class InverseList implements Lazy {
 	}
 
 	public long getCount() {
-		return loader.count(field);
+		return loader.count(field, Direction.INCOMING);
 	}
 	
 	private Collection data() {

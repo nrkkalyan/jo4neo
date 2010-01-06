@@ -46,14 +46,11 @@ public class FieldContext {
 				&& PrimitiveWrapper.isPrimitive(field.getType()
 						.getComponentType());
 	}
-
-	public Iterable<Relationship> relationships(Node n, RelationFactory f) {
-		return n.getRelationships(toRelationship(f), Direction.OUTGOING);
-	}
 	
-	public Iterable<Relationship> inverseRelationships(Node n, RelationFactory f) {
-		return n.getRelationships(toRelationship(f), Direction.INCOMING);
+	public Iterable<Relationship> relationships(Node n, RelationFactory f, Direction direction) {
+		return n.getRelationships(toRelationship(f), direction);
 	}
+
 
 	public Object value() {
 		Object result = null;

@@ -121,15 +121,16 @@ class LoadOperation<T> implements LoadCollectionOps {
 	}
 
 	private void single(Node n, FieldContext field) {
-		for (Relationship r : field.relationships(n, neo.getRelationFactory())) {
+		for (Relationship r : field.relationships(n, neo.getRelationFactory(),
+				Direction.OUTGOING)) {
 			field.setProperty(loadDirect(r.getEndNode()));
 			return;
 		}
 	}
 
 	private void inverse(Node n, FieldContext field) {
-		for (Relationship r : field.inverseRelationships(n, neo
-				.getRelationFactory())) {
+		for (Relationship r : field.relationships(n, neo.getRelationFactory(),
+				Direction.INCOMING)) {
 			field.setProperty(loadDirect(r.getStartNode()));
 			return;
 		}
@@ -318,12 +319,13 @@ class LoadOperation<T> implements LoadCollectionOps {
 		}
 	}
 
-	public long count(FieldContext field) {
+	public long count(FieldContext field, Direction direction) {
 		long count = 0;
 		Transaction t = neo.beginTx();
 		try {
 			Node n = getNode(field);
-			for (Relationship r : field.relationships(n, neo.getRelationFactory()))
+			for (Relationship r : field.relationships(n, neo.getRelationFactory(),
+					direction))
 				count++;
 		} finally {
 			t.finish();

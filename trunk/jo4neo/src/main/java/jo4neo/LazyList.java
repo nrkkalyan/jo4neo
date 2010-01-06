@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.neo4j.api.core.Direction;
+
 
 
 import jo4neo.util.FieldContext;
@@ -28,7 +30,7 @@ class LazyList implements Lazy {
 	}
 	
 	public long getCount() {
-		return graph().count(field);
+		return graph().count(field, Direction.OUTGOING);
 	}
 	
 	private LoadCollectionOps graph() {
