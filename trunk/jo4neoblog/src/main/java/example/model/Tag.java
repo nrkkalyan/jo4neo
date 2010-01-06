@@ -6,7 +6,6 @@ import jo4neo.neo;
 
 public class Tag extends NeoBean<Tag> {
 	
-	public static final String index = "tag.name";
 	@neo(inverse="hasTag") public Collection<Post> posts;
 	@neo(index=true) public String name;
 
