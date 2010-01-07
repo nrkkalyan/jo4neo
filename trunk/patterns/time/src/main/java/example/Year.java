@@ -9,9 +9,7 @@ public class Year extends Base {
 	@neo(inverse="hasYear") public Collection<Month> months;
 	@neo(index=true) public int value;
 	
-	public Year() {
-		
-	}
+	public Year() {}
 	
 	public Year(Calendar cal) {
 		value = cal.get(Calendar.YEAR);
