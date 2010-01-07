@@ -57,6 +57,10 @@ public class ObjectGraph {
 	public <T> T get(Class<T> t, long key) {
 		return new LoadOperation<T>(t, ineo).load(key);
 	}
+	
+	public Object get(Node node) {
+		return new LoadOperation<Object>(Object.class, ineo).load(node);
+	}
 
 	public void close() {
 		ineo.close();

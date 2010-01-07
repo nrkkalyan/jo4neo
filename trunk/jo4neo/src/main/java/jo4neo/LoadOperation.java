@@ -332,6 +332,27 @@ class LoadOperation<T> implements LoadCollectionOps {
 		}
 		return count;
 	}
+
+	public Object load(Node n) {
+		Transaction t = neo.beginTx();
+		try {
+			TypeWrapper type = nodesJavaType(n);
+			if (!type.assignableTo(cls))
+				throw new NotFoundException(n + " cannot be seen as a "
+						+ cls);
+			if (n == null)
+				return null;
+			Object o = loadDirect(n);
+			t.success();
+			return o;
+		} catch (NotFoundException e) {
+			return n;
+		} finally {
+			t.finish();
+		}
+	}
+	
+	
 }
 
 /**

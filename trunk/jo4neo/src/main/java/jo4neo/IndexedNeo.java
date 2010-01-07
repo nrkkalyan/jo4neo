@@ -1,5 +1,6 @@
 package jo4neo;
 
+import static jo4neo.Relationships.JO4NEO_HAS_TYPE;
 import static jo4neo.TypeWrapperFactory.$;
 
 import java.io.Serializable;
@@ -139,6 +140,9 @@ public class IndexedNeo implements NeoService {
 				getIndexService().index(n, URI.class.getName(), uri.toString());
 				n.setProperty("uri", uri.toString());
 				n.setProperty(Nodeid.class.getName(), URI.class.getName());
+				//find metanode for type t
+				Node metanode = getMetaNode(URI.class);	
+				n.createRelationshipTo(metanode, JO4NEO_HAS_TYPE);	
 			}
 			t.success();
 			return n;
