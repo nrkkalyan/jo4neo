@@ -42,7 +42,6 @@ public class Util {
 			Month month = new Month(i);
 			month.parent = y;
 			graph.persist(month);
-			System.out.println(y.nodeid());
 		}
 		return y;
 	}

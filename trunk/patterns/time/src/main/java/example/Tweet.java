@@ -6,6 +6,5 @@ import jo4neo.neo;
 
 public class Tweet extends Event {
 
-	@neo public String content;
 	@neo public URI from;
 }

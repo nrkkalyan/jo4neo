@@ -14,7 +14,7 @@
   	<dependency>
   		<groupId>thewebsemantic</groupId>
   		<artifactId>jo4neo</artifactId>
-  		<version>0.2.4-SNAPSHOT</version>
+  		<version>0.2.4</version>
   	</dependency>
   	<dependency>
   		<groupId>net.sf.json-lib</groupId>
