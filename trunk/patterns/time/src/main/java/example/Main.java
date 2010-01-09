@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import jo4neo.ObjectGraph;
+import jo4neo.ObjectGraphFactory;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -29,7 +30,7 @@ public class Main {
 	public static void main(String[] args) throws MalformedURLException, IOException, ParseException {
 		
 		NeoService neo = new EmbeddedNeo("neo_store");
-		ObjectGraph graph = new ObjectGraph(neo);
+		ObjectGraph graph = ObjectGraphFactory.instance().get(neo);
 		
 		populateGraph(graph);
 		Transaction t = graph.beginTx();
