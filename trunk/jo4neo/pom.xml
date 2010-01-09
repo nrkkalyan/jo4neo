@@ -4,7 +4,6 @@
 	<groupId>thewebsemantic</groupId>
 	<artifactId>jo4neo</artifactId>
 	<name>jo4neo</name>
-	<version>0.2.4</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.neo4j</groupId>
@@ -27,6 +26,7 @@
 			<version>4.7</version>
 		</dependency>
 	</dependencies>
+	<version>0.3.0</version>
 	
 	 <build>
         <extensions>
