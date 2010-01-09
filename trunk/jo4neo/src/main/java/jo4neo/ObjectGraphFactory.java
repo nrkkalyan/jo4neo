@@ -9,6 +9,13 @@ import jo4neo.spi.ObjectGraphProvider;
 
 import org.neo4j.api.core.NeoService;
 
+/**
+ * Creates or retrieves exisiting {@link ObjectGraph} instances associated 
+ * with a particular NeoService.
+ * 
+ * @author Taylor Cowan
+ *
+ */
 public class ObjectGraphFactory {
 
 	private static ObjectGraphFactory myself = new ObjectGraphFactory();

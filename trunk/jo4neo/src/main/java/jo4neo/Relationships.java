@@ -2,6 +2,12 @@ package jo4neo;
 
 import org.neo4j.api.core.RelationshipType;
 
+/**
+ * Relationships used by jo4neo in constructing the object graph.
+ * 
+ * @author tcowan
+ *
+ */
 public enum Relationships implements RelationshipType {
 	JO4NEO_HAS_TYPE,
 	JO4NEO_NEXT_MOST_RECENT

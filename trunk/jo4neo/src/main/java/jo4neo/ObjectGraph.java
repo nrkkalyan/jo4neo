@@ -19,6 +19,10 @@ import org.neo4j.api.core.Transaction;
  * @author Taylor Cowan
  *
  */
+/**
+ * @author tcowan
+ *
+ */
 public interface ObjectGraph {
 
 	
@@ -61,7 +65,7 @@ public interface ObjectGraph {
 
 	/**
 	 * Type safe lookup of object given it's neo4j nodeid.
-	 * Your domain classes may use {@link Nodeid#id() to discover
+	 * Your domain classes may use {@link Nodeid#id()} to discover
 	 * their neo4j nodeid.   
 	 *  
 	 * @param t
@@ -70,16 +74,48 @@ public interface ObjectGraph {
 	 */
 	public abstract <T> T get(Class<T> t, long key);
 
+	
+	/**
+	 * 
+	 * @param node
+	 * @return
+	 */
 	public abstract Object get(Node node);
 	
+	/**
+	 * 
+	 * @param uri
+	 * @return
+	 */
 	public abstract Node get(URI uri);
 
+
+	/**
+	 * 
+	 * @param type
+	 * @param nodes
+	 * @return
+	 */
 	public abstract <T> Collection<T> get(Class<T> type, Iterable<Node> nodes);
 
+	/**
+	 * 
+	 * @param uri
+	 * @return
+	 */
 	public abstract void close();
 
+	/**
+	 * @param <A>
+	 * @param a
+	 * @return
+	 */
 	public abstract <A> Where<A> find(A a);
 
+	/**
+	 * @param values
+	 * @return
+	 */
 	public abstract long count(Collection<? extends Object> values);
 
 	public abstract <T> Collection<T> getAddedSince(Class<T> t, Date d);

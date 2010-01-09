@@ -5,6 +5,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * When applied to a java class declaration, this annotation tells
+ * jo4neo to let the class participate in Timeline indexing.
+ * 
+ * {@link ObjectGraph#getAddedBetween(Class, java.util.Date, java.util.Date)} and 
+ * {@link ObjectGraph#getAddedSince(Class, java.util.Date)} are only available for types
+ * annotated with {@literal}@Timeline.
+ * 
+ * @author Taylor Cowan
+ * @see ObjectGraph#getAddedBetween(Class, java.util.Date, java.util.Date)
+ * @see ObjectGraph#getAddedSince(Class, java.util.Date)
+ *
+ */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface Timeline {

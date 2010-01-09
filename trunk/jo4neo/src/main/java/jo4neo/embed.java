@@ -5,6 +5,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Denotes a persistent field.  Fields annotated with embed
+ * will be serialized to bytes using the Java's
+ * standard serialization mechanism.  Fields annotated
+ * with embed should be marked with the Serializable interface.
+ * 
+ * In the neo4j graph the bytes are stored as a node property.
+ * 
+ * @author Taylor Cowan
+ *
+ */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface embed {
