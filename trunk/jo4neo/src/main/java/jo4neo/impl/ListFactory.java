@@ -1,35 +1,17 @@
-package jo4neo;
+package jo4neo.impl;
 
-import java.util.Collection;
+import jo4neo.util.Lazy;
 
-import jo4neo.fluent.Result;
-
-
-
-
-class ResultImpl<T> implements Result<T> {
-
-	Class<T> c;
-	String indexName;
-	Object o;
-	ObjectGraph pm;
-	
-	public ResultImpl(ObjectGraph pm, Class<T> c, String indexName, Object o) {
-		this.o = o;
-		this.indexName = indexName;
-		this.c = c;
-		this.pm = pm;
-	}
-
-	public T result() {
-		return pm.getSingle(c,indexName,o);
-	}
-
-	public Collection<T> results() {
-		return pm.get(c,indexName,o);
+class ListFactory {
+	public static Lazy get(FieldContext field, LoadOperation load) {
+		if (field.isInverse())
+			return new InverseList(field, load);
+		else if (field.isTraverser())
+			return new TraverserList(field, load);
+		else
+			return new LazyList(field, load);
 	}
 }
-
 /**
  * jo4neo is a java object binding library for neo4j
  * Copyright (C) 2009  Taylor Cowan

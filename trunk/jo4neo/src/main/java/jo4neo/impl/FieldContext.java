@@ -1,4 +1,4 @@
-package jo4neo.util;
+package jo4neo.impl;
 
 import static jo4neo.util.PrimitiveWrapper.isPrimitive;
 
@@ -9,6 +9,10 @@ import java.util.Collection;
 import java.util.Date;
 
 import jo4neo.TraverserProvider;
+import jo4neo.util.NullType;
+import jo4neo.util.PrimitiveWrapper;
+import jo4neo.util.RelationFactory;
+import jo4neo.util.Utils;
 
 
 

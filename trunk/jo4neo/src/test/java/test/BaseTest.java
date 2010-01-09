@@ -3,6 +3,7 @@ package test;
 import java.io.File;
 
 import jo4neo.ObjectGraph;
+import jo4neo.ObjectGraphFactory;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -18,7 +19,7 @@ public class BaseTest {
 	@BeforeClass
 	public static void setup() {
 		neo = new EmbeddedNeo("neo_store");
-		graph = new ObjectGraph(neo);
+		graph = ObjectGraphFactory.instance().get(neo);
 	}
 	
 	@AfterClass
@@ -26,7 +27,6 @@ public class BaseTest {
 		graph.close();
 		neo.shutdown();
 		deleteDirectory(new File("neo_store"));
-
 	}
 	
 	@Test

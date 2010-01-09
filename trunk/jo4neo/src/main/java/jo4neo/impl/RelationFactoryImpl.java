@@ -1,20 +1,31 @@
-package jo4neo;
+package jo4neo.impl;
 
-import java.util.Comparator;
+import java.lang.reflect.Field;
 
+import jo4neo.neo;
+import jo4neo.util.RelationFactory;
 
-public class NeoComparator implements Comparator<Object> {
+import org.neo4j.api.core.DynamicRelationshipType;
+import org.neo4j.api.core.RelationshipType;
 
-	public int compare(Object o1, Object o2) {
-		TypeWrapper t1 = TypeWrapperFactory.$(o1);
-		TypeWrapper t2 = TypeWrapperFactory.$(o2);		
-		return compare(t1.id(o1),  t2.id(o2));
+public class RelationFactoryImpl implements RelationFactory {
+
+	public RelationshipType relationshipType(Field f) {		
+		if ( f.isAnnotationPresent(neo.class)) {
+			neo p = f.getAnnotation(neo.class);
+			String name = p.value();
+			if (!neo.DEFAULT.equals(name))
+				return relationshipType(name);
+			
+		}
+		String n = f.getName();
+		return relationshipType(n);
+			
 	}
-	
-	private int compare(Nodeid n1, Nodeid n2) {
-		return (n1.id() == n2.id()) ?  0:1;
-	}
 
+	public RelationshipType relationshipType(String name) {
+		return DynamicRelationshipType.withName(name);
+	}
 }
 
 /**

@@ -1,29 +1,33 @@
-package jo4neo;
+package jo4neo.impl;
 
-import java.lang.reflect.Field;
+import java.util.Collection;
 
-import jo4neo.util.RelationFactory;
+import jo4neo.ObjectGraph;
+import jo4neo.fluent.Result;
 
-import org.neo4j.api.core.DynamicRelationshipType;
-import org.neo4j.api.core.RelationshipType;
 
-public class RelationFactoryImpl implements RelationFactory {
 
-	public RelationshipType relationshipType(Field f) {		
-		if ( f.isAnnotationPresent(neo.class)) {
-			neo p = f.getAnnotation(neo.class);
-			String name = p.value();
-			if (!neo.DEFAULT.equals(name))
-				return relationshipType(name);
-			
-		}
-		String n = f.getName();
-		return relationshipType(n);
-			
+
+class ResultImpl<T> implements Result<T> {
+
+	Class<T> c;
+	String indexName;
+	Object o;
+	ObjectGraph pm;
+	
+	public ResultImpl(ObjectGraph pm, Class<T> c, String indexName, Object o) {
+		this.o = o;
+		this.indexName = indexName;
+		this.c = c;
+		this.pm = pm;
 	}
 
-	public RelationshipType relationshipType(String name) {
-		return DynamicRelationshipType.withName(name);
+	public T result() {
+		return pm.getSingle(c,indexName,o);
+	}
+
+	public Collection<T> results() {
+		return pm.get(c,indexName,o);
 	}
 }
 

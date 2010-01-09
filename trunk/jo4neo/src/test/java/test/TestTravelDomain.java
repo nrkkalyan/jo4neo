@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Collection;
 
 import jo4neo.ObjectGraph;
+import jo4neo.ObjectGraphFactory;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -43,7 +44,7 @@ public class TestTravelDomain {
 	public static void setup() {
 		deleteDirectory(new File("neo_store2"));
 		neo = new EmbeddedNeo("neo_store2");
-		pm = new ObjectGraph(neo);
+		pm = ObjectGraphFactory.instance().get(neo);
 		createStates();
 		createCities();
 	}

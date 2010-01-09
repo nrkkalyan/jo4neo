@@ -1,6 +1,6 @@
-package jo4neo;
+package jo4neo.impl;
 
-import jo4neo.util.FieldContext;
+import jo4neo.Nodeid;
 
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
@@ -8,7 +8,7 @@ import org.neo4j.api.core.Transaction;
 
 
 
-public class DeleteOpertation {
+class DeleteOpertation {
 
 	IndexedNeo ineo;
 	

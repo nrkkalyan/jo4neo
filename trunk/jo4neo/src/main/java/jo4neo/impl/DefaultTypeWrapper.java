@@ -1,4 +1,4 @@
-package jo4neo;
+package jo4neo.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -7,8 +7,8 @@ import java.util.logging.Level;
 
 
 
-import jo4neo.util.AnnotationHelper;
-import jo4neo.util.FieldContext;
+import jo4neo.Nodeid;
+import jo4neo.PersistenceException;
 import jo4neo.util.Utils;
 
 import static jo4neo.util.Resources.*;
@@ -31,14 +31,14 @@ class DefaultTypeWrapper extends TypeWrapper {
 			throw new PersistenceException(msg(MISSING_ID, c.getName()));
 	}
 
-	public Nodeid id(Object o) {
-		Nodeid n = null;
+	public InjectedNodeid id(Object o) {
+		InjectedNodeid n = null;
 		try {
 			if (!idfield.isAccessible())
 				idfield.setAccessible(true);
-			n = (Nodeid)idfield.get(o);
+			n = (InjectedNodeid)idfield.get(o);
 			if (n== null)
-				n = new Nodeid(o.getClass());
+				n = new DefaultNodeid(o.getClass());
 			idfield.set(o, n);
 		} catch (Exception e) {
 			logger.log(Level.WARNING, "Error retrieving id field value.", e);

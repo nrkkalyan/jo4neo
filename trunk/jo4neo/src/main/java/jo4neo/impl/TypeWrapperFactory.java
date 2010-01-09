@@ -1,4 +1,4 @@
-package jo4neo;
+package jo4neo.impl;
 
 import java.lang.reflect.Field;
 import java.net.URI;

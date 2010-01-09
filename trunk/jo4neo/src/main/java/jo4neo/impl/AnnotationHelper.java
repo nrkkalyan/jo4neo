@@ -1,13 +1,14 @@
-package jo4neo.util;
+package jo4neo.impl;
 
 import java.lang.reflect.Field;
 
 import jo4neo.TraverserProvider;
+import jo4neo.util.RelationFactory;
 
 import org.neo4j.api.core.RelationshipType;
 
 
-public interface AnnotationHelper {
+interface AnnotationHelper {
 	public TraverserProvider getTraverserProvider(Field field);
 	boolean isInverse(Field field);
 	boolean isIndexed(Field field);

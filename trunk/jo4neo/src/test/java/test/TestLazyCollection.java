@@ -7,10 +7,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.TreeSet;
 
-import jo4neo.NeoComparator;
 import jo4neo.Nodeid;
-import jo4neo.TypeWrapper;
-import jo4neo.TypeWrapperFactory;
+import jo4neo.impl.DefaultNodeid;
+import jo4neo.impl.NeoComparator;
+import jo4neo.impl.TypeWrapper;
+import jo4neo.impl.TypeWrapperFactory;
 
 import org.junit.Test;
 import org.neo4j.api.core.Transaction;
@@ -29,7 +30,7 @@ public class TestLazyCollection extends BaseTest {
 		Person p3 = new Person();
 
 		TypeWrapper tw = TypeWrapperFactory.$(p3);
-		Nodeid neo = new Nodeid(12, Person.class);
+		Nodeid neo = new DefaultNodeid(12, Person.class);
 		tw.setId(p3, neo);
 
 		set.add(p1);

@@ -1,18 +1,39 @@
-package jo4neo;
+package jo4neo.impl;
 
-import jo4neo.util.FieldContext;
-import jo4neo.util.Lazy;
+import java.util.HashMap;
+import java.util.Map;
 
-class ListFactory {
-	public static Lazy get(FieldContext field, LoadOperation load) {
-		if (field.isInverse())
-			return new InverseList(field, load);
-		else if (field.isTraverser())
-			return new TraverserList(field, load);
-		else
-			return new LazyList(field, load);
+import static jo4neo.impl.TypeWrapperFactory.$;
+
+import jo4neo.ObjectGraph;
+import jo4neo.fluent.Is;
+import jo4neo.fluent.Where;
+
+
+public class FieldValueMap<A> implements Where<A> {
+	
+	Class<A> c;
+	Map<Object, FieldContext> map;
+	ObjectGraph pm;
+	
+	public FieldValueMap(A a, ObjectGraph pm) {
+		c = (Class<A>) a.getClass();
+		this.pm = pm;
+		map = new HashMap<Object, FieldContext>();
+		for (FieldContext f : $(a).getFields(a))
+			map.put(f.initWithNewObject(), f);
 	}
+
+	public FieldContext getField(Object value) {
+		return map.get(value);
+	}
+	
+	public Is<A> where(Object o) {
+		return new IndexQuery<A>(map.get(o), pm, c);
+	}
+
 }
+
 /**
  * jo4neo is a java object binding library for neo4j
  * Copyright (C) 2009  Taylor Cowan

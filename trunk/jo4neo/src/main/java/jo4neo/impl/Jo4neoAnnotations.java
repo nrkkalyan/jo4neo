@@ -1,17 +1,19 @@
-package jo4neo;
+package jo4neo.impl;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
-import jo4neo.util.AnnotationHelper;
-import jo4neo.util.FieldContext;
+import jo4neo.DefaultTraverserProvider;
+import jo4neo.TraverserProvider;
+import jo4neo.embed;
+import jo4neo.neo;
 import jo4neo.util.RelationFactory;
 
 import org.neo4j.api.core.RelationshipType;
 
 
 
-public class Jo4neoAnnotations implements AnnotationHelper {
+class Jo4neoAnnotations implements AnnotationHelper {
 
 	public TraverserProvider getTraverserProvider(Field field) {
 		Class<? extends TraverserProvider> c = field.getAnnotation(neo.class).traverser();

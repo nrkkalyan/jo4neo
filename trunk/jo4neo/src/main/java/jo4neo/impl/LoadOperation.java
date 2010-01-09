@@ -1,6 +1,6 @@
-package jo4neo;
+package jo4neo.impl;
 
-import static jo4neo.TypeWrapperFactory.$;
+import static jo4neo.impl.TypeWrapperFactory.$;
 import static jo4neo.util.Resources.MISSING_TIMELINE_ANNOTATION;
 import static jo4neo.util.Resources.msg;
 
@@ -11,7 +11,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import jo4neo.util.FieldContext;
+import jo4neo.Nodeid;
+import jo4neo.Relationships;
+import jo4neo.Timeline;
 
 import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
@@ -216,7 +218,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 			return cache.get(n.getId());
 		TypeWrapper type = nodesJavaType(n);
 		Object o = type.newInstance(n);
-		type.setId(o, new Nodeid(n.getId(), type.getWrappedType()));
+		type.setId(o, new DefaultNodeid(n.getId(), type.getWrappedType()));
 		cache.put(n.getId(), o);
 		for (FieldContext field : type.getFields(o))
 			if (field.isInverse() && field.isSingular())

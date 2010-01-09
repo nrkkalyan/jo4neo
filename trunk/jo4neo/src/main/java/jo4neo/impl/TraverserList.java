@@ -1,41 +1,34 @@
-package jo4neo;
+package jo4neo.impl;
 
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.neo4j.api.core.Direction;
 
 
-
-import jo4neo.util.FieldContext;
 import jo4neo.util.Lazy;
 
 /**
- * Represents implied relationships.
- * members cannot be added or removed as this
- * is contingent upon relationships declared from another
- * entity.
  *
  */
 @SuppressWarnings("unchecked")
-class InverseList implements Lazy {
+class TraverserList implements Lazy {
 
 	private transient FieldContext field;
 	private transient LoadOperation loader;
 	private Collection data;
 	
-	public InverseList(FieldContext f, LoadOperation neo) {
+	public TraverserList(FieldContext f, LoadOperation neo) {
 		field = f;
 		this.loader = neo;
 	}
-
-	public long getCount() {
-		return loader.count(field, Direction.INCOMING);
-	}
 	
+	public long getCount() {
+		throw new UnsupportedOperationException();
+	}
+
 	private Collection data() {
 		if ( data == null)
-			data = loader.loadInverse(field);
+			data = loader.loadTraverser(field);
 		return data;
 	}
 	

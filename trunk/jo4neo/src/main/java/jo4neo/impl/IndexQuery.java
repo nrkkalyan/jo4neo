@@ -1,35 +1,24 @@
-package jo4neo;
+package jo4neo.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static jo4neo.TypeWrapperFactory.$;
-
+import jo4neo.ObjectGraph;
 import jo4neo.fluent.Is;
-import jo4neo.fluent.Where;
-import jo4neo.util.FieldContext;
+import jo4neo.fluent.Result;
 
 
-public class FieldValueMap<A> implements Where<A> {
-	
-	Class<A> c;
-	Map<Object, FieldContext> map;
+class IndexQuery<T> implements Is<T> {
+
 	ObjectGraph pm;
+	Class<T> c;
+	FieldContext f;
 	
-	public FieldValueMap(A a, ObjectGraph pm) {
-		c = (Class<A>) a.getClass();
+	public IndexQuery(FieldContext f, ObjectGraph pm, Class<T> c) {
 		this.pm = pm;
-		map = new HashMap<Object, FieldContext>();
-		for (FieldContext f : $(a).getFields(a))
-			map.put(f.initWithNewObject(), f);
-	}
-
-	public FieldContext getField(Object value) {
-		return map.get(value);
+		this.c = c;
+		this.f = f;
 	}
 	
-	public Is<A> where(Object o) {
-		return new IndexQuery<A>(map.get(o), pm, c);
+	public Result<T> is(Object o) {
+		return new ResultImpl<T>(pm,c,f.getIndexName(), o);
 	}
 
 }

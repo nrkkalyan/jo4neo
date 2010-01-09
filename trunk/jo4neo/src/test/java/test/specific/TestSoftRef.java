@@ -3,6 +3,7 @@ package test.specific;
 import java.util.Arrays;
 
 import jo4neo.ObjectGraph;
+import jo4neo.ObjectGraphFactory;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -15,7 +16,7 @@ public class TestSoftRef {
 	@Test
 	public void garbageCollected() {
 		NeoService neo = new EmbeddedNeo("neo_store");
-		ObjectGraph graph = new ObjectGraph(neo);			
+		ObjectGraph graph = ObjectGraphFactory.instance().get(neo);		
 
 		Transaction t = graph.beginTx();
 		try {

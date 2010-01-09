@@ -1,10 +1,11 @@
-package jo4neo;
+package jo4neo.impl;
 
 import java.net.URI;
 
+
 import org.neo4j.api.core.Node;
 
-class URINodeId extends Nodeid {
+class URINodeId extends DefaultNodeid{
 
 	
 	URI uri;

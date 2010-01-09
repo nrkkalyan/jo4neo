@@ -1,11 +1,11 @@
-package jo4neo;
+package jo4neo.impl;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.util.logging.Logger;
 
-import jo4neo.util.FieldContext;
+import jo4neo.Nodeid;
 
 
 
@@ -28,7 +28,7 @@ public abstract class TypeWrapper {
 
 	public abstract Object newInstance(Object o);	
 	public abstract FieldContext[] getFields(Object o);
-	public abstract Nodeid id(Object o);
+	public abstract InjectedNodeid id(Object o);
 
 	public abstract void setId(Object bean, Nodeid n);
 	public abstract Class<?> getWrappedType();

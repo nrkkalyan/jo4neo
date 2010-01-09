@@ -1,146 +1,96 @@
 package jo4neo;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
 import jo4neo.fluent.Where;
-import jo4neo.util.Lazy;
 
-import org.neo4j.api.core.NeoService;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Transaction;
 
 /**
+ * Interface used to interact with neo4j in an object oriented manner.
  * 
+ * An <code>ObjectGraph</code> instance is associated with a particular
+ * <code>NeoService</code> instance.  It is thread safe and therefore you can
+ * only have one ObjectGraph instance per NeoService.
  * 
+ * @author Taylor Cowan
  *
  */
-public class ObjectGraph {
+public interface ObjectGraph {
 
-	IndexedNeo ineo;
-
-	public ObjectGraph(NeoService neo) {
-		ineo = new IndexedNeo(neo);
-	}
-
-	public Transaction beginTx() {
-		return ineo.beginTx();
-	}
-
-	public <A> void persist(A... o) {
-		new PersistOperation<A>(ineo).save(o);
-	}
-
-	public Node get(Object o) {
-		return ineo.asNode(o);
-	}
-
-	public void delete(Object... o) {
-		new DeleteOpertation(ineo).delete(o);
-	}
-
-	private Node asNode(Object o) {
-		Transaction t = ineo.beginTx();
-		try {
-			TypeWrapper type = TypeWrapperFactory.$(o);
-			Nodeid neo = type.id(o);
-			Node n = ineo.getNodeById(neo);
-			t.success();
-			return n;
-		} finally {
-			t.finish();
-		}
-	}
-
-	public <T> T get(Class<T> t, long key) {
-		return new LoadOperation<T>(t, ineo).load(key);
-	}
 	
-	public Object get(Node node) {
-		return new LoadOperation<Object>(Object.class, ineo).load(node);
-	}
+	/**
+	 * As in neo4j, starts a new transaction and associates it with the current thread.
+	 * @return a transaction from NeoService.
+	 */
+	public abstract Transaction beginTx();
 
-	public void close() {
-		ineo.close();
-	}
+	/**
+	 * Mirror a java object within the neo4j graph.  Only fields annotated with {@code}neo
+	 * will be considered.
+	 * @param o
+	 */
+	public abstract <A> void persist(A... o);
 
-	<T> Collection<T> get(Class<T> t, String indexname, Object value) {
-		Transaction tx = ineo.beginTx();
-		try {
-			ArrayList<T> list = new ArrayList<T>();
-			for (Node n : ineo.getIndexService().getNodes(indexname, value))
-				list.add(get(t, n.getId()));
-			tx.success();
-			return list;
-		} finally {
-			tx.finish();
-		}
-	}
-
-	public <A> Where<A> find(A a) {
-		return new FieldValueMap<A>(a, this);
-	}
+	/**
+	 * removes all data representing an object from the graph.
+	 * 
+	 * @param o an object retrieved from this {@link ObjectGraph}
+	 */
+	public abstract void delete(Object... o);
 	
-	public long count(Collection<? extends Object> values) {
-		if (values instanceof Lazy)
-			return ((Lazy) values).getCount();
-		return 0;
-	}
 	
-	<T> T getSingle(Class<T> t, String indexname, Object value) {
-		return new LoadOperation<T>(t, ineo).load(indexname, value);
-	}
-
-	public <T> Collection<T> get(Class<T> t) {
-		return new LoadOperation<T>(t, ineo).loadAll();
-	}
-
-	public <T> Collection<T> getAddedSince(Class<T> t, Date d) {
-		return new LoadOperation<T>(t, ineo).since(d.getTime());
-	}
-
-	public <T> Collection<T> getAddedBetween(Class<T> t, Date from, Date to) {
-		return new LoadOperation<T>(t, ineo).within(from.getTime(), to
-				.getTime());
-	}
-
-	public <T> Collection<T> getMostRecent(Class<T> t, int max) {
-		if ( supportsRecency(t))
-			return new LoadOperation<T>(t, ineo).latest(max);
-		else 
-			throw new RuntimeException("Recency unsupported for " + t + ": must be annotated as @neo(recency=true)");
-	}
-
-	public Node get(URI uri) {
-		return ineo.getURINode(uri);
-	}
-
-	public <T> Collection<T> get(Class<T> type, Iterable<Node> nodes) {
-		return new LoadOperation<T>(type, ineo).loadAndFilter(nodes);
-	}
+	/**
+	 * Looks up a neo4j graph node using it's java object
+	 * mirror. 
+	 * @param o an object retrieved from this {@link ObjectGraph}
+	 * @return neo4j node represented by o
+	 */
+	public abstract Node get(Object o);
 	
-	private boolean supportsRecency(Class<?> c) {
-		return c.isAnnotationPresent(neo.class) && c.getAnnotation(neo.class).recency();
-	}
+	/**
+	 * Looks up all instances of {@code}type in the graph.
+	 * 
+	 * @param type a type previously stored in the graph
+	 * @return a Collection of {@code}type instances.
+	 */
+	public abstract <T> Collection<T> get(Class<T> type);
+
+	/**
+	 * Type safe lookup of object given it's neo4j nodeid.
+	 * Your domain classes may use {@link Nodeid#id() to discover
+	 * their neo4j nodeid.   
+	 *  
+	 * @param t
+	 * @param key neo4j node id.
+	 * @return
+	 */
+	public abstract <T> T get(Class<T> t, long key);
+
+	public abstract Object get(Node node);
+	
+	public abstract Node get(URI uri);
+
+	public abstract <T> Collection<T> get(Class<T> type, Iterable<Node> nodes);
+
+	public abstract void close();
+
+	public abstract <A> Where<A> find(A a);
+
+	public abstract long count(Collection<? extends Object> values);
+
+	public abstract <T> Collection<T> getAddedSince(Class<T> t, Date d);
+
+	public abstract <T> Collection<T> getAddedBetween(Class<T> t, Date from,
+			Date to);
+
+	public abstract <T> Collection<T> getMostRecent(Class<T> t, int max);
+	
+	public <T> T getSingle(Class<T> t, String indexname, Object value);
+	
+	public <T> Collection<T> get(Class<T> t, String indexname, Object value);
 
 }
-
-/**
- * jo4neo is a java object binding library for neo4j Copyright (C) 2009 Taylor
- * Cowan
- * 
- * This program is free software: you can redistribute it and/or modify it under
- * the terms of the GNU Affero General Public License as published by the Free
- * Software Foundation, either version 3 of the License, or (at your option) any
- * later version.
- * 
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
- * details.
- * 
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */

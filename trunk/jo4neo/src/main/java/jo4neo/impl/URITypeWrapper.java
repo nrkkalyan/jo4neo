@@ -1,8 +1,8 @@
-package jo4neo;
+package jo4neo.impl;
 
 import java.net.URI;
 
-import jo4neo.util.FieldContext;
+import jo4neo.Nodeid;
 
 import org.neo4j.api.core.Node;
 
@@ -21,7 +21,7 @@ class URITypeWrapper extends TypeWrapper {
 	}
 
 	@Override
-	public Nodeid id(Object o) {
+	public InjectedNodeid id(Object o) {
 		return new URINodeId((URI)o);
 	}
 

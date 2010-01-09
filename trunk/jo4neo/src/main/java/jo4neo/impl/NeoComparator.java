@@ -1,24 +1,20 @@
-package jo4neo;
+package jo4neo.impl;
 
-import jo4neo.fluent.Is;
-import jo4neo.fluent.Result;
-import jo4neo.util.FieldContext;
+import java.util.Comparator;
+
+import jo4neo.Nodeid;
 
 
-class IndexQuery<T> implements Is<T> {
+public class NeoComparator implements Comparator<Object> {
 
-	ObjectGraph pm;
-	Class<T> c;
-	FieldContext f;
-	
-	public IndexQuery(FieldContext f, ObjectGraph pm, Class<T> c) {
-		this.pm = pm;
-		this.c = c;
-		this.f = f;
+	public int compare(Object o1, Object o2) {
+		TypeWrapper t1 = TypeWrapperFactory.$(o1);
+		TypeWrapper t2 = TypeWrapperFactory.$(o2);		
+		return compare(t1.id(o1),  t2.id(o2));
 	}
 	
-	public Result<T> is(Object o) {
-		return new ResultImpl<T>(pm,c,f.getIndexName(), o);
+	private int compare(Nodeid n1, Nodeid n2) {
+		return (n1.id() == n2.id()) ?  0:1;
 	}
 
 }

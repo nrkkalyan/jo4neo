@@ -1,6 +1,6 @@
 package test;
 
-import jo4neo.FieldValueMap;
+import jo4neo.impl.FieldValueMap;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package jo4neo;
+package jo4neo.impl;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,8 +8,6 @@ import java.lang.reflect.Field;
 
 
 
-import jo4neo.util.AnnotationHelper;
-import jo4neo.util.FieldContext;
 import jo4neo.util.Utils;
 
 

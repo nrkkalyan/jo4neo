@@ -1,7 +1,5 @@
-package jo4neo;
+package jo4neo.impl;
 
-import java.lang.ref.SoftReference;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -9,73 +7,48 @@ import org.neo4j.api.core.Direction;
 
 
 
-import jo4neo.util.FieldContext;
 import jo4neo.util.Lazy;
 
-
-
+/**
+ * Represents implied relationships.
+ * members cannot be added or removed as this
+ * is contingent upon relationships declared from another
+ * entity.
+ *
+ */
 @SuppressWarnings("unchecked")
-class LazyList implements Lazy {
+class InverseList implements Lazy {
 
 	private transient FieldContext field;
-	private transient SoftReference<LoadCollectionOps> loader;
-	private transient Collection newdata;
-
+	private transient LoadOperation loader;
 	private Collection data;
-	private boolean modified = false;
 	
-	public LazyList(FieldContext f, LoadCollectionOps loader) {
+	public InverseList(FieldContext f, LoadOperation neo) {
 		field = f;
-		this.loader = new SoftReference(loader);
-	}
-	
-	public long getCount() {
-		return graph().count(field, Direction.OUTGOING);
-	}
-	
-	private LoadCollectionOps graph() {
-		LoadCollectionOps graph = loader.get();
-		if (graph == null || graph.isClosed())
-			throw new UnsupportedOperationException("Neo graph is closed");
-		return graph;
+		this.loader = neo;
 	}
 
+	public long getCount() {
+		return loader.count(field, Direction.INCOMING);
+	}
+	
 	private Collection data() {
-		if (data == null)
-			data = graph().load(field);
+		if ( data == null)
+			data = loader.loadInverse(field);
 		return data;
 	}
 	
-	protected Collection newdata() {
-		if ( newdata == null)
-			newdata = new ArrayList<Object>();
-		return newdata;
-	}
-	
-	protected Collection consumeUpdates() {
-		Collection updates = newdata();
-		newdata = null;
-		return updates;
-	}
-
 	public boolean add(Object e) {
-		modified = true;
-		if (data().add(e)) {
-			newdata().add(e);
-			return true;
-		}
 		return false;
 	}
 
 	public boolean addAll(Collection c) {
-		modified = true;
-		return data().addAll(c);
+		return false;
 	}
 
 
 	public void clear() {
-		modified = true;
-		data().clear();
+
 	}
 
 	public boolean contains(Object o) {
@@ -103,20 +76,15 @@ class LazyList implements Lazy {
 	}
 
 	public boolean remove(Object o) {
-		modified = true;
-		if (data().remove(o))
-			graph().removeRelationship(field, o);
-		return data().remove(o);
+		return false;
 	}
 
 	public boolean removeAll(Collection c) {
-		modified = true;
-		return data().removeAll(c);
+		return false;
 	}
 
 	public boolean retainAll(Collection c) {
-		modified = true;
-		return data().retainAll(c);
+		return false;
 	}
 	
 	public int size() {
@@ -136,7 +104,7 @@ class LazyList implements Lazy {
 	}
 
 	public boolean modified() {
-		return modified;
+		return false;
 	}
 	
 

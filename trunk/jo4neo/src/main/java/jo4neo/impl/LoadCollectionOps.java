@@ -1,10 +1,9 @@
-package jo4neo;
+package jo4neo.impl;
 
 import java.util.Collection;
 
 import org.neo4j.api.core.Direction;
 
-import jo4neo.util.FieldContext;
 
 
 

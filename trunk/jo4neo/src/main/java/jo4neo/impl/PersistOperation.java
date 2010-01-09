@@ -1,13 +1,17 @@
-package jo4neo;
+package jo4neo.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import jo4neo.util.FieldContext;
+import jo4neo.Nodeid;
+import jo4neo.Timeline;
+import jo4neo.neo;
 import jo4neo.util.Lazy;
 
-import static jo4neo.TypeWrapperFactory.*;
+import static jo4neo.Relationships.JO4NEO_HAS_TYPE;
+import static jo4neo.Relationships.JO4NEO_NEXT_MOST_RECENT;
+import static jo4neo.impl.TypeWrapperFactory.*;
 import static org.neo4j.api.core.Direction.*;
 import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
@@ -146,6 +150,51 @@ class PersistOperation<T> {
 		for (Relationship r : node.getRelationships(reltype, Direction.OUTGOING))
 			r.delete();
 	}
+	
+	
+
+	
+	/**
+	 * Creates a new node within the context of a given javaclass.  First the node
+	 * is annotated with the classname.  The neo4j node's id, as a long, is remembered
+	 * so that the containing java object knows to where and from where its values will be persisted.
+	 * Next the node is related to a "metanode" which represents metainformation about the javaclass
+	 * within the neo graph.  This allows jo4neo to find all instances of a given type easily.
+	 * Finally, if the javaclass is annotated with the Timeline annotation, the new node
+	 * is stored within a timeline rooted at the javaclasses metanode. 
+	 * @param neo
+	 * @return
+	 */
+	private Node newNode(Nodeid nodeid) {
+		Class<?> type = nodeid.type();
+		long id = nodeid.id();
+		Node newNode = neo.createNode();
+		newNode.setProperty(Nodeid.class.getName(), type.getName());
+		id = newNode.getId();
+		//find metanode for type t
+		Node metanode = neo.getMetaNode(type);		
+		newNode.createRelationshipTo(metanode, JO4NEO_HAS_TYPE);	
+		if (type.isAnnotationPresent(Timeline.class))
+			neo.getTimeLine(type).addNode(newNode, System.currentTimeMillis());
+		
+		//delete "latest" relation
+		if (type.isAnnotationPresent(neo.class) && type.getAnnotation(neo.class).recency())
+			recencyStack(newNode, metanode);
+
+		return newNode;	
+	}
+
+	private void recencyStack(Node newNode, Node metanode) {
+		Node latest=null;
+		for(Relationship r : metanode.getRelationships(JO4NEO_NEXT_MOST_RECENT, Direction.OUTGOING)) {
+			latest = r.getEndNode();
+			r.delete();
+		}
+		if (latest!=null)
+			newNode.createRelationshipTo(latest, JO4NEO_NEXT_MOST_RECENT);
+		metanode.createRelationshipTo(newNode, JO4NEO_NEXT_MOST_RECENT);
+	}
+
 
 }
 

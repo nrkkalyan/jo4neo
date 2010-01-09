@@ -1,49 +1,80 @@
-package jo4neo;
+package jo4neo.impl;
 
+import java.lang.ref.SoftReference;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.neo4j.api.core.Direction;
 
 
-import jo4neo.util.FieldContext;
+
 import jo4neo.util.Lazy;
 
-/**
- *
- */
+
+
 @SuppressWarnings("unchecked")
-class TraverserList implements Lazy {
+public class LazyList implements Lazy {
 
 	private transient FieldContext field;
-	private transient LoadOperation loader;
+	private transient SoftReference<LoadCollectionOps> loader;
+	private transient Collection newdata;
+
 	private Collection data;
+	private boolean modified = false;
 	
-	public TraverserList(FieldContext f, LoadOperation neo) {
+	public LazyList(FieldContext f, LoadCollectionOps loader) {
 		field = f;
-		this.loader = neo;
+		this.loader = new SoftReference(loader);
 	}
 	
 	public long getCount() {
-		throw new UnsupportedOperationException();
+		return graph().count(field, Direction.OUTGOING);
+	}
+	
+	private LoadCollectionOps graph() {
+		LoadCollectionOps graph = loader.get();
+		if (graph == null || graph.isClosed())
+			throw new UnsupportedOperationException("Neo graph is closed");
+		return graph;
 	}
 
 	private Collection data() {
-		if ( data == null)
-			data = loader.loadTraverser(field);
+		if (data == null)
+			data = graph().load(field);
 		return data;
 	}
 	
+	protected Collection newdata() {
+		if ( newdata == null)
+			newdata = new ArrayList<Object>();
+		return newdata;
+	}
+	
+	protected Collection consumeUpdates() {
+		Collection updates = newdata();
+		newdata = null;
+		return updates;
+	}
+
 	public boolean add(Object e) {
+		modified = true;
+		if (data().add(e)) {
+			newdata().add(e);
+			return true;
+		}
 		return false;
 	}
 
 	public boolean addAll(Collection c) {
-		return false;
+		modified = true;
+		return data().addAll(c);
 	}
 
 
 	public void clear() {
-
+		modified = true;
+		data().clear();
 	}
 
 	public boolean contains(Object o) {
@@ -71,15 +102,20 @@ class TraverserList implements Lazy {
 	}
 
 	public boolean remove(Object o) {
-		return false;
+		modified = true;
+		if (data().remove(o))
+			graph().removeRelationship(field, o);
+		return data().remove(o);
 	}
 
 	public boolean removeAll(Collection c) {
-		return false;
+		modified = true;
+		return data().removeAll(c);
 	}
 
 	public boolean retainAll(Collection c) {
-		return false;
+		modified = true;
+		return data().retainAll(c);
 	}
 	
 	public int size() {
@@ -99,7 +135,7 @@ class TraverserList implements Lazy {
 	}
 
 	public boolean modified() {
-		return false;
+		return modified;
 	}
 	
 

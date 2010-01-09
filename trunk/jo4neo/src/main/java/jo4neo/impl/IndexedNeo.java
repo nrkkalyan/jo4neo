@@ -1,13 +1,14 @@
-package jo4neo;
+package jo4neo.impl;
 
 import static jo4neo.Relationships.JO4NEO_HAS_TYPE;
-import static jo4neo.TypeWrapperFactory.$;
+import static jo4neo.impl.TypeWrapperFactory.$;
 
 import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+import jo4neo.Nodeid;
 import jo4neo.util.RelationFactory;
 
 import org.neo4j.api.core.DynamicRelationshipType;
@@ -17,11 +18,10 @@ import org.neo4j.api.core.Relationship;
 import org.neo4j.api.core.RelationshipType;
 import org.neo4j.api.core.Transaction;
 import org.neo4j.util.index.IndexService;
-import org.neo4j.util.index.Isolation;
 import org.neo4j.util.index.LuceneIndexService;
 import org.neo4j.util.timeline.Timeline;
 
-public class IndexedNeo implements NeoService {
+class IndexedNeo implements NeoService {
 
 	private NeoService neo;
 	private LuceneIndexService index;
@@ -94,11 +94,11 @@ public class IndexedNeo implements NeoService {
 		return neo.createNode();
 	}
 
-	protected Node asNode(Object o) {
+	public Node asNode(Object o) {
 		return getNodeById($(o).id(o));
 	}
 
-	protected Node getMetaNode(Class<?> type) {
+	public Node getMetaNode(Class<?> type) {
 		Node metanode;
 		RelationshipType relType = DynamicRelationshipType.withName(type
 				.getName());
@@ -114,7 +114,7 @@ public class IndexedNeo implements NeoService {
 		return metanode;
 	}
 
-	protected Timeline getTimeLine(Class<?> c) {
+	public Timeline getTimeLine(Class<?> c) {
 
 		if (timelines.containsKey(c))
 			return timelines.get(c);
