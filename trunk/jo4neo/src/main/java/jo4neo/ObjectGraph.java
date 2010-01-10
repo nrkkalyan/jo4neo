@@ -17,10 +17,8 @@ import org.neo4j.api.core.Transaction;
  * only have one ObjectGraph instance per NeoService.
  * 
  * @author Taylor Cowan
- *
- */
-/**
- * @author tcowan
+ * 
+ * @see ObjectGraphFactory
  *
  */
 public interface ObjectGraph {
@@ -76,54 +74,96 @@ public interface ObjectGraph {
 
 	
 	/**
+	 * Return an object represented by <code>node</code> provided
+	 * the node was created by jo4neo.
 	 * 
 	 * @param node
-	 * @return
+	 * @return an object that mirrors node.
 	 */
 	public abstract Object get(Node node);
 	
 	/**
+	 * Looks up the node representation of a given 
+	 * uri.  This method may update your graph if no node
+	 * was previously allocated for the uri.
 	 * 
-	 * @param uri
-	 * @return
+	 * @return the node representation of uri.
 	 */
 	public abstract Node get(URI uri);
 
 
 	/**
+	 * Unmarshal a collections of nodes into objects.
 	 * 
-	 * @param type
-	 * @param nodes
-	 * @return
 	 */
 	public abstract <T> Collection<T> get(Class<T> type, Iterable<Node> nodes);
 
 	/**
+	 * Closes this ObjectGraph after which it will be unavailable 
+	 * for use.  Calling close is necessary, and should be called even
+	 * if the application is halted suddenly. ObjectGraph's maintain 
+	 * a lucene index which may become corrupt without proper shutdown.
 	 * 
-	 * @param uri
-	 * @return
 	 */
 	public abstract void close();
 
 	/**
-	 * @param <A>
+	 * Begin fluent interface find.  <code>a</code> should be 
+	 * a newly constructed instance as it's contents will be modified/initialized
+	 * by this call.
+	 * 
+	 * <code>
+	 *   Customer customer = new Customer();
+	 *   customer = graph.find(customer).where(customer.id).is(123).result();
+	 * </code>
+	 * 
 	 * @param a
 	 * @return
 	 */
 	public abstract <A> Where<A> find(A a);
 
 	/**
-	 * @param values
+	 * Counts child entities without loading objects into memory.  This is preferable to 
+	 * using Collection.size(), which would load the full collection into memory.
+	 * 
+	 * <code>
+	 *   Customer customer = new Customer();
+	 *   customer = graph.find(customer).where(customer.id).is(123).result();
+	 *   long numOrders = graph.count(customer.orders);
+	 * </code>
+	 * 
+	 * @param values a collection value from a jo4neo annotated field.
 	 * @return
 	 */
 	public abstract long count(Collection<? extends Object> values);
 
+	/**
+	 * Returns a collection of entities added since <code>d</code>.
+	 * Type <code>t</code> must be annotated with {@link Timeline}
+	 * 
+	 * @see Timeline
+	 * 
+	 */
 	public abstract <T> Collection<T> getAddedSince(Class<T> t, Date d);
 
+	/**
+	 * Returns a collection of entities added bewteen dates from and to.
+	 * Type <code>t</code> must be annotated with {@link Timeline}.
+	 * 
+	 * @see Timeline
+	 */
 	public abstract <T> Collection<T> getAddedBetween(Class<T> t, Date from,
 			Date to);
 
+	
+	/**
+	 * Returns up to <code>max</code> most recently added instances of type <code>t</code>
+	 * 
+	 * @param max limit the number of instances returned
+	 * @see neo#recency()
+	 */
 	public abstract <T> Collection<T> getMostRecent(Class<T> t, int max);
+	
 	
 	public <T> T getSingle(Class<T> t, String indexname, Object value);
 	

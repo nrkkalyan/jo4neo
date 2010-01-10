@@ -54,6 +54,12 @@ public @interface neo {
 	 * @return
 	 */
 	Class<? extends TraverserProvider> traverser() default DefaultTraverserProvider.class;
+	
+	/**
+	 * If true jo4neo manages a list of instances in most recent order.
+	 * 
+	 * @see ObjectGraph#getMostRecent(Class, int)
+	 */
 	boolean recency() default false;
 }
 
