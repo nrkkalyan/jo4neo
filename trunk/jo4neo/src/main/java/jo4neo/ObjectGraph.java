@@ -111,11 +111,12 @@ public interface ObjectGraph {
 	 * Begin fluent interface find.  <code>a</code> should be 
 	 * a newly constructed instance as it's contents will be modified/initialized
 	 * by this call.
-	 * 
+	 * <pre>
 	 * <code>
 	 *   Customer customer = new Customer();
 	 *   customer = graph.find(customer).where(customer.id).is(123).result();
 	 * </code>
+	 * </pre>
 	 * 
 	 * @param a
 	 * @return
@@ -125,12 +126,13 @@ public interface ObjectGraph {
 	/**
 	 * Counts child entities without loading objects into memory.  This is preferable to 
 	 * using Collection.size(), which would load the full collection into memory.
-	 * 
+	 * <pre>
 	 * <code>
 	 *   Customer customer = new Customer();
 	 *   customer = graph.find(customer).where(customer.id).is(123).result();
 	 *   long numOrders = graph.count(customer.orders);
 	 * </code>
+	 * </pre>
 	 * 
 	 * @param values a collection value from a jo4neo annotated field.
 	 * @return

@@ -5,15 +5,15 @@ package jo4neo;
  * javabean/POJO with jo4neo your bean should have a Nodeid field declared
  * as transient:
  * 
- * <code>
+ * <pre><code>
  * public DomainObject {
  *     //used by jo4neo
  *     private transient Nodeid id;  
  *     // indicates a field to be persisted in graph  
- *     @neo private String name;
+ *     {@literal}@neo private String name;
  *     ...
  * }
- * </code>
+ * </code></pre>
  * This example is the minimum necessary to augment a graph with a single node
  * holding a single property.
  */
