@@ -1,6 +1,7 @@
 package example;
 
 import jo4neo.ObjectGraph;
+import jo4neo.ObjectGraphFactory;
 
 import org.neo4j.api.core.EmbeddedNeo;
 import org.neo4j.api.core.NeoService;
@@ -52,7 +53,7 @@ public class Main {
 	public static void main(String[] args) {
 
 		NeoService neo = new EmbeddedNeo("neo_store2");
-		ObjectGraph graph = new ObjectGraph(neo);
+		ObjectGraph graph = ObjectGraphFactory.instance().get(neo);
 		try {
 			setup(graph);
 			Role role = new Role();
