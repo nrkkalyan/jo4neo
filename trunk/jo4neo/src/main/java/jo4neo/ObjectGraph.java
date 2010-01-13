@@ -28,21 +28,21 @@ public interface ObjectGraph {
 	 * As in neo4j, starts a new transaction and associates it with the current thread.
 	 * @return a transaction from NeoService.
 	 */
-	public abstract Transaction beginTx();
+	Transaction beginTx();
 
 	/**
 	 * Mirror a java object within the neo4j graph.  Only fields annotated with {@code}neo
 	 * will be considered.
 	 * @param o
 	 */
-	public abstract <A> void persist(A... o);
+	<A> void persist(A... o);
 
 	/**
 	 * removes all data representing an object from the graph.
 	 * 
 	 * @param o an object retrieved from this {@link ObjectGraph}
 	 */
-	public abstract void delete(Object... o);
+	void delete(Object... o);
 	
 	
 	/**
@@ -51,7 +51,7 @@ public interface ObjectGraph {
 	 * @param o an object retrieved from this {@link ObjectGraph}
 	 * @return neo4j node represented by o
 	 */
-	public abstract Node get(Object o);
+	Node get(Object o);
 	
 	/**
 	 * Looks up all instances of {@code}type in the graph.
@@ -59,7 +59,7 @@ public interface ObjectGraph {
 	 * @param type a type previously stored in the graph
 	 * @return a Collection of {@code}type instances.
 	 */
-	public abstract <T> Collection<T> get(Class<T> type);
+	<T> Collection<T> get(Class<T> type);
 
 	/**
 	 * Type safe lookup of object given it's neo4j nodeid.
@@ -70,7 +70,7 @@ public interface ObjectGraph {
 	 * @param key neo4j node id.
 	 * @return
 	 */
-	public abstract <T> T get(Class<T> t, long key);
+	<T> T get(Class<T> t, long key);
 
 	
 	/**
@@ -80,7 +80,7 @@ public interface ObjectGraph {
 	 * @param node
 	 * @return an object that mirrors node.
 	 */
-	public abstract Object get(Node node);
+	Object get(Node node);
 	
 	/**
 	 * Looks up the node representation of a given 
@@ -89,14 +89,14 @@ public interface ObjectGraph {
 	 * 
 	 * @return the node representation of uri.
 	 */
-	public abstract Node get(URI uri);
+	Node get(URI uri);
 
 
 	/**
 	 * Unmarshal a collections of nodes into objects.
 	 * 
 	 */
-	public abstract <T> Collection<T> get(Class<T> type, Iterable<Node> nodes);
+	<T> Collection<T> get(Class<T> type, Iterable<Node> nodes);
 
 	/**
 	 * Closes this ObjectGraph after which it will be unavailable 
@@ -105,7 +105,7 @@ public interface ObjectGraph {
 	 * a lucene index which may become corrupt without proper shutdown.
 	 * 
 	 */
-	public abstract void close();
+	void close();
 
 	/**
 	 * Begin fluent interface find.  <code>a</code> should be 
@@ -121,7 +121,7 @@ public interface ObjectGraph {
 	 * @param a
 	 * @return
 	 */
-	public abstract <A> Where<A> find(A a);
+	<A> Where<A> find(A a);
 
 	/**
 	 * Counts child entities without loading objects into memory.  This is preferable to 
@@ -137,7 +137,7 @@ public interface ObjectGraph {
 	 * @param values a collection value from a jo4neo annotated field.
 	 * @return
 	 */
-	public abstract long count(Collection<? extends Object> values);
+	long count(Collection<? extends Object> values);
 
 	/**
 	 * Returns a collection of entities added since <code>d</code>.
@@ -146,7 +146,7 @@ public interface ObjectGraph {
 	 * @see Timeline
 	 * 
 	 */
-	public abstract <T> Collection<T> getAddedSince(Class<T> t, Date d);
+	<T> Collection<T> getAddedSince(Class<T> t, Date d);
 
 	/**
 	 * Returns a collection of entities added bewteen dates from and to.
@@ -154,7 +154,7 @@ public interface ObjectGraph {
 	 * 
 	 * @see Timeline
 	 */
-	public abstract <T> Collection<T> getAddedBetween(Class<T> t, Date from,
+	<T> Collection<T> getAddedBetween(Class<T> t, Date from,
 			Date to);
 
 	
@@ -164,7 +164,7 @@ public interface ObjectGraph {
 	 * @param max limit the number of instances returned
 	 * @see neo#recency()
 	 */
-	public abstract <T> Collection<T> getMostRecent(Class<T> t, int max);
+	<T> Collection<T> getMostRecent(Class<T> t, int max);
 	
 	
 	public <T> T getSingle(Class<T> t, String indexname, Object value);
