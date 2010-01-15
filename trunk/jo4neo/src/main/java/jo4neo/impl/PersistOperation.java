@@ -1,18 +1,15 @@
 package jo4neo.impl;
 
+import static jo4neo.Relationships.JO4NEO_NEXT_MOST_RECENT;
+import static jo4neo.impl.TypeWrapperFactory.$;
+import static org.neo4j.api.core.Direction.OUTGOING;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import jo4neo.Nodeid;
-import jo4neo.Timeline;
-import jo4neo.neo;
 import jo4neo.util.Lazy;
 
-import static jo4neo.Relationships.JO4NEO_HAS_TYPE;
-import static jo4neo.Relationships.JO4NEO_NEXT_MOST_RECENT;
-import static jo4neo.impl.TypeWrapperFactory.*;
-import static org.neo4j.api.core.Direction.*;
 import org.neo4j.api.core.Direction;
 import org.neo4j.api.core.Node;
 import org.neo4j.api.core.Relationship;
