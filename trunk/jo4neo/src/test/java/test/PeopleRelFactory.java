@@ -2,7 +2,7 @@ package test;
 
 import jo4neo.util.RelationFactory;
 
-import org.neo4j.api.core.RelationshipType;
+import org.neo4j.graphdb.RelationshipType;
 
 
 public class PeopleRelFactory implements RelationFactory {

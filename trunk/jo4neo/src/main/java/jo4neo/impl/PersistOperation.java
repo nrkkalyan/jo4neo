@@ -2,7 +2,7 @@ package jo4neo.impl;
 
 import static jo4neo.Relationships.JO4NEO_NEXT_MOST_RECENT;
 import static jo4neo.impl.TypeWrapperFactory.$;
-import static org.neo4j.api.core.Direction.OUTGOING;
+import static org.neo4j.graphdb.Direction.OUTGOING;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,12 +10,12 @@ import java.util.Map;
 
 import jo4neo.util.Lazy;
 
-import org.neo4j.api.core.Direction;
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.Relationship;
-import org.neo4j.api.core.RelationshipType;
-import org.neo4j.api.core.Transaction;
-import org.neo4j.util.index.IndexService;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.index.IndexService;
 
 
 

@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import jo4neo.TraverserProvider;
 import jo4neo.util.RelationFactory;
 
-import org.neo4j.api.core.RelationshipType;
+import org.neo4j.graphdb.RelationshipType;
 
 
 interface AnnotationHelper {

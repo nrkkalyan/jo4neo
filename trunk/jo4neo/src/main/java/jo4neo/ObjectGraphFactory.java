@@ -7,7 +7,7 @@ import java.util.ServiceLoader;
 
 import jo4neo.spi.ObjectGraphProvider;
 
-import org.neo4j.api.core.NeoService;
+import org.neo4j.graphdb.GraphDatabaseService;
 
 /**
  * Creates or retrieves exisiting {@link ObjectGraph} instances associated 
@@ -19,17 +19,17 @@ import org.neo4j.api.core.NeoService;
 public class ObjectGraphFactory {
 
 	private static ObjectGraphFactory myself = new ObjectGraphFactory();
-	private Map<NeoService, ObjectGraph> cache;
+	private Map<GraphDatabaseService, ObjectGraph> cache;
 
 	private ObjectGraphFactory() {
-		cache = Collections.synchronizedMap(new IdentityHashMap<NeoService, ObjectGraph>());
+		cache = Collections.synchronizedMap(new IdentityHashMap<GraphDatabaseService, ObjectGraph>());
 	}
 
 	public static ObjectGraphFactory instance() {
 		return myself;
 	}
 
-	public ObjectGraph get(NeoService neo) {
+	public ObjectGraph get(GraphDatabaseService neo) {
 		ObjectGraph graph;
 		if (!cache.containsKey(neo)) {
 			ObjectGraphProvider provider = getProvider();

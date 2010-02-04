@@ -14,7 +14,7 @@ import jo4neo.impl.TypeWrapper;
 import jo4neo.impl.TypeWrapperFactory;
 
 import org.junit.Test;
-import org.neo4j.api.core.Transaction;
+import org.neo4j.graphdb.Transaction;
 
 
 public class TestLazyCollection extends BaseTest {

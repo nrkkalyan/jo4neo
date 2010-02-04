@@ -1,6 +1,5 @@
 package jo4neo.impl;
 
-import static jo4neo.impl.TypeWrapperFactory.$;
 import static jo4neo.util.Resources.MISSING_TIMELINE_ANNOTATION;
 import static jo4neo.util.Resources.msg;
 
@@ -15,15 +14,15 @@ import jo4neo.Nodeid;
 import jo4neo.Relationships;
 import jo4neo.Timeline;
 
-import org.neo4j.api.core.Direction;
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.NotFoundException;
-import org.neo4j.api.core.Relationship;
-import org.neo4j.api.core.ReturnableEvaluator;
-import org.neo4j.api.core.StopEvaluator;
-import org.neo4j.api.core.Transaction;
-import org.neo4j.api.core.Traverser;
-import org.neo4j.api.core.Traverser.Order;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.NotFoundException;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.ReturnableEvaluator;
+import org.neo4j.graphdb.StopEvaluator;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.Traverser;
+import org.neo4j.graphdb.Traverser.Order;
 
 class LoadOperation<T> implements LoadCollectionOps {
 
@@ -259,7 +258,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 		timelineAnnotationRequired();
 		Transaction t = neo.beginTx();
 		try {
-			org.neo4j.util.timeline.Timeline tl = neo.getTimeLine(cls);
+			org.neo4j.index.timeline.Timeline tl = neo.getTimeLine(cls);
 			return load(tl.getAllNodesAfter(since));
 		} finally {
 			t.finish();
@@ -285,7 +284,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 		timelineAnnotationRequired();
 		Transaction t = neo.beginTx();
 		try {
-			org.neo4j.util.timeline.Timeline tl = neo.getTimeLine(cls);
+			org.neo4j.index.timeline.Timeline tl = neo.getTimeLine(cls);
 			return load(tl.getAllNodesBetween(from, to));
 		} finally {
 			t.finish();

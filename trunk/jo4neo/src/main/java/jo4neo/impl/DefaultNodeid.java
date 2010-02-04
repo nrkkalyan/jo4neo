@@ -4,9 +4,9 @@ import jo4neo.Nodeid;
 import jo4neo.Timeline;
 import jo4neo.neo;
 
-import org.neo4j.api.core.Direction;
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.Relationship;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 import static jo4neo.Relationships.*;
 
 

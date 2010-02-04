@@ -9,7 +9,7 @@ import jo4neo.embed;
 import jo4neo.neo;
 import jo4neo.util.RelationFactory;
 
-import org.neo4j.api.core.RelationshipType;
+import org.neo4j.graphdb.RelationshipType;
 
 
 

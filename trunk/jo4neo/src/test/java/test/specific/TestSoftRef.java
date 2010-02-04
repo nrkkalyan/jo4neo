@@ -7,15 +7,15 @@ import jo4neo.ObjectGraphFactory;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
-import org.neo4j.api.core.Transaction;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 public class TestSoftRef {
 	
 	@Test
 	public void garbageCollected() {
-		NeoService neo = new EmbeddedNeo("neo_store");
+		GraphDatabaseService neo = new EmbeddedGraphDatabase("neo_store");
 		ObjectGraph graph = ObjectGraphFactory.instance().get(neo);		
 
 		Transaction t = graph.beginTx();

@@ -2,7 +2,7 @@ package jo4neo.impl;
 
 import java.util.Collection;
 
-import org.neo4j.api.core.Direction;
+import org.neo4j.graphdb.Direction;
 
 
 

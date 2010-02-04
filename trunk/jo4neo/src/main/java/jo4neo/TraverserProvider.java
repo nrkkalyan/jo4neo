@@ -1,7 +1,7 @@
 package jo4neo;
 
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.Traverser;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Traverser;
 
 /**
  * Used along with {@link neo} annotation to create a collection

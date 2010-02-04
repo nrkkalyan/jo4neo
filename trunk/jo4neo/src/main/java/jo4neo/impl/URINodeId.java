@@ -3,7 +3,7 @@ package jo4neo.impl;
 import java.net.URI;
 
 
-import org.neo4j.api.core.Node;
+import org.neo4j.graphdb.Node;
 
 class URINodeId extends DefaultNodeid{
 

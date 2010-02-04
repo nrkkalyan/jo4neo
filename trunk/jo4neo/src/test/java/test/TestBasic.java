@@ -13,9 +13,7 @@ import jo4neo.ObjectGraph;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
-import org.neo4j.api.core.Transaction;
+import org.neo4j.graphdb.Transaction;
 
 
 public class TestBasic extends BaseTest {

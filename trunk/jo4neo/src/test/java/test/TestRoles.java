@@ -1,13 +1,14 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import jo4neo.ObjectGraph;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
-
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.Relationship;
-import org.neo4j.api.core.Transaction;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.Transaction;
 
 
 public class TestRoles extends BaseTest {

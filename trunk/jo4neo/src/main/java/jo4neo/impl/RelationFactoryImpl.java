@@ -5,8 +5,8 @@ import java.lang.reflect.Field;
 import jo4neo.neo;
 import jo4neo.util.RelationFactory;
 
-import org.neo4j.api.core.DynamicRelationshipType;
-import org.neo4j.api.core.RelationshipType;
+import org.neo4j.graphdb.DynamicRelationshipType;
+import org.neo4j.graphdb.RelationshipType;
 
 public class RelationFactoryImpl implements RelationFactory {
 

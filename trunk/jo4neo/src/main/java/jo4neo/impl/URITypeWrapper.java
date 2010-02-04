@@ -4,7 +4,7 @@ import java.net.URI;
 
 import jo4neo.Nodeid;
 
-import org.neo4j.api.core.Node;
+import org.neo4j.graphdb.Node;
 
 
 

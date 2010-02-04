@@ -1,6 +1,6 @@
 package test;
 
-import org.neo4j.api.core.RelationshipType;
+import org.neo4j.graphdb.RelationshipType;
 
 public enum PeopleRelationships implements RelationshipType {
 	FRIEND,

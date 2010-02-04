@@ -14,13 +14,13 @@ import jo4neo.ObjectGraphFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 
 public class TestTravelDomain {
 	
-	static NeoService neo;
+	static GraphDatabaseService neo;
 	static ObjectGraph pm;
 	
 
@@ -43,7 +43,7 @@ public class TestTravelDomain {
 	@BeforeClass
 	public static void setup() {
 		deleteDirectory(new File("neo_store2"));
-		neo = new EmbeddedNeo("neo_store2");
+		neo = new EmbeddedGraphDatabase("neo_store2");
 		pm = ObjectGraphFactory.instance().get(neo);
 		createStates();
 		createCities();

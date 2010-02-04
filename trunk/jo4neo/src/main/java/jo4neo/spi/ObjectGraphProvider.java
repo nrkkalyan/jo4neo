@@ -1,9 +1,9 @@
 package jo4neo.spi;
 
-import org.neo4j.api.core.NeoService;
-
 import jo4neo.ObjectGraph;
 
+import org.neo4j.graphdb.GraphDatabaseService;
+
 public interface ObjectGraphProvider  {	
-	public ObjectGraph create(NeoService neo);
+	public ObjectGraph create(GraphDatabaseService neo);
 }

@@ -16,10 +16,10 @@ import jo4neo.util.Utils;
 
 
 
-import org.neo4j.api.core.Direction;
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.Relationship;
-import org.neo4j.api.core.RelationshipType;
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
 
 public class FieldContext {
 

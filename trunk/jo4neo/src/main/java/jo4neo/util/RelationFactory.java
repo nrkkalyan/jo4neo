@@ -1,6 +1,8 @@
 package jo4neo.util;
 
-import org.neo4j.api.core.RelationshipType;
+import org.neo4j.graphdb.RelationshipType;
+
+
 
 public interface RelationFactory {
 	public RelationshipType relationshipType(String f);

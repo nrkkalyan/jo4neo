@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Test;
-import org.neo4j.api.core.Transaction;
+import org.neo4j.graphdb.Transaction;
 
 
 public class TestTypes extends BaseTest {

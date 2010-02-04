@@ -6,8 +6,8 @@ import java.util.Date;
 
 import jo4neo.fluent.Where;
 
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.Transaction;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
 
 /**
  * Interface used to interact with neo4j in an object oriented manner.

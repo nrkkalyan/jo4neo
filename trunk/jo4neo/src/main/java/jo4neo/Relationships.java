@@ -1,6 +1,8 @@
 package jo4neo;
 
-import org.neo4j.api.core.RelationshipType;
+import org.neo4j.graphdb.RelationshipType;
+
+
 
 /**
  * Relationships used by jo4neo in constructing the object graph.

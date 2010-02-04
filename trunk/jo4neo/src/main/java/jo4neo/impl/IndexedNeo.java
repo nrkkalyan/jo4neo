@@ -11,27 +11,31 @@ import java.util.Map;
 import jo4neo.Nodeid;
 import jo4neo.util.RelationFactory;
 
-import org.neo4j.api.core.DynamicRelationshipType;
-import org.neo4j.api.core.NeoService;
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.Relationship;
-import org.neo4j.api.core.RelationshipType;
-import org.neo4j.api.core.Transaction;
-import org.neo4j.util.index.IndexService;
-import org.neo4j.util.index.LuceneIndexService;
-import org.neo4j.util.timeline.Timeline;
 
-class IndexedNeo implements NeoService {
+import org.neo4j.graphdb.DynamicRelationshipType;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.RelationshipType;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.index.IndexService;
+import org.neo4j.index.lucene.LuceneIndexService;
+import org.neo4j.index.timeline.Timeline;
 
-	private NeoService neo;
+
+
+
+class IndexedNeo implements GraphDatabaseService {
+
+	private GraphDatabaseService neo;
 	private LuceneIndexService index;
 	private RelationFactory relFactory;
 	private boolean isClosed = false;
 	private Map<Class<?>, Timeline> timelines;
 
-	public IndexedNeo(NeoService neo) {
+	public IndexedNeo(GraphDatabaseService neo) {
 		this.neo = neo;
-		index = new LuceneIndexService(neo);
+		index = new LuceneIndexService (neo);
 		relFactory = new RelationFactoryImpl();
 		timelines = new HashMap<Class<?>, Timeline>();
 	}
@@ -120,7 +124,7 @@ class IndexedNeo implements NeoService {
 			return timelines.get(c);
 
 		Node metaNode = getMetaNode(c);
-		org.neo4j.util.timeline.Timeline t = new org.neo4j.util.timeline.Timeline(
+		org.neo4j.index.timeline.Timeline t = new org.neo4j.index.timeline.Timeline(
 				c.getName(), metaNode, neo);
 		timelines.put(c, t);
 		return t;

@@ -1,8 +1,9 @@
 package test.specific;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
-import org.neo4j.api.core.Transaction;
-import static org.junit.Assert.*;
+import org.neo4j.graphdb.Transaction;
 
 import test.BaseTest;
 

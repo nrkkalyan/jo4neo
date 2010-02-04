@@ -8,17 +8,17 @@ import jo4neo.ObjectGraphFactory;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 public class BaseTest {
 
-	public static NeoService neo;
+	public static GraphDatabaseService neo;
 	public static ObjectGraph graph;
 	
 	@BeforeClass
 	public static void setup() {
-		neo = new EmbeddedNeo("neo_store");
+		neo = new EmbeddedGraphDatabase("neo_store");
 		graph = ObjectGraphFactory.instance().get(neo);
 	}
 	

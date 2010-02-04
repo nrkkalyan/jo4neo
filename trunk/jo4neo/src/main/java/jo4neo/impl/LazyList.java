@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.neo4j.api.core.Direction;
+import org.neo4j.graphdb.Direction;
 
 
 

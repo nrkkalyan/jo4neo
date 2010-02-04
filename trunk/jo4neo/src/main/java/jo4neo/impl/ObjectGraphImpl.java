@@ -11,9 +11,9 @@ import jo4neo.neo;
 import jo4neo.fluent.Where;
 import jo4neo.util.Lazy;
 
-import org.neo4j.api.core.NeoService;
-import org.neo4j.api.core.Node;
-import org.neo4j.api.core.Transaction;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.GraphDatabaseService;
 
 /**
  * 
@@ -24,7 +24,7 @@ class ObjectGraphImpl implements ObjectGraph {
 
 	IndexedNeo ineo;
 
-	public ObjectGraphImpl(NeoService neo) {
+	public ObjectGraphImpl(GraphDatabaseService neo) {
 		ineo = new IndexedNeo(neo);
 	}
 
@@ -77,7 +77,7 @@ class ObjectGraphImpl implements ObjectGraph {
 	}
 	
 	/* (non-Javadoc)
-	 * @see jo4neo.ObjectGraph#get(org.neo4j.api.core.Node)
+	 * @see jo4neo.ObjectGraph#get(org.neo4j.graphdb.Node)
 	 */
 	public Object get(Node node) {
 		return new LoadOperation<Object>(Object.class, ineo).load(node);

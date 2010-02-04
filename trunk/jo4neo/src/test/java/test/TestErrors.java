@@ -5,15 +5,15 @@ import jo4neo.ObjectGraph;
 import jo4neo.ObjectGraphFactory;
 
 import org.junit.Test;
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 
 public class TestErrors {
 	
 	@Test
 	public void basic() {
-		NeoService neo = new EmbeddedNeo("neo_store");
+		GraphDatabaseService neo = new EmbeddedGraphDatabase("neo_store");
 		ObjectGraph pm = ObjectGraphFactory.instance().get(neo);
 		boolean caught = false;
 		try {
