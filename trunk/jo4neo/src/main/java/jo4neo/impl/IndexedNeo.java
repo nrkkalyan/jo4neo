@@ -19,6 +19,7 @@ import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.index.IndexService;
+import org.neo4j.index.lucene.LuceneFulltextQueryIndexService;
 import org.neo4j.index.lucene.LuceneIndexService;
 import org.neo4j.index.timeline.Timeline;
 
@@ -29,24 +30,31 @@ class IndexedNeo implements GraphDatabaseService {
 
 	private GraphDatabaseService neo;
 	private LuceneIndexService index;
+	private LuceneFulltextQueryIndexService ftindex;
 	private RelationFactory relFactory;
 	private boolean isClosed = false;
 	private Map<Class<?>, Timeline> timelines;
 
 	public IndexedNeo(GraphDatabaseService neo) {
 		this.neo = neo;
-		index = new LuceneIndexService (neo);
+		index = new LuceneIndexService(neo);
+		ftindex = new LuceneFulltextQueryIndexService(neo);
 		relFactory = new RelationFactoryImpl();
 		timelines = new HashMap<Class<?>, Timeline>();
 	}
 
 	public synchronized void close() {
 		index.shutdown(); 
+		ftindex.shutdown();
 		isClosed = true;
 	}
 
 	public IndexService getIndexService() {
 		return index;
+	}
+	
+	public IndexService getFullTextIndexService() {
+		return ftindex;
 	}
 
 	public Transaction beginTx() {
