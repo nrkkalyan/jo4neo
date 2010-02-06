@@ -61,6 +61,8 @@ public @interface neo {
 	 * @see ObjectGraph#getMostRecent(Class, int)
 	 */
 	boolean recency() default false;
+
+	boolean fulltext() default false;
 }
 
 /**

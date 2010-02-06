@@ -78,6 +78,12 @@ class PersistOperation<T> {
 					field.value());
 			index().index(node, field.getIndexName(),
 					field.value());
+		} else if (field.value() != null && field.isFullText() ) {
+			String name = field.getIndexName();
+			String value = field.value().toString();
+			IndexService is = neo.getFullTextIndexService();
+			is.removeIndex(node, field.getIndexName(), field.value());
+			is.index(node, field.getIndexName(), field.value());
 		}
 	}
 

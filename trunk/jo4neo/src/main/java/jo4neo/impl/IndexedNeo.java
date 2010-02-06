@@ -24,8 +24,6 @@ import org.neo4j.index.lucene.LuceneIndexService;
 import org.neo4j.index.timeline.Timeline;
 
 
-
-
 class IndexedNeo implements GraphDatabaseService {
 
 	private GraphDatabaseService neo;
@@ -52,7 +50,7 @@ class IndexedNeo implements GraphDatabaseService {
 	public IndexService getIndexService() {
 		return index;
 	}
-	
+
 	public IndexService getFullTextIndexService() {
 		return ftindex;
 	}
@@ -162,7 +160,6 @@ class IndexedNeo implements GraphDatabaseService {
 			t.finish();
 		}
 	}
-
 }
 
 /**

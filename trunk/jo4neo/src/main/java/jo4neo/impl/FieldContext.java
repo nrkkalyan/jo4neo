@@ -46,6 +46,10 @@ public class FieldContext {
 	public boolean isIndexed() {
 		return helper.isIndexed(field);
 	}
+	
+	public boolean isFullText() {
+		return helper.isFullText(field);
+	}
 
 	private boolean arrayPrimitive() {
 		return field.getType().isArray()

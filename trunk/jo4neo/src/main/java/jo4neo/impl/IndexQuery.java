@@ -10,15 +10,18 @@ class IndexQuery<T> implements Is<T> {
 	ObjectGraph pm;
 	Class<T> c;
 	FieldContext f;
-	
+
 	public IndexQuery(FieldContext f, ObjectGraph pm, Class<T> c) {
 		this.pm = pm;
 		this.c = c;
 		this.f = f;
 	}
-	
+
 	public Result<T> is(Object o) {
-		return new ResultImpl<T>(pm,c,f.getIndexName(), o);
+		if (f.isFullText())
+			return new FullTextResultImpl<T>(pm, c, f.getIndexName(), o);
+		else
+			return new ResultImpl<T>(pm,c,f.getIndexName(), o);
 	}
 
 }

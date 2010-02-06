@@ -16,4 +16,5 @@ interface AnnotationHelper {
 	boolean isEmbedded(Field field);
 	RelationshipType toRelationship(RelationFactory f, Field field);
 	FieldContext[] getFields(Field[] fields, Object o);
+	public boolean isFullText(Field field);
 }

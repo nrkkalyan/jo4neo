@@ -14,6 +14,7 @@ import jo4neo.util.Lazy;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.index.IndexService;
 
 /**
  * 
@@ -168,9 +169,24 @@ class ObjectGraphImpl implements ObjectGraph {
 	public <T> Collection<T> get(Class<T> type, Iterable<Node> nodes) {
 		return new LoadOperation<T>(type, ineo).loadAndFilter(nodes);
 	}
-	
+
 	private boolean supportsRecency(Class<?> c) {
 		return c.isAnnotationPresent(neo.class) && c.getAnnotation(neo.class).recency();
+	}
+
+	public <T> Collection<T> getFullText(Class<T> t, String indexname,
+			Object value) {
+		Transaction tx = ineo.beginTx();
+		try {
+			ArrayList<T> list = new ArrayList<T>();
+			IndexService is = ineo.getFullTextIndexService();
+			for (Node n : is.getNodes(indexname, value))
+				list.add(get(t, n.getId()));
+			tx.success();
+			return list;
+		} finally {
+			tx.finish();
+		}
 	}
 
 }

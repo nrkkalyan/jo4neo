@@ -29,6 +29,11 @@ class Jo4neoAnnotations implements AnnotationHelper {
 				neo.class).index());
 	}
 
+	public boolean isFullText(Field field) {
+		return (field.isAnnotationPresent(neo.class) && field.getAnnotation(
+				neo.class).fulltext());
+	}
+
 	public boolean isInverse(Field field) {
 		if (field.isAnnotationPresent(neo.class)) {
 			neo n = field.getAnnotation(neo.class);
@@ -37,7 +42,6 @@ class Jo4neoAnnotations implements AnnotationHelper {
 		return false;		
 	}
 
-	
 	public RelationshipType toRelationship(RelationFactory f, Field field) {
 		String n = field.getName();
 		if (field.isAnnotationPresent(neo.class)) {

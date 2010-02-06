@@ -8,6 +8,7 @@ import jo4neo.fluent.Where;
 
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.index.IndexService;
 
 /**
  * Interface used to interact with neo4j in an object oriented manner.
@@ -167,8 +168,10 @@ public interface ObjectGraph {
 	<T> Collection<T> getMostRecent(Class<T> t, int max);
 	
 	
-	public <T> T getSingle(Class<T> t, String indexname, Object value);
+	<T> T getSingle(Class<T> t, String indexname, Object value);
 	
-	public <T> Collection<T> get(Class<T> t, String indexname, Object value);
+	<T> Collection<T> get(Class<T> t, String indexname, Object value);
+	
+	<T> Collection<T> getFullText(Class<T> t, String indexname, Object value);
 
 }
