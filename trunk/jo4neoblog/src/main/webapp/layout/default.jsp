@@ -12,9 +12,9 @@
     <body>
 	<div id="page">
     <div id="header">
-	<div style="float:left"><h1><a href="${pageContext.request.contextPath}/">jo4neo Blog</a></h1></div>
-	<div style="float:right">
-	<c:choose>
+    
+    <div>
+    <c:choose>
     <c:when test="${not empty login}">
     logged in as ${login.screenName} | 
     <stripes:link beanclass="action.PostAction">new post</stripes:link> |
@@ -23,9 +23,20 @@
     <c:when test="${empty login}">
     <stripes:link beanclass="action.LoginAction">sign in</stripes:link>
     </c:when>
-    </c:choose>   
+    </c:choose>
+    </div>
+    
+    <div>
+	  <div style="float:left"><h1><a href="${pageContext.request.contextPath}/">jo4neo Blog</a></h1></div>
+	  <div style="text-align:right">
+  	    <stripes:form beanclass="action.SearchAction" method="post">
+	      <stripes:text name="query"/>
+	      <stripes:submit name="search" value="search"/>
+        </stripes:form>
+	  </div>
 	</div>
-    <div class="br"> </div>
+	
+    <div class="br" style="clear:both"> </div>
     </div>
     <div id="content">
     <stripes:layout-component name="contents"/>

@@ -3,7 +3,7 @@ package example;
 import java.util.Collection;
 import java.util.Locale;
 
-import org.neo4j.api.core.NotFoundException;
+import org.neo4j.graphdb.NotFoundException;
 
 import net.sourceforge.stripes.validation.TypeConverter;
 import net.sourceforge.stripes.validation.ValidationError;

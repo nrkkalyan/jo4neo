@@ -12,10 +12,10 @@ public class Post extends NeoBean<Post> {
 	
 	@neo private Collection<Comment> comments = new LinkedList<Comment>();
 	@neo("hasTag") private Collection<Tag> tags = new HashSet<Tag>();
-	@neo private User author;
-	@neo private Date createdAt;
-	@neo private String title;
-	@neo private String content;
+	@neo User author;
+	@neo Date createdAt;
+	@neo String title;
+	@neo(fulltext=true) public String content;
 
 	public Post(String s) {
 		this();

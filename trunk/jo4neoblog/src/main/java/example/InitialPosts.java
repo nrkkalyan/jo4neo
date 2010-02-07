@@ -4,7 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 
-import org.neo4j.api.core.Transaction;
+import org.neo4j.graphdb.Transaction;
 
 import action.Hex;
 
