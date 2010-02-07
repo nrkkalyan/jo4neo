@@ -28,6 +28,9 @@ class DeleteOpertation {
 				for (FieldContext field : type.getFields(item))
 					if (field.isIndexed())
 						indexRemove(delNode, field);
+					else if (field.isFullText())
+						ftIndexRemove(delNode, field);
+						
 
 				for (Relationship r : delNode.getRelationships())
 					r.delete();
@@ -41,6 +44,11 @@ class DeleteOpertation {
 	
 	private void indexRemove(Node delNode, FieldContext field) {
 		ineo.getIndexService().removeIndex(delNode, field.getIndexName(),
+				field.value());
+	}
+	
+	private void ftIndexRemove(Node delNode, FieldContext field) {
+		ineo.getFullTextIndexService().removeIndex(delNode, field.getIndexName(),
 				field.value());
 	}
 }

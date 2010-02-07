@@ -38,6 +38,16 @@ public class TestFullText extends BaseTest {
 		articles = graph.fullTextQuery(Article.class, "test.specific.Article.content_INDEX", "nearly Jed");
 		assertEquals(1, articles.size());
 		
+		
+		articles = graph.find(a).where(a.content).is("mountaineer").results();
+		for (Article article : articles)
+			graph.delete(article);
+
+		
+		articles = graph.find(a).where(a.content).is("mountaineer").results();
+		assertEquals(0, articles.size());
+		
+		
 	}
 
 }
