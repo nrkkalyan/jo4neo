@@ -174,7 +174,7 @@ class ObjectGraphImpl implements ObjectGraph {
 		return c.isAnnotationPresent(neo.class) && c.getAnnotation(neo.class).recency();
 	}
 
-	public <T> Collection<T> getFullText(Class<T> t, String indexname,
+	public <T> Collection<T> fullTextQuery(Class<T> t, String indexname,
 			Object value) {
 		Transaction tx = ineo.beginTx();
 		try {

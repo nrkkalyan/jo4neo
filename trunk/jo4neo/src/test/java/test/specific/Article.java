@@ -9,7 +9,7 @@ public class Article {
 	
 	@neo(fulltext=true) String content;
 	@neo String author;
-	//@neo String[] tags;
+	@neo String[] tags;
 	
 	public Article() {}
 

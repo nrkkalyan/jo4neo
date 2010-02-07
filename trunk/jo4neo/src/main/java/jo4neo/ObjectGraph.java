@@ -172,6 +172,6 @@ public interface ObjectGraph {
 	
 	<T> Collection<T> get(Class<T> t, String indexname, Object value);
 	
-	<T> Collection<T> getFullText(Class<T> t, String indexname, Object value);
+	<T> Collection<T> fullTextQuery(Class<T> t, String indexname, Object value);
 
 }

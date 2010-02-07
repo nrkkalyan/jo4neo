@@ -11,11 +11,11 @@ import jo4neo.fluent.Where;
 
 
 public class FieldValueMap<A> implements Where<A> {
-	
+
 	Class<A> c;
 	Map<Object, FieldContext> map;
 	ObjectGraph pm;
-	
+
 	public FieldValueMap(A a, ObjectGraph pm) {
 		c = (Class<A>) a.getClass();
 		this.pm = pm;
@@ -27,7 +27,7 @@ public class FieldValueMap<A> implements Where<A> {
 	public FieldContext getField(Object value) {
 		return map.get(value);
 	}
-	
+
 	public Is<A> where(Object o) {
 		return new IndexQuery<A>(map.get(o), pm, c);
 	}
