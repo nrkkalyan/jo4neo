@@ -14,7 +14,7 @@ public class NeoComparator implements Comparator<Object> {
 	}
 	
 	private int compare(Nodeid n1, Nodeid n2) {
-		return (n1.id() == n2.id()) ?  0:1;
+		return (n1.id() == n2.id() && n1.valid() ) ?  0:1;
 	}
 
 }

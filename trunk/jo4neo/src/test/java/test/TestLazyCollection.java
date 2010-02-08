@@ -34,11 +34,11 @@ public class TestLazyCollection extends BaseTest {
 		tw.setId(p3, neo);
 
 		set.add(p1);
-		assertFalse(set.add(p2));
-		assertEquals(set.size(), 1);
+		assertTrue(set.add(p2));
+		assertEquals(set.size(), 2);
 
 		assertTrue(set.add(p3));
-		assertEquals(set.size(), 2);
+		assertEquals(set.size(), 3);
 	}
 	
 	@Test
