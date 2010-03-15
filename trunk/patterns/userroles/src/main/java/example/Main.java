@@ -3,8 +3,8 @@ package example;
 import jo4neo.ObjectGraph;
 import jo4neo.ObjectGraphFactory;
 
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 public class Main {
 
@@ -52,7 +52,8 @@ public class Main {
 
 	public static void main(String[] args) {
 
-		NeoService neo = new EmbeddedNeo("neo_store2");
+		GraphDatabaseService neo = new EmbeddedGraphDatabase("neo_store2");
+		neo.enableRemoteShell();
 		ObjectGraph graph = ObjectGraphFactory.instance().get(neo);
 		try {
 			setup(graph);

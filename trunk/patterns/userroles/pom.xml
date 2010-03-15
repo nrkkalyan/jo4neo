@@ -9,7 +9,7 @@
 		<dependency>
 			<groupId>thewebsemantic</groupId>
 			<artifactId>jo4neo</artifactId>
-			<version>0.3.0</version>
+			<version>0.4.1</version>
 		</dependency>
 	</dependencies>
 
@@ -19,4 +19,16 @@
 			<url>http://jo4neo.googlecode.com/svn/trunk/repo</url>
 		</repository>
 	</repositories>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>
