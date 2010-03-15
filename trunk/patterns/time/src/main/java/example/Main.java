@@ -18,9 +18,9 @@ import jo4neo.ObjectGraphFactory;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
-import org.neo4j.api.core.EmbeddedNeo;
-import org.neo4j.api.core.NeoService;
-import org.neo4j.api.core.Transaction;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 public class Main {
 	
@@ -29,11 +29,11 @@ public class Main {
 	
 	public static void main(String[] args) throws MalformedURLException, IOException, ParseException {
 		
-		NeoService neo = new EmbeddedNeo("neo_store");
+		GraphDatabaseService neo = new EmbeddedGraphDatabase("neo_store");
 		ObjectGraph graph = ObjectGraphFactory.instance().get(neo);
 		
 		populateGraph(graph);
-		Transaction t = graph.beginTx();
+		org.neo4j.graphdb.Transaction t = graph.beginTx();
 		try {
 
 			Collection<URI> people =  graph.get(URI.class);

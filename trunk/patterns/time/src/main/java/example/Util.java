@@ -2,9 +2,9 @@ package example;
 
 import java.util.Calendar;
 
-import org.neo4j.api.core.Transaction;
-
 import jo4neo.ObjectGraph;
+
+import org.neo4j.graphdb.Transaction;
 
 public class Util {
 
