@@ -5,12 +5,18 @@ import java.util.Collection;
 import jo4neo.ObjectGraph;
 import jo4neo.ObjectGraphFactory;
 
+import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.kernel.EmbeddedGraphDatabase;
 
 public class Jo4neoTest {
 
+	@Test
+	public void noop() {
+		
+	}
+	
 	public static void main(String args[]) {
 
 		GraphDatabaseService neo = new EmbeddedGraphDatabase("bugs");
