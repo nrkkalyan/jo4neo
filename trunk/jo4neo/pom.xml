@@ -7,18 +7,18 @@
 	<dependencies>
 	   <dependency>
       <groupId>org.neo4j</groupId>
-      <artifactId>neo-utils</artifactId>
-      <version>1.0-b11-SNAPSHOT</version>
+      <artifactId>neo4j-utils</artifactId>
+      <version>1.0</version>
     </dependency>
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-index</artifactId>
-			<version>1.0-b1-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-kernel</artifactId>
-			<version>1.0-rc</version>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
