@@ -5,11 +5,11 @@
 	<artifactId>jo4neo</artifactId>
 	<name>jo4neo</name>
 	<dependencies>
-	   <dependency>
-      <groupId>org.neo4j</groupId>
-      <artifactId>neo4j-utils</artifactId>
-      <version>1.0</version>
-    </dependency>
+		<dependency>
+			<groupId>org.neo4j</groupId>
+			<artifactId>neo4j-utils</artifactId>
+			<version>1.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.neo4j</groupId>
 			<artifactId>neo4j-index</artifactId>
@@ -27,43 +27,37 @@
 		</dependency>
 	</dependencies>
 	<version>0.4.2</version>
-	
-	 <build>
-        <extensions>
-            <extension>
-            	<groupId>org.jvnet.wagon-svn</groupId>
-            	<artifactId>wagon-svn</artifactId>
-            	<version>1.9</version>
-            </extension>
-        </extensions>
-		<plugins>
-		    <plugin>
-		      <groupId>org.apache.maven.plugins</groupId>
-		      <artifactId>maven-compiler-plugin</artifactId>
-		      <version>2.0.2</version>
-		      <configuration>
-		        <source>1.5</source>
-		        <target>1.5</target>
-		      </configuration>
-		    </plugin>
-		  </plugins>
 
-    </build>
-    
-    <distributionManagement>
-        <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>googlecode</id>
-            <url>svn:https://jo4neo.googlecode.com/svn/trunk/repo</url>
-        </repository>
-        <snapshotRepository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>googlecode.snapshot</id>
-            <url>svn:https://jo4neo.googlecode.com/svn/trunk/snapshotrepo</url>
-            
-        </snapshotRepository>
-    </distributionManagement>
-    
+	<build>
+		<extensions>
+			<extension>
+				<groupId>org.jvnet.wagon-svn</groupId>
+				<artifactId>wagon-svn</artifactId>
+				<version>1.9</version>
+			</extension>
+		</extensions>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+		</plugins>
+
+	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>neo4j-upload-repository</id>
+			<name>Developers-only Maven 2 upload repository for Neo4j</name>
+			<url>scpexe://m2.neo4j.org/home/neo/maven2</url>
+		</repository>
+	</distributionManagement>
+
 	<repositories>
 		<repository>
 			<id>neo4j-public-repository</id>
