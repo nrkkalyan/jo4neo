@@ -36,7 +36,7 @@ public class Utils {
 		} else if (c == java.util.Date.class) {
 			return (T) new java.util.Date(counter++);
 		} else if (c == Collection.class) {
-			return (T) new ArrayList();
+			return (T) new ArrayList<T>();
 		} else if (c == Integer.TYPE) {
 			return (T) new Integer((int) counter++);
 		} else if (c == Long.TYPE) {

@@ -16,7 +16,7 @@ public class TestFieldValueMap {
 		p.setLastName("cowan");
 
 		
-		FieldValueMap map = new FieldValueMap(p, null);
+		FieldValueMap<?> map = new FieldValueMap<Object>(p, null);
 		
 		System.out.println(map.getField(p.age).getFieldname());
 		System.out.println(map.getField(p.address).getFieldname());
@@ -29,7 +29,7 @@ public class TestFieldValueMap {
 		f.setJ(1);
 		f.setX(3);
 		
-		map = new FieldValueMap(f, null);
+		map = new FieldValueMap<Object>(f, null);
 		System.out.println(map.getField(f.i).getFieldname());
 		System.out.println(map.getField(f.j).getFieldname());
 		System.out.println(map.getField(f.x).getFieldname());

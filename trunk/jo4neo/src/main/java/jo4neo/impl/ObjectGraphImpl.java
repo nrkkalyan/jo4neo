@@ -5,15 +5,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import jo4neo.Nodeid;
 import jo4neo.ObjectGraph;
 import jo4neo.neo;
 import jo4neo.fluent.Where;
 import jo4neo.util.Lazy;
 
+import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.index.IndexService;
 
 /**
@@ -55,19 +54,6 @@ class ObjectGraphImpl implements ObjectGraph {
 	 */
 	public void delete(Object... o) {
 		new DeleteOpertation(ineo).delete(o);
-	}
-
-	private Node asNode(Object o) {
-		Transaction t = ineo.beginTx();
-		try {
-			TypeWrapper type = TypeWrapperFactory.$(o);
-			Nodeid neo = type.id(o);
-			Node n = ineo.getNodeById(neo);
-			t.success();
-			return n;
-		} finally {
-			t.finish();
-		}
 	}
 
 	/* (non-Javadoc)

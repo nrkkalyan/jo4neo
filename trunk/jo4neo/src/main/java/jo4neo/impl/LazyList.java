@@ -18,14 +18,14 @@ public class LazyList implements Lazy {
 
 	private transient FieldContext field;
 	private transient SoftReference<LoadCollectionOps> loader;
-	private transient Collection newdata;
+	private transient Collection<Object> newdata;
 
-	private Collection data;
+	private Collection<Object> data;
 	private boolean modified = false;
 	
 	public LazyList(FieldContext f, LoadCollectionOps loader) {
 		field = f;
-		this.loader = new SoftReference(loader);
+		this.loader = new SoftReference<LoadCollectionOps>(loader);
 	}
 	
 	public long getCount() {
@@ -39,20 +39,20 @@ public class LazyList implements Lazy {
 		return graph;
 	}
 
-	private Collection data() {
+	private Collection<Object> data() {
 		if (data == null)
 			data = graph().load(field);
 		return data;
 	}
 	
-	protected Collection newdata() {
+	protected Collection<Object> newdata() {
 		if ( newdata == null)
 			newdata = new ArrayList<Object>();
 		return newdata;
 	}
 	
-	protected Collection consumeUpdates() {
-		Collection updates = newdata();
+	protected Collection<Object> consumeUpdates() {
+		Collection<Object> updates = newdata();
 		newdata = null;
 		return updates;
 	}
@@ -66,7 +66,7 @@ public class LazyList implements Lazy {
 		return false;
 	}
 
-	public boolean addAll(Collection c) {
+	public boolean addAll(Collection<?> c) {
 		modified = true;
 		return data().addAll(c);
 	}
@@ -81,7 +81,7 @@ public class LazyList implements Lazy {
 		return data().contains(o);
 	}
 
-	public boolean containsAll(Collection c) {
+	public boolean containsAll(Collection<?> c) {
 		return data().containsAll(c);
 	}
 
@@ -97,7 +97,7 @@ public class LazyList implements Lazy {
 		return data().isEmpty();
 	}
 
-	public Iterator iterator() {
+	public Iterator<Object> iterator() {
 		return data().iterator();
 	}
 
@@ -108,12 +108,12 @@ public class LazyList implements Lazy {
 		return data().remove(o);
 	}
 
-	public boolean removeAll(Collection c) {
+	public boolean removeAll(Collection<?> c) {
 		modified = true;
 		return data().removeAll(c);
 	}
 
-	public boolean retainAll(Collection c) {
+	public boolean retainAll(Collection<?> c) {
 		modified = true;
 		return data().retainAll(c);
 	}

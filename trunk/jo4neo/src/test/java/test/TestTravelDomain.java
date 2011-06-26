@@ -109,7 +109,7 @@ public class TestTravelDomain {
 		assertEquals(6, states.size());
 		boolean caught = false;
 		try {
-			Collection<City> cities = pm.getAddedSince(City.class,c.getTime());
+			pm.getAddedSince(City.class,c.getTime());
 		} catch (UnsupportedOperationException e) {
 			caught = true;
 			//e.printStackTrace();

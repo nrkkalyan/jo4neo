@@ -6,6 +6,7 @@ import static jo4neo.util.Resources.msg;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -40,6 +41,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 		this.cls = type;
 	}
 
+	@SuppressWarnings("unchecked")
 	public T load(long key) {
 		Transaction t = neo.beginTx();
 		try {
@@ -72,6 +74,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private Collection<T> load(Iterable<Node> nodes, long max) {
 		Transaction t = neo.beginTx();
 		long l = 0;
@@ -93,6 +96,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 		return load(nodes, Long.MAX_VALUE);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Collection<T> loadAndFilter(Iterable<Node> nodes) {
 		return (Collection<T>) loadAndFilter(nodes, cls);
 	}
@@ -113,6 +117,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private Collection<T> loadAll(Iterable<Relationship> relations) {
 		ArrayList<T> results = new ArrayList<T>();
 		for (Relationship r : relations)
@@ -305,6 +310,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public T load(String indexname, Object value) {
 
 		Transaction t = neo.beginTx();
@@ -325,9 +331,13 @@ class LoadOperation<T> implements LoadCollectionOps {
 		Transaction t = neo.beginTx();
 		try {
 			Node n = getNode(field);
-			for (Relationship r : field.relationships(n, neo.getRelationFactory(),
-					direction))
+			for (
+					Iterator<Relationship> i = field.relationships(n, neo.getRelationFactory(),
+					direction).iterator();
+					i.hasNext();
+					i.next()) {
 				count++;
+			}
 		} finally {
 			t.finish();
 		}

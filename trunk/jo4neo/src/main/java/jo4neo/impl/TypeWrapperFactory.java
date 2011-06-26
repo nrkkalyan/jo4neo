@@ -8,7 +8,7 @@ import jo4neo.util.Utils;
 
 public class TypeWrapperFactory {
 
-	public static HashMap<Class, TypeWrapper> cache = new HashMap<Class, TypeWrapper>();
+	public static HashMap<Class<?>, TypeWrapper> cache = new HashMap<Class<?>, TypeWrapper>();
 	static Jo4neoAnnotations helper = new Jo4neoAnnotations();
 	
 	static {

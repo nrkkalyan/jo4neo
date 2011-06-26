@@ -16,6 +16,7 @@ public class FieldValueMap<A> implements Where<A> {
 	Map<Object, FieldContext> map;
 	ObjectGraph pm;
 
+	@SuppressWarnings("unchecked")
 	public FieldValueMap(A a, ObjectGraph pm) {
 		c = (Class<A>) a.getClass();
 		this.pm = pm;

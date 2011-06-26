@@ -75,7 +75,7 @@ public class FieldContext {
 		if (result instanceof Date)
 			return ((Date) result).getTime();
 		else if (isPlural())
-			return ((Collection) result).toArray();
+			return ((Collection<?>) result).toArray();
 		else
 			return result;
 	}
@@ -120,10 +120,11 @@ public class FieldContext {
 			n.setProperty(name(), value());
 	}
 
+	@SuppressWarnings("unchecked")
 	public Collection<Object> values() {
 		try {
 			field.setAccessible(true);
-			return (Collection) field.get(subject);
+			return (Collection<Object>) field.get(subject);
 		} catch (Exception e) {
 			Utils.runtime(e);
 		}

@@ -20,10 +20,10 @@ import jo4neo.util.Lazy;
 class InverseList implements Lazy {
 
 	private transient FieldContext field;
-	private transient LoadOperation loader;
-	private Collection data;
+	private transient LoadOperation<?> loader;
+	private Collection<Object> data;
 	
-	public InverseList(FieldContext f, LoadOperation neo) {
+	public InverseList(FieldContext f, LoadOperation<?> neo) {
 		field = f;
 		this.loader = neo;
 	}
@@ -32,7 +32,7 @@ class InverseList implements Lazy {
 		return loader.count(field, Direction.INCOMING);
 	}
 	
-	private Collection data() {
+	private Collection<Object> data() {
 		if ( data == null)
 			data = loader.loadInverse(field);
 		return data;
@@ -42,7 +42,7 @@ class InverseList implements Lazy {
 		return false;
 	}
 
-	public boolean addAll(Collection c) {
+	public boolean addAll(Collection<?> c) {
 		return false;
 	}
 
@@ -55,7 +55,7 @@ class InverseList implements Lazy {
 		return data().contains(o);
 	}
 
-	public boolean containsAll(Collection c) {
+	public boolean containsAll(Collection<?> c) {
 		return data().containsAll(c);
 	}
 
@@ -71,7 +71,7 @@ class InverseList implements Lazy {
 		return data().isEmpty();
 	}
 
-	public Iterator iterator() {
+	public Iterator<Object> iterator() {
 		return data().iterator();
 	}
 
@@ -79,11 +79,11 @@ class InverseList implements Lazy {
 		return false;
 	}
 
-	public boolean removeAll(Collection c) {
+	public boolean removeAll(Collection<?> c) {
 		return false;
 	}
 
-	public boolean retainAll(Collection c) {
+	public boolean retainAll(Collection<?> c) {
 		return false;
 	}
 	

@@ -16,6 +16,7 @@ class DeleteOpertation {
 		this.ineo = ineo;
 	}
 
+	@SuppressWarnings("unused")
 	public void delete(Object... o) {
 		Transaction t = ineo.beginTx();
 		try {

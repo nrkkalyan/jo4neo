@@ -1,6 +1,5 @@
 package jo4neo.impl;
 
-import static jo4neo.Relationships.JO4NEO_NEXT_MOST_RECENT;
 import static jo4neo.impl.TypeWrapperFactory.$;
 import static org.neo4j.graphdb.Direction.OUTGOING;
 
@@ -79,8 +78,6 @@ class PersistOperation<T> {
 			index().index(node, field.getIndexName(),
 					field.value());
 		} else if (field.value() != null && field.isFullText() ) {
-			String name = field.getIndexName();
-			String value = field.value().toString();
 			IndexService is = neo.getFullTextIndexService();
 			is.removeIndex(node, field.getIndexName(), field.value());
 			is.index(node, field.getIndexName(), field.value());
@@ -92,7 +89,7 @@ class PersistOperation<T> {
 	}
 
 	private void relations(Node node, FieldContext field) {
-		Collection<Object> values = field.values();
+		Collection<?> values = field.values();
 		RelationshipType reltype = field.toRelationship(neo.getRelationFactory());
 		
 		//initialize null collections to a lazy loader
@@ -152,17 +149,6 @@ class PersistOperation<T> {
 	private void deleteAll(Node node, RelationshipType reltype) {
 		for (Relationship r : node.getRelationships(reltype, Direction.OUTGOING))
 			r.delete();
-	}
-	
-	private void recencyStack(Node newNode, Node metanode) {
-		Node latest=null;
-		for(Relationship r : metanode.getRelationships(JO4NEO_NEXT_MOST_RECENT, Direction.OUTGOING)) {
-			latest = r.getEndNode();
-			r.delete();
-		}
-		if (latest!=null)
-			newNode.createRelationshipTo(latest, JO4NEO_NEXT_MOST_RECENT);
-		metanode.createRelationshipTo(newNode, JO4NEO_NEXT_MOST_RECENT);
 	}
 
 

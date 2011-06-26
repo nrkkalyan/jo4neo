@@ -3,7 +3,7 @@ package jo4neo.impl;
 import jo4neo.util.Lazy;
 
 class ListFactory {
-	public static Lazy get(FieldContext field, LoadOperation load) {
+	public static Lazy get(FieldContext field, LoadOperation<?> load) {
 		if (field.isInverse())
 			return new InverseList(field, load);
 		else if (field.isTraverser())

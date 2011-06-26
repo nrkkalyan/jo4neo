@@ -43,6 +43,7 @@ public class TestDelete extends BaseTest {
 	public void inverse() {
 		Transaction t = graph.beginTx();
 		try {
+			@SuppressWarnings("unused")
 			Product p = new Product();
 			t.success();
 		} finally {

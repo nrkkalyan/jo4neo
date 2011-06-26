@@ -14,10 +14,10 @@ import jo4neo.util.Lazy;
 class TraverserList implements Lazy {
 
 	private transient FieldContext field;
-	private transient LoadOperation loader;
-	private Collection data;
+	private transient LoadOperation<?> loader;
+	private Collection<?> data;
 	
-	public TraverserList(FieldContext f, LoadOperation neo) {
+	public TraverserList(FieldContext f, LoadOperation<?> neo) {
 		field = f;
 		this.loader = neo;
 	}
@@ -26,7 +26,7 @@ class TraverserList implements Lazy {
 		throw new UnsupportedOperationException();
 	}
 
-	private Collection data() {
+	private Collection<?> data() {
 		if ( data == null)
 			data = loader.loadTraverser(field);
 		return data;
@@ -36,7 +36,7 @@ class TraverserList implements Lazy {
 		return false;
 	}
 
-	public boolean addAll(Collection c) {
+	public boolean addAll(Collection<?> c) {
 		return false;
 	}
 
@@ -49,7 +49,7 @@ class TraverserList implements Lazy {
 		return data().contains(o);
 	}
 
-	public boolean containsAll(Collection c) {
+	public boolean containsAll(Collection<?> c) {
 		return data().containsAll(c);
 	}
 
@@ -65,19 +65,19 @@ class TraverserList implements Lazy {
 		return data().isEmpty();
 	}
 
-	public Iterator iterator() {
-		return data().iterator();
+	public Iterator<Object> iterator() {
+		return (Iterator<Object>) data().iterator();
 	}
 
 	public boolean remove(Object o) {
 		return false;
 	}
 
-	public boolean removeAll(Collection c) {
+	public boolean removeAll(Collection<?> c) {
 		return false;
 	}
 
-	public boolean retainAll(Collection c) {
+	public boolean retainAll(Collection<?> c) {
 		return false;
 	}
 	

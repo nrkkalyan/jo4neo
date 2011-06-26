@@ -85,7 +85,7 @@ class DefaultTypeWrapper extends TypeWrapper {
 		return this.me.getName();
 	}
 	
-	public Field[] getDeclaredFields(Class c) {
+	public Field[] getDeclaredFields(Class<?> c) {
 		ArrayList<Field> fields = new ArrayList<Field>();
 		for (Field field : c.getDeclaredFields())
 			fields.add(field);
