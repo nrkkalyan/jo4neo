@@ -274,7 +274,7 @@ public class TestBasic extends BaseTest {
 
 	@Test
 	public void notransaction() {
-		try {
+
 			Address a = new Address();
 			a.state = "TX";
 			a.city = "Keller";
@@ -295,12 +295,10 @@ public class TestBasic extends BaseTest {
 
 			Person p2 = graph.get(Person.class, p1.neo.id());
 			assertEquals(32, p2.getAge());
+			assertEquals(p1.getAge(), p2.getAge());
 			assertNotNull(p2.getFriend());
 			assertEquals(p2.getFriend().getFirstName(), "friend");
-			System.out.println(p2.getAddress().getState());
-		} finally {
-			
-		}
+			assertEquals(p2.getFriend().getFirstName(), p1.getFriend().getFirstName());
 	}
 
 	@Test

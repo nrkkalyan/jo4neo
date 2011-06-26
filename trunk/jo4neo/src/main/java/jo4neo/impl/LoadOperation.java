@@ -46,21 +46,15 @@ class LoadOperation<T> implements LoadCollectionOps {
 
 	@SuppressWarnings("unchecked")
 	public T load(long key) {
-		Transaction t = neo.beginTx();
-		try {
-			Node n = neo.getNodeById(key);
-			TypeWrapper type = nodesJavaType(n);
-			if (!type.assignableTo(cls))
-				throw new NotFoundException("Node " + key + " cannot be seen as a "
-						+ cls);
-			if (n == null)
-				return null;
-			Object o = loadDirect(n);
-			t.success();
-			return (T) o;
-		} finally {
-			t.finish();
-		}
+		Node n = neo.getNodeById(key);
+		TypeWrapper type = nodesJavaType(n);
+		if (!type.assignableTo(cls))
+			throw new NotFoundException("Node " + key + " cannot be seen as a "
+					+ cls);
+		if (n == null)
+			return null;
+		Object o = loadDirect(n);
+		return (T) o;
 	}
 
 	public boolean isClosed() {
@@ -68,31 +62,20 @@ class LoadOperation<T> implements LoadCollectionOps {
 	}
 
 	public Collection<T> loadAll() {
-		Transaction t = neo.beginTx();
-		try {
-			Node n = neo.getMetaNode(cls);
-			return loadAll(n.getRelationships(Relationships.JO4NEO_HAS_TYPE));
-		} finally {
-			t.finish();
-		}
+		Node n = neo.getMetaNode(cls);
+		return loadAll(n.getRelationships(Relationships.JO4NEO_HAS_TYPE));
 	}
 
 	@SuppressWarnings("unchecked")
 	private Collection<T> load(Iterable<Node> nodes, long max) {
-		Transaction t = neo.beginTx();
 		long l = 0;
-		try {
-			ArrayList<T> results = new ArrayList<T>();
-			for (Node node : nodes) {
-				if (l++ >= max)
-					break;
-				results.add((T) loadDirect(node));
-			}
-			t.success();
-			return results;
-		} finally {
-			t.finish();
+		ArrayList<T> results = new ArrayList<T>();
+		for (Node node : nodes) {
+			if (l++ >= max)
+				break;
+			results.add((T) loadDirect(node));
 		}
+			return results;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -101,19 +84,13 @@ class LoadOperation<T> implements LoadCollectionOps {
 	}
 
 	public Collection<Object> loadAndFilter(Iterable<Node> nodes, Class<?> clazz) {
-		Transaction t = neo.beginTx();
-		try {
-			ArrayList<Object> results = new ArrayList<Object>();
-			for (Node node : nodes) {
-				Class<?> nodeType = nodesJavaType(node).getWrappedType();
-				if (clazz.isAssignableFrom(nodeType))
-					results.add(loadDirect(node));
-			}
-			t.success();
-			return results;
-		} finally {
-			t.finish();
+		ArrayList<Object> results = new ArrayList<Object>();
+		for (Node node : nodes) {
+			Class<?> nodeType = nodesJavaType(node).getWrappedType();
+			if (clazz.isAssignableFrom(nodeType))
+				results.add(loadDirect(node));
 		}
+		return results;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -142,19 +119,13 @@ class LoadOperation<T> implements LoadCollectionOps {
 	}
 
 	public Collection<Object> load(FieldContext field) {
-		Transaction t = neo.beginTx();
-		try {
-			Set<Object> values = new TreeSet<Object>(new NeoComparator());
-			Node n = getNode(field);
-			for (Relationship r : outgoingRelationships(field, n)) {
-				if (!values.add(loadDirect(r.getEndNode())))
-					System.err.println("duplicate relations in graph.");
-			}
-			t.success();
-			return values;
-		} finally {
-			t.finish();
+		Set<Object> values = new TreeSet<Object>(new NeoComparator());
+		Node n = getNode(field);
+		for (Relationship r : outgoingRelationships(field, n)) {
+			if (!values.add(loadDirect(r.getEndNode())))
+				System.err.println("duplicate relations in graph.");
 		}
+		return values;
 	}
 
 	private Node getNode(FieldContext field) {
@@ -162,31 +133,19 @@ class LoadOperation<T> implements LoadCollectionOps {
 	}
 
 	public Collection<Object> loadInverse(FieldContext field) {
-		Transaction t = neo.beginTx();
-		try {
-			Set<Object> values = new TreeSet<Object>(new NeoComparator());
-			Node n = getNode(field);
-			for (Relationship r : incommingRelationships(field, n)) {
-				if (!values.add(loadDirect(r.getStartNode())))
-					System.err.println("duplicate relations in graph.");
-			}
-			t.success();
-			return values;
-		} finally {
-			t.finish();
+		Set<Object> values = new TreeSet<Object>(new NeoComparator());
+		Node n = getNode(field);
+		for (Relationship r : incommingRelationships(field, n)) {
+			if (!values.add(loadDirect(r.getStartNode())))
+				System.err.println("duplicate relations in graph.");
 		}
+		return values;
 	}
 
 	public Collection<Object> loadTraverser(FieldContext field) {
-		Transaction t = neo.beginTx();
-		try {
-			Node n = getNode(field);
-			Traverser tvsr = field.getTraverserProvider().get(n);
-			t.success();
-			return loadAndFilter(tvsr, field.type2());
-		} finally {
-			t.finish();
-		}
+		Node n = getNode(field);
+		Traverser tvsr = field.getTraverserProvider().get(n);
+		return loadAndFilter(tvsr, field.type2());
 	}
 
 	public void removeRelationship(FieldContext field, Object o) {
@@ -260,15 +219,9 @@ class LoadOperation<T> implements LoadCollectionOps {
 	 */
 	public Collection<T> since(long since) {
 		timelineAnnotationRequired();
-		Transaction t = neo.beginTx();
-		try {
-			
-			TimelineIndex<Node> tl = neo.getTimeLine(cls);
-			
-			return load(tl.getBetween(since, null));
-		} finally {
-			t.finish();
-		}
+		TimelineIndex<Node> tl = neo.getTimeLine(cls);
+		
+		return load(tl.getBetween(since, null));
 	}
 
 	private Collection<T> load(IndexHits<Node> hits) {
@@ -292,64 +245,44 @@ class LoadOperation<T> implements LoadCollectionOps {
 	 */
 	public Collection<T> within(long from, long to) {
 		timelineAnnotationRequired();
-		Transaction t = neo.beginTx();
-		try {
-			TimelineIndex<Node> tl = neo.getTimeLine(cls);
-			return load(tl.getBetween(from, to));
-		} finally {
-			t.finish();
-		}
+		TimelineIndex<Node> tl = neo.getTimeLine(cls);
+		return load(tl.getBetween(from, to));
 	}
 
 	public Collection<T> latest(long max) {
-		Transaction t = neo.beginTx();
-		try {
-			Node metanode = neo.getMetaNode(cls);
-			Traverser tvsr = metanode.traverse(Order.BREADTH_FIRST,
-					StopEvaluator.END_OF_GRAPH,
-					ReturnableEvaluator.ALL_BUT_START_NODE,
-					Relationships.JO4NEO_NEXT_MOST_RECENT, Direction.OUTGOING);
-			return load(tvsr, max);
-		} finally {
-			t.finish();
-		}
+		Node metanode = neo.getMetaNode(cls);
+		Traverser tvsr = metanode.traverse(Order.BREADTH_FIRST,
+				StopEvaluator.END_OF_GRAPH,
+				ReturnableEvaluator.ALL_BUT_START_NODE,
+				Relationships.JO4NEO_NEXT_MOST_RECENT, Direction.OUTGOING);
+		return load(tvsr, max);
 	}
 
 	@SuppressWarnings("unchecked")
 	public T load(String indexname, Object value) {
 
-		Transaction t = neo.beginTx();
-		try {
-			Node n = neo.getIndexService().get(indexname, value).getSingle();
-			if (n == null)
-				return null;
-			Object o = loadDirect(n);
-			t.success();
-			return (T) o;
-		} finally {
-			t.finish();
-		}
+		Node n = neo.getIndexService().get(indexname, value).getSingle();
+		if (n == null)
+			return null;
+		Object o = loadDirect(n);
+		return (T) o;
 	}
 
 	public long count(FieldContext field, Direction direction) {
 		long count = 0;
-		Transaction t = neo.beginTx();
-		try {
-			Node n = getNode(field);
-			for (
-					Iterator<Relationship> i = field.relationships(n, neo.getRelationFactory(),
-					direction).iterator();
-					i.hasNext();
-					i.next()) {
-				count++;
-			}
-		} finally {
-			t.finish();
+		Node n = getNode(field);
+		for (
+				Iterator<Relationship> i = field.relationships(n, neo.getRelationFactory(),
+				direction).iterator();
+				i.hasNext();
+				i.next()) {
+			count++;
 		}
 		return count;
 	}
 
 	public Object load(Node n) {
+		// TODO remove transaction
 		Transaction t = neo.beginTx();
 		try {
 			TypeWrapper type = nodesJavaType(n);

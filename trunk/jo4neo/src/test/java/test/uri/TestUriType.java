@@ -1,6 +1,6 @@
 package test.uri;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.net.URI;
 import java.util.Collection;
@@ -32,16 +32,14 @@ public class TestUriType extends BaseTest{
 		r = reviews.iterator().next();
 		assertEquals(uri, r.link);
 		
-		Transaction t = graph.beginTx();
-		try {
-			Node n = graph.get(uri);
-			System.out.println(n.getProperty("uri"));
-			for (Relationship rel : n.getRelationships(Direction.INCOMING)) {
-				System.out.println(rel.getType().name());
-			}
-		} finally {
-			t.finish();
+		Node n = graph.get(uri);
+		assertEquals(n.getProperty("uri"), "http://neo4j.org");
+		int counter = 0;
+		for (Relationship rel : n.getRelationships(Direction.INCOMING)) {
+			counter++;
+			assertEquals("link", rel.getType().name());
 		}
+		assertEquals(1, counter);
 		
 		reviews = graph.find(r).where(r.stars).is(5).results();
 		assertEquals(1, reviews.size());

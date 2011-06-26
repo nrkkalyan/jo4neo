@@ -78,16 +78,10 @@ class ObjectGraphImpl implements ObjectGraph {
 	}
 
 	public <T> Collection<T> get(Class<T> t, String indexname, Object value) {
-		Transaction tx = ineo.beginTx();
-		try {
-			ArrayList<T> list = new ArrayList<T>();
-			for (Node n : ineo.getIndexService().get(indexname, value))
-				list.add(get(t, n.getId()));
-			tx.success();
-			return list;
-		} finally {
-			tx.finish();
-		}
+		ArrayList<T> list = new ArrayList<T>();
+		for (Node n : ineo.getIndexService().get(indexname, value))
+			list.add(get(t, n.getId()));
+		return list;
 	}
 
 	/* (non-Javadoc)
@@ -169,17 +163,11 @@ class ObjectGraphImpl implements ObjectGraph {
 	 */
 	public <T> Collection<T> fullTextQuery(Class<T> t, String indexname,
 			Object value) {
-		Transaction tx = ineo.beginTx();
-		try {
-			ArrayList<T> list = new ArrayList<T>();
-			Index<Node> index = ineo.getFullTextIndexService();
-			for (Node n : index.query(indexname, value))
-				list.add(get(t, n.getId()));
-			tx.success();
-			return list;
-		} finally {
-			tx.finish();
-		}
+		ArrayList<T> list = new ArrayList<T>();
+		Index<Node> index = ineo.getFullTextIndexService();
+		for (Node n : index.query(indexname, value))
+			list.add(get(t, n.getId()));
+		return list;
 	}
 
 }
