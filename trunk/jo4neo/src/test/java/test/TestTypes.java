@@ -1,8 +1,6 @@
 package test;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -57,6 +55,9 @@ public class TestTypes extends BaseTest {
 			bean.setLongItem(10001);
 			bean.setNames( new String[] {"a", "b", "c", "d" });
 			bean.setTags(Arrays.asList("a", "b", "c", "d"));
+			bean.setWaar(true);
+			bean.setOnwaar(false);
+			bean.setOokwaar(true);
 			
 			graph.persist(bean);
 			
@@ -66,6 +67,10 @@ public class TestTypes extends BaseTest {
 			assertArrayEquals(new int[] {1,2,3,4,10}, check.getAges());		
 			assertNotNull(check.getTags());
 			assertEquals(4, check.getTags().size());
+			assertTrue(check.getWaar());
+			assertFalse(check.getOnwaar());
+			assertTrue(check.getOokwaar());
+			
 			t.success();
 		
 		} finally {

@@ -18,7 +18,35 @@ public class TypeBean {
 	@neo String[] names;
 	@neo Collection<String> tags;
 	@neo Collection<Double> values;
+	
+	@neo boolean waar;
+	@neo boolean onwaar;
+	@neo boolean ookwaar;
 
+	public Boolean getWaar() {
+		return waar;
+	}
+	
+	public void setWaar(boolean val) {
+		this.waar = val;
+	}
+
+	public Boolean getOnwaar() {
+		return onwaar;
+	}
+	
+	public void setOnwaar(boolean val) {
+		this.onwaar = val;
+	}
+
+	public Boolean getOokwaar() {
+		return ookwaar;
+	}
+	
+	public void setOokwaar(boolean val) {
+		this.ookwaar = val;
+	}
+	
 	public Collection<Double> getValues() {
 		return values;
 	}

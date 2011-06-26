@@ -11,9 +11,6 @@ import org.neo4j.graphdb.Direction;
 
 import jo4neo.util.Lazy;
 
-
-
-@SuppressWarnings("unchecked")
 public class LazyList implements Lazy {
 
 	private transient FieldContext field;
@@ -126,6 +123,7 @@ public class LazyList implements Lazy {
 		return data().toArray();
 	}
 
+	@SuppressWarnings("unchecked")
 	public Object[] toArray(Object[] a) {
 		return data().toArray(a);
 	}
