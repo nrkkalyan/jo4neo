@@ -1,5 +1,6 @@
 package jo4neo.impl;
 
+import java.lang.annotation.Annotation;
 import jo4neo.Nodeid;
 import jo4neo.Timeline;
 import jo4neo.neo;
@@ -89,8 +90,8 @@ public class DefaultNodeid implements InjectedNodeid {
 		//find metanode for type t
 		Node metanode = neo.getMetaNode(type);		
 		newNode.createRelationshipTo(metanode, JO4NEO_HAS_TYPE);	
-		if (type.isAnnotationPresent(Timeline.class))
-			neo.getTimeLine(type).addNode(newNode, System.currentTimeMillis());
+		if (type.isAnnotationPresent((Class<? extends Annotation>) Timeline.class))
+			neo.getTimeLine(type).add(newNode, System.currentTimeMillis());
 		
 		//delete "latest" relation
 		if (type.isAnnotationPresent(neo.class) && type.getAnnotation(neo.class).recency())

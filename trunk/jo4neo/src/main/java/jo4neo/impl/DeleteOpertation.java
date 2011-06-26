@@ -44,12 +44,12 @@ class DeleteOpertation {
 	}
 	
 	private void indexRemove(Node delNode, FieldContext field) {
-		ineo.getIndexService().removeIndex(delNode, field.getIndexName(),
+		ineo.getIndexService().remove(delNode, field.getIndexName(),
 				field.value());
 	}
 	
 	private void ftIndexRemove(Node delNode, FieldContext field) {
-		ineo.getFullTextIndexService().removeIndex(delNode, field.getIndexName(),
+		ineo.getFullTextIndexService().remove(delNode, field.getIndexName(),
 				field.value());
 	}
 }

@@ -3,7 +3,6 @@ package jo4neo.impl;
 import static jo4neo.Relationships.JO4NEO_HAS_TYPE;
 import static jo4neo.impl.TypeWrapperFactory.$;
 
-import java.io.Serializable;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,60 +10,56 @@ import java.util.Map;
 import jo4neo.Nodeid;
 import jo4neo.util.RelationFactory;
 
-
 import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.index.IndexService;
-import org.neo4j.index.lucene.LuceneFulltextQueryIndexService;
-import org.neo4j.index.lucene.LuceneIndexService;
-import org.neo4j.index.timeline.Timeline;
-
+import org.neo4j.graphdb.event.KernelEventHandler;
+import org.neo4j.graphdb.event.TransactionEventHandler;
+import org.neo4j.graphdb.index.Index;
+import org.neo4j.graphdb.index.IndexManager;
+import org.neo4j.helpers.collection.MapUtil;
+import org.neo4j.index.lucene.LuceneTimeline;
+import org.neo4j.index.lucene.TimelineIndex;
 
 class IndexedNeo implements GraphDatabaseService {
 
 	private GraphDatabaseService neo;
-	private LuceneIndexService index;
-	private LuceneFulltextQueryIndexService ftindex;
+	private Index<Node> index;
+	private Index<Node> ftindex;
 	private RelationFactory relFactory;
 	private boolean isClosed = false;
-	private Map<Class<?>, Timeline> timelines;
+
+	private Map<Class<?>, TimelineIndex<Node>> timelines;
 
 	public IndexedNeo(GraphDatabaseService neo) {
 		this.neo = neo;
-		index = new LuceneIndexService(neo);
-		ftindex = new LuceneFulltextQueryIndexService(neo);
+		IndexManager im = neo.index();
+		index = im.forNodes("default");
+
+		ftindex = im.forNodes("default-fulltext", MapUtil.stringMap(
+				IndexManager.PROVIDER, "lucene", "type", "fulltext"));
+		;
 		relFactory = new RelationFactoryImpl();
-		timelines = new HashMap<Class<?>, Timeline>();
+		timelines = new HashMap<Class<?>, TimelineIndex<Node>>();
 	}
 
 	public synchronized void close() {
-		index.shutdown(); 
-		ftindex.shutdown();
 		isClosed = true;
 	}
 
-	public IndexService getIndexService() {
+	public Index<Node> getIndexService() {
 		return index;
 	}
 
-	public IndexService getFullTextIndexService() {
+	public Index<Node> getFullTextIndexService() {
 		return ftindex;
 	}
 
 	public Transaction beginTx() {
 		return neo.beginTx();
-	}
-
-	public boolean enableRemoteShell() {
-		return neo.enableRemoteShell();
-	}
-
-	public boolean enableRemoteShell(Map<String, Serializable> arg0) {
-		return neo.enableRemoteShell(arg0);
 	}
 
 	public Iterable<Node> getAllNodes() {
@@ -124,14 +119,14 @@ class IndexedNeo implements GraphDatabaseService {
 		return metanode;
 	}
 
-	public Timeline getTimeLine(Class<?> c) {
+	public TimelineIndex<Node> getTimeLine(Class<?> c) {
 
 		if (timelines.containsKey(c))
 			return timelines.get(c);
-
-		Node metaNode = getMetaNode(c);
-		org.neo4j.index.timeline.Timeline t = new org.neo4j.index.timeline.Timeline(
-				c.getName(), metaNode, neo);
+		// TODO
+		// Node metaNode = getMetaNode(c);
+		TimelineIndex<Node> t = new LuceneTimeline<Node>(neo, neo.index()
+				.forNodes(c.getName()));
 		timelines.put(c, t);
 		return t;
 	}
@@ -140,19 +135,44 @@ class IndexedNeo implements GraphDatabaseService {
 		return isClosed;
 	}
 
+	public IndexManager index() {
+		return neo.index();
+	}
+
+	public KernelEventHandler registerKernelEventHandler(
+			KernelEventHandler handler) {
+		return neo.registerKernelEventHandler(handler);
+	}
+
+	public <T> TransactionEventHandler<T> registerTransactionEventHandler(
+			TransactionEventHandler<T> handler) {
+		return neo.registerTransactionEventHandler(handler);
+	}
+
+	@Override
+	public KernelEventHandler unregisterKernelEventHandler(
+			KernelEventHandler handler) {
+		return neo.unregisterKernelEventHandler(handler);
+	}
+
+	@Override
+	public <T> TransactionEventHandler<T> unregisterTransactionEventHandler(
+			TransactionEventHandler<T> handler) {
+		return neo.unregisterTransactionEventHandler(handler);
+	}
+
 	public Node getURINode(URI uri) {
 		Transaction t = neo.beginTx();
 		try {
-			Node n = getIndexService().getSingleNode(URI.class.getName(),
-					uri.toString());
+			Node n = getIndexService().get(URI.class.getName(), uri.toString()).getSingle();
 			if (n == null) {
 				n = createNode();
-				getIndexService().index(n, URI.class.getName(), uri.toString());
+				getIndexService().add(n, URI.class.getName(), uri.toString());
 				n.setProperty("uri", uri.toString());
 				n.setProperty(Nodeid.class.getName(), URI.class.getName());
-				//find metanode for type t
-				Node metanode = getMetaNode(URI.class);	
-				n.createRelationshipTo(metanode, JO4NEO_HAS_TYPE);	
+				// find metanode for type t
+				Node metanode = getMetaNode(URI.class);
+				n.createRelationshipTo(metanode, JO4NEO_HAS_TYPE);
 			}
 			t.success();
 			return n;

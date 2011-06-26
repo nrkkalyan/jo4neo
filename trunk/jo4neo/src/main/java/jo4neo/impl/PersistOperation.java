@@ -14,7 +14,7 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.RelationshipType;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.index.IndexService;
+import org.neo4j.graphdb.index.Index;
 
 
 
@@ -73,18 +73,18 @@ class PersistOperation<T> {
 	private void saveAndIndex(Node node, FieldContext field) {
 		field.applyTo(node);
 		if (field.value() != null && field.isIndexed()) {
-			index().removeIndex(node, field.getIndexName(),
+			index().remove(node, field.getIndexName(),
 					field.value());
-			index().index(node, field.getIndexName(),
+			index().add(node, field.getIndexName(),
 					field.value());
 		} else if (field.value() != null && field.isFullText() ) {
-			IndexService is = neo.getFullTextIndexService();
-			is.removeIndex(node, field.getIndexName(), field.value());
-			is.index(node, field.getIndexName(), field.value());
+			Index<Node> is = neo.getFullTextIndexService();
+			is.remove(node, field.getIndexName(), field.value());
+			is.add(node, field.getIndexName(), field.value());
 		}
 	}
 
-	private IndexService index() {
+	private Index<Node> index() {
 		return neo.getIndexService();
 	}
 

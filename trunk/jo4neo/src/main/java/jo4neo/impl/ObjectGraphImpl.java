@@ -13,7 +13,7 @@ import jo4neo.util.Lazy;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.Transaction;
-import org.neo4j.index.IndexService;
+import org.neo4j.graphdb.index.Index;
 
 /**
  * 
@@ -81,7 +81,7 @@ class ObjectGraphImpl implements ObjectGraph {
 		Transaction tx = ineo.beginTx();
 		try {
 			ArrayList<T> list = new ArrayList<T>();
-			for (Node n : ineo.getIndexService().getNodes(indexname, value))
+			for (Node n : ineo.getIndexService().get(indexname, value))
 				list.add(get(t, n.getId()));
 			tx.success();
 			return list;
@@ -160,13 +160,20 @@ class ObjectGraphImpl implements ObjectGraph {
 		return c.isAnnotationPresent(neo.class) && c.getAnnotation(neo.class).recency();
 	}
 
+	/**
+	 * returns a collection of objects that match the query string (full-text).
+	 * @param t the type of the returned objects
+	 * @param indexname the key
+	 * @param value the query string, (part of) the value
+	 * @return a collection with all hits
+	 */
 	public <T> Collection<T> fullTextQuery(Class<T> t, String indexname,
 			Object value) {
 		Transaction tx = ineo.beginTx();
 		try {
 			ArrayList<T> list = new ArrayList<T>();
-			IndexService is = ineo.getFullTextIndexService();
-			for (Node n : is.getNodes(indexname, value))
+			Index<Node> index = ineo.getFullTextIndexService();
+			for (Node n : index.query(indexname, value))
 				list.add(get(t, n.getId()));
 			tx.success();
 			return list;

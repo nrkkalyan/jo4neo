@@ -3,6 +3,7 @@ package jo4neo.impl;
 import static jo4neo.util.Resources.MISSING_TIMELINE_ANNOTATION;
 import static jo4neo.util.Resources.msg;
 
+import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -24,6 +25,8 @@ import org.neo4j.graphdb.StopEvaluator;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.Traverser;
 import org.neo4j.graphdb.Traverser.Order;
+import org.neo4j.graphdb.index.IndexHits;
+import org.neo4j.index.lucene.TimelineIndex;
 
 class LoadOperation<T> implements LoadCollectionOps {
 
@@ -90,10 +93,6 @@ class LoadOperation<T> implements LoadCollectionOps {
 		} finally {
 			t.finish();
 		}
-	}
-
-	private Collection<T> load(Iterable<Node> nodes) {
-		return load(nodes, Long.MAX_VALUE);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -263,18 +262,24 @@ class LoadOperation<T> implements LoadCollectionOps {
 		timelineAnnotationRequired();
 		Transaction t = neo.beginTx();
 		try {
-			org.neo4j.index.timeline.Timeline tl = neo.getTimeLine(cls);
-			return load(tl.getAllNodesAfter(since));
+			
+			TimelineIndex<Node> tl = neo.getTimeLine(cls);
+			
+			return load(tl.getBetween(since, null));
 		} finally {
 			t.finish();
 		}
+	}
+
+	private Collection<T> load(IndexHits<Node> hits) {
+		return load(hits, Long.MAX_VALUE);
 	}
 
 	/**
 	 * 
 	 */
 	private void timelineAnnotationRequired() {
-		if (!cls.isAnnotationPresent(Timeline.class))
+		if (!cls.isAnnotationPresent((Class<? extends Annotation>) Timeline.class))
 			throw new UnsupportedOperationException(msg(
 					MISSING_TIMELINE_ANNOTATION, cls));
 	}
@@ -289,8 +294,8 @@ class LoadOperation<T> implements LoadCollectionOps {
 		timelineAnnotationRequired();
 		Transaction t = neo.beginTx();
 		try {
-			org.neo4j.index.timeline.Timeline tl = neo.getTimeLine(cls);
-			return load(tl.getAllNodesBetween(from, to));
+			TimelineIndex<Node> tl = neo.getTimeLine(cls);
+			return load(tl.getBetween(from, to));
 		} finally {
 			t.finish();
 		}
@@ -315,7 +320,7 @@ class LoadOperation<T> implements LoadCollectionOps {
 
 		Transaction t = neo.beginTx();
 		try {
-			Node n = neo.getIndexService().getSingleNode(indexname, value);
+			Node n = neo.getIndexService().get(indexname, value).getSingle();
 			if (n == null)
 				return null;
 			Object o = loadDirect(n);
