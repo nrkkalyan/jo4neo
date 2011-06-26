@@ -3,6 +3,9 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
+
 import jo4neo.ObjectGraph;
 
 import org.junit.Test;
@@ -17,27 +20,49 @@ public class TestRoles extends BaseTest {
 	public void inverse() {
 		ObjectGraph p = graph;
 		Transaction t = p.beginTx();
-		long id = 0;
+		long c_id = 0;
+		long d_id = 0;
 		try {
+			
+			Collection<Role> existingRoles = p.get(Role.class);
+			for (Role existing: existingRoles) {
+				p.delete(existing);
+			}
+			
 			Role a = new Role("a");
 			Role b = new Role("b", a);
 			Role c = new Role("c", b);
 			Role d = new Role("d", c);
 			p.persist(d);
 			t.success();
-			id = d.id.id();
+			c_id = c.id.id();
+			d_id = d.id.id();
 		} finally {
 			t.finish();
 		}
 		
-		Node n = neo.getNodeById(id);
+		Node n = neo.getNodeById(d_id);
 		for (Relationship rel : n.getRelationships()) {
-			System.out.println(n.getProperty("name").toString() + rel.getType());
+			if (n.getProperty("name").toString().equals("parent")) {
+				assertEquals(
+						c_id, 
+						rel.getStartNode().getId()
+				);
+			}			
 		}
 		Role role = new Role();
 		role = p.find(role).where(role.name).is("d").result();
-		for(Role r : p.get(Role.class))
-			System.out.println(r.name + "...");
+		int counter = 0;
+		for(Role r : p.get(Role.class)) {
+			counter++;
+			assertTrue(
+				r.name.equals("a")
+				|| r.name.equals("b")
+				|| r.name.equals("c")
+				|| r.name.equals("d")
+			);
+		}
+		assertEquals(4, counter);
 		
 	}
 	@Test
@@ -54,6 +79,7 @@ public class TestRoles extends BaseTest {
 		s.name = "foo";
 		assertTrue(r.equals(s));
 	}
+
 	@Test
 	public void basic() {
 		ObjectGraph p = graph;
@@ -61,7 +87,6 @@ public class TestRoles extends BaseTest {
 		try {
 			
 			for(Role r : p.get(Role.class)) {
-				System.out.println(r.name + "...");
 				p.delete(r);
 			}
 			Role roleuser = new Role("roleuser");
@@ -95,7 +120,15 @@ public class TestRoles extends BaseTest {
 			r = p.find(r).where(r.name).is("rolesuperuser").result();
 			assertEquals(1, r.users.size());
 			while (r != null) {
-				System.out.println("has parent " + r.name);
+				if (r.name.equals("a")) {
+					assertTrue(r.parent == null);
+				} else if (r.name.equals("b")) {
+					assertTrue(r.parent.name == "a");
+				} else if (r.name.equals("c")) {
+					assertTrue(r.parent.name == "b");
+				} else if (r.name.equals("d")) {
+					assertTrue(r.parent.name == "c");
+				}
 				r = r.parent;
 			}
 			

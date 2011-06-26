@@ -28,10 +28,20 @@ public class TestTraversal extends BaseTest {
 		
 		Collection<Module> modules = graph.get(Module.class);
 		assertEquals(modules.size(),2);
-		for (Module module : modules) {		
-			System.out.println(module + " has the following elements...");
-			for (Object obj : module.getElements()) {
-				System.out.println(obj);
+		for (Module module : modules) {
+			if (module.getName().equals("root")) {
+				assertEquals(1, module.getBasicItems().size());
+				assertEquals(1, module.getBasicItems().size());
+				assertEquals(2, module.getElements().size());
+			} else {
+				assertEquals(0, module.getBasicItems().size());
+				assertEquals(0, module.getModules().size());
+				assertEquals(0, module.getElements().size());
+			}
+
+			for (@SuppressWarnings("unused") Object obj : module.getElements()) {
+				// only root gets here
+				assertEquals(module.getName(), "root");
 			}
 		}
 	}

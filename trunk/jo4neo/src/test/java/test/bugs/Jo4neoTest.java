@@ -1,10 +1,12 @@
 package test.bugs;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import jo4neo.ObjectGraph;
 import jo4neo.ObjectGraphFactory;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
@@ -15,15 +17,16 @@ public class Jo4neoTest {
 	@Test
 	public void noop() {
 		
-	}
-	
-	public static void main(String args[]) {
-
 		GraphDatabaseService neo = new EmbeddedGraphDatabase("bugs");
 		ObjectGraph graph = ObjectGraphFactory.instance().get(neo);
 
 		Transaction t = graph.beginTx();
 		try {
+			
+			Collection<ExampleObject> examples = graph.get(ExampleObject.class);
+			for (ExampleObject example : examples) {
+				graph.delete(example);
+			}
 
 			ExampleObject to = new ExampleObject("Hello", "World", 1);
 
@@ -50,10 +53,22 @@ public class Jo4neoTest {
 		}
 		
 		Collection<ExampleObject> nodes = graph.get(ExampleObject.class);
+		
+		Assert.assertEquals(5, nodes.size());
+		
+		ArrayList<Integer> numberFields = new ArrayList<Integer>(5);   
 		for (ExampleObject o : nodes) {
-			System.out.println(o.number + o.stringOne);
+			numberFields.add(o.number);
 		}
-		System.out.println("done");
+		
+		Integer ia[] = new Integer[numberFields.size()];
+		ia = numberFields.toArray(ia);
+
+		Assert.assertArrayEquals(
+				new Integer[] {1,1,2,3,4}, 
+				numberFields.toArray(new Integer[numberFields.size()])
+		);
+		
 		graph.close();
 		neo.shutdown();
 	}

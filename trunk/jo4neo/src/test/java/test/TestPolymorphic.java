@@ -39,7 +39,6 @@ public class TestPolymorphic extends BaseTest {
 			tag = graph.find(tag).where(tag.name).is("semweb").result();
 
 			for (Taggable thing : tag.getItems()) {
-				System.out.println(thing);
 				assertTrue(thing instanceof ContentItem);
 			}
 			assertEquals(3, tag.getItems().size());
