@@ -112,9 +112,15 @@ class IndexedNeo implements GraphDatabaseService {
 		if (r.iterator().hasNext())
 			metanode = r.iterator().next().getEndNode();
 		else {
-			metanode = neo.createNode();
-			metanode.setProperty(Nodeid.class.getName(), type.getName());
-			root.createRelationshipTo(metanode, relType);
+			Transaction tx = neo.beginTx();
+			try {
+				metanode = neo.createNode();
+				metanode.setProperty(Nodeid.class.getName(), type.getName());
+				root.createRelationshipTo(metanode, relType);
+				tx.success();
+			} finally {
+				tx.finish();
+			}
 		}
 		return metanode;
 	}
