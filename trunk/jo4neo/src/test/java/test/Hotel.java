@@ -13,7 +13,8 @@ public class Hotel {
 	
 	@neo Collection<Ammenity> ammenities;
 	@neo(index=true) String name;
-	
+	@neo(index=true) boolean test;
+
 	public Collection<Ammenity> getAmmenities() {
 		return ammenities;
 	}
@@ -26,6 +27,4 @@ public class Hotel {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
 }

@@ -1,10 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<parent>
-		<artifactId>parent-pom</artifactId>
-		<groupId>org.neo4j</groupId>
-		<version>8-SNAPSHOT</version>
-	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>thewebsemantic</groupId>
 	<artifactId>jo4neo</artifactId>
@@ -20,11 +15,16 @@
 			<artifactId>neo4j-kernel</artifactId>
 			<version>${neo4j-version}</version>
 		</dependency>
+		<dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.4</version>
+       </dependency>
 	</dependencies>
 	
 	<version>0.5-SNAPSHOT</version>
 	<properties>
-		<neo4j-version>1.4.M04</neo4j-version>
+		<neo4j-version>1.4</neo4j-version>
 	</properties>
 
 	<build>

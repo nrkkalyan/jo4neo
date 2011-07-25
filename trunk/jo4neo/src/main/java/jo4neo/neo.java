@@ -53,7 +53,7 @@ public @interface neo {
 	 * 
 	 * @return
 	 */
-	Class<? extends TraverserProvider> traverser() default DefaultTraverserProvider.class;
+	Class<? extends TraverserProvider> traverser() default jo4neo.DefaultTraverserProvider.class;
 	
 	/**
 	 * If true jo4neo manages a list of instances in most recent order.

@@ -26,7 +26,7 @@ public class TestBasic extends BaseTest {
 			h.setName("Hyatt Boston");
 			graph.persist(h);
 			graph.persist(h);
-			Hotel hotel = new Hotel();
+            Hotel hotel = new Hotel();
 			Collection<Hotel> hotels = graph.find(hotel).where(hotel.name).is("Hyatt Boston").results();
 			
 			assertEquals(hotels.size(), 1);
