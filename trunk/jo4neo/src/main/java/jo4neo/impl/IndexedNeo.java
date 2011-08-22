@@ -155,13 +155,11 @@ class IndexedNeo implements GraphDatabaseService {
 		return neo.registerTransactionEventHandler(handler);
 	}
 
-	@Override
 	public KernelEventHandler unregisterKernelEventHandler(
 			KernelEventHandler handler) {
 		return neo.unregisterKernelEventHandler(handler);
 	}
 
-	@Override
 	public <T> TransactionEventHandler<T> unregisterTransactionEventHandler(
 			TransactionEventHandler<T> handler) {
 		return neo.unregisterTransactionEventHandler(handler);
