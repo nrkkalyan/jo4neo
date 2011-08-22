@@ -18,13 +18,13 @@
 		<dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.4</version>
+        <version>4.8</version>
        </dependency>
 	</dependencies>
 	
 	<version>0.5-SNAPSHOT</version>
 	<properties>
-		<neo4j-version>1.4</neo4j-version>
+		<neo4j-version>1.4.1</neo4j-version>
 	</properties>
 
 	<build>
@@ -36,13 +36,7 @@
 			</extension>
 		</extensions>
 		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
+			
 		</plugins>
 
 	</build>
