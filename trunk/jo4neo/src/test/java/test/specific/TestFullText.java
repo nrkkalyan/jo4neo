@@ -3,7 +3,7 @@ package test.specific;
 import java.util.Collection;
 
 import org.junit.Test;
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 import org.neo4j.graphdb.Transaction;
 
 import test.BaseTest;
