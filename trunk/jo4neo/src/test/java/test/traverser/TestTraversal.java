@@ -7,7 +7,7 @@ import org.neo4j.graphdb.Transaction;
 
 import test.BaseTest;
 
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 
 public class TestTraversal extends BaseTest {
 	
