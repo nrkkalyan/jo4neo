@@ -35,6 +35,7 @@ public class ObjectGraphFactory {
 			ObjectGraphProvider provider = getProvider();
 			graph = provider.create(neo);
 			cache.put(neo, graph);
+			registerShutdownHook(neo);
 		} else {
 			graph = cache.get(neo);
 		}
@@ -47,6 +48,18 @@ public class ObjectGraphFactory {
 		for (ObjectGraphProvider objectGraphProvider : service)
 			return objectGraphProvider;
 		return null;
+	}
+
+	private void registerShutdownHook(final GraphDatabaseService neo) {
+		// Registers a shutdown hook for the Neo4j instance so that it
+		// shuts down nicely when the VM exits (even if you "Ctrl-C" the
+		// running example before it's completed)
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				neo.shutdown();
+			}
+		});
 	}
 
 }

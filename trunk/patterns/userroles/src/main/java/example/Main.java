@@ -53,7 +53,6 @@ public class Main {
 	public static void main(String[] args) {
 
 		GraphDatabaseService neo = new EmbeddedGraphDatabase("neo_store2");
-		neo.enableRemoteShell();
 		ObjectGraph graph = ObjectGraphFactory.instance().get(neo);
 		try {
 			setup(graph);

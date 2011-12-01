@@ -24,7 +24,7 @@
 	
 	<version>0.5-SNAPSHOT</version>
 	<properties>
-		<neo4j-version>1.4.1</neo4j-version>
+		<neo4j-version>1.6-SNAPSHOT</neo4j-version>
 	</properties>
 
 	<build>
